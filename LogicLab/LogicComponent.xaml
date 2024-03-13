@@ -1,0 +1,15 @@
+﻿<UserControl x:Class="LogicLab.LogicComponent"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:LogicLab"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Rectangle x:Name="MainImage" HorizontalAlignment="Left" Height="100" Stroke="White" VerticalAlignment="Top" Width="100" RadiusX="15" RadiusY="15" Fill="#FFA4A4A4" StrokeThickness="3" MouseDown="MainImage_MouseDown" MouseUp="MainImage_MouseUp">
+            
+        </Rectangle>
+        <Label Content="Label" HorizontalAlignment="Left" Margin="32,50,0,0" VerticalAlignment="Top"/>
+    </Grid>
+</UserControl>
