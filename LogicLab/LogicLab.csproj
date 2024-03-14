@@ -9,15 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="OR.png" />
-    <None Remove="XOR Gate.png" />
-    <None Remove="XOR.png" />
+    <None Remove="AND Gate.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="OR.png" />
-    <Resource Include="XOR Gate.png" />
-    <Resource Include="XOR.png" />
+    <Resource Include="AND Gate.png" />
   </ItemGroup>
 
 </Project>

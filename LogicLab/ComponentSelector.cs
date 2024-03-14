@@ -1,7 +1,9 @@
 ﻿using System.Collections.Immutable;
-using System.Drawing;
+using System.Windows.Shapes;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace LogicLab;
 
@@ -10,19 +12,42 @@ public static class ComponentSelector
     private static readonly List<LogicComponent> selectedComponents = [];
     public static ImmutableList<LogicComponent> SelectedComponents => selectedComponents.ToImmutableList();
 
+    public static Grid Grid
+    {
+        get => _grid;
+        set
+        {
+            if (_grid == null)
+                value.Children.Add(selectionBox);
+            _grid ??= value;
+        }
+    }
+
+    private static readonly Rectangle selectionBox;
     private static bool isMouseDown;
     private static Point mouseDownPos;
-    private static Rectangle selectionBox;
+    private static Grid _grid;
+
+    static ComponentSelector()
+    {
+        // Create the selection rectangle
+        selectionBox = new Rectangle
+        {
+            Fill = new SolidColorBrush(Color.FromArgb(50, 0, 0, 255)), // Transparent blue fill
+            Stroke = Brushes.LightBlue, // Light blue border
+            StrokeThickness = 1,
+            Visibility = Visibility.Collapsed,
+            HorizontalAlignment = HorizontalAlignment.Left,
+            VerticalAlignment = VerticalAlignment.Top
+        };
+    }
 
     public static void SingleSelect(LogicComponent logicComponent)
     {
         DeselectAll(logicComponent);
         selectedComponents.Add(logicComponent);
     }
-    public static void Deselect(LogicComponent logicComponent)
-    {
-        selectedComponents.Remove(logicComponent);
-    }
+    public static void Deselect(LogicComponent logicComponent) => selectedComponents.Remove(logicComponent);
     public static bool IsSelected(LogicComponent logicComponent) => selectedComponents.Contains(logicComponent);
     public static void DeselectAll(LogicComponent? ignore = null)
     {
@@ -30,19 +55,16 @@ public static class ComponentSelector
             if (selectedComponents[i] != ignore)
                 selectedComponents[i].Deselect();
     }
-    public static void ShiftSelect(LogicComponent logicComponent)
-    {
-        selectedComponents.Add(logicComponent);
-    }
+    public static void ShiftSelect(LogicComponent logicComponent) => selectedComponents.Add(logicComponent);
 
     public static void MouseDown(MouseButtonEventArgs e)
     {
-        if (e.OriginalSource is not Grid)
+        if (e.OriginalSource is not System.Windows.Controls.Grid)
             return;
         // Capture and track the mouse.
         isMouseDown = true;
-        mouseDownPos = e.GetPosition(grid); // Get the mouse position relative to the grid
-        grid.CaptureMouse();
+        mouseDownPos = e.GetPosition(Grid); // Get the mouse position relative to the grid
+        Grid.CaptureMouse();
 
         // Initial placement of the drag selection box.
         selectionBox.Width = 0;
@@ -56,7 +78,7 @@ public static class ComponentSelector
             return;
 
         // When the mouse is held down, reposition the drag selection box.
-        Point mousePos = e.GetPosition(grid);
+        Point mousePos = e.GetPosition(Grid);
 
         if (mouseDownPos.X < mousePos.X)
             selectionBox.Width = mousePos.X - mouseDownPos.X;
@@ -76,19 +98,42 @@ public static class ComponentSelector
     }
     public static void MouseUp(MouseButtonEventArgs e)
     {
+        if (!isMouseDown)
+            return;
         isMouseDown = false;
-        grid.ReleaseMouseCapture();
+        Grid.ReleaseMouseCapture();
 
         // Hide the drag selection box.
         selectionBox.Visibility = Visibility.Collapsed;
 
-        Point mouseUpPos = e.GetPosition(grid);
+        Point mouseUpPos = e.GetPosition(Grid);
+        Rect selectionRect = new(mouseDownPos, mouseUpPos);
 
-        // TODO: 
-        //
-        // The mouse has been released, check to see if any of the items 
-        // in the other canvas are contained within mouseDownPos and 
-        // mouseUpPos, for any that are, select them!
-        //
+        List<LogicComponent> intersectingControls = [];
+        FindIntersectingControls(Grid, selectionRect, intersectingControls);
+
+        intersectingControls.ForEach(lc => lc.Select(shiftSelect: true));
+    }
+
+    private static void FindIntersectingControls(DependencyObject parent, Rect selectionRect, List<LogicComponent> intersectingControls)
+    {
+        int count = VisualTreeHelper.GetChildrenCount(parent);
+        for (int i = 0; i < count; i++)
+        {
+            var child = VisualTreeHelper.GetChild(parent, i);
+            if (child is not FrameworkElement element)
+                continue;
+            
+            // Check if the control intersects with the selection rectangle
+            Rect bounds = new(element.RenderSize);
+            Point topLeft = element.TranslatePoint(new Point(), Grid);
+            bounds.Offset(topLeft.X, topLeft.Y);
+
+            if (selectionRect.IntersectsWith(bounds) && element is LogicComponent logicComponent)
+                intersectingControls.Add(logicComponent);
+
+            // Recursively search child elements
+            FindIntersectingControls(element, selectionRect, intersectingControls);
+        }
     }
 }

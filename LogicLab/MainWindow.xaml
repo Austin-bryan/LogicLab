@@ -6,52 +6,11 @@
         xmlns:local="clr-namespace:LogicLab"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid x:Name="MainGrid" Background="#FF2B2B2B" MouseDown="Grid_MouseDown">
+    <Grid x:Name="MainGrid" Background="#FF2B2B2B" MouseDown="Grid_MouseDown" MouseMove="MainGrid_MouseMove" MouseUp="MainGrid_MouseUp">
         <local:LogicComponent HorizontalAlignment="Left" Margin="115,73,0,0" VerticalAlignment="Top"/>
-        <Rectangle HorizontalAlignment="Left" Height="83" Margin="317,0,0,0" VerticalAlignment="Center" Width="83">
-            <Rectangle.Fill>
-                <ImageBrush ImageSource="/Images/AND Gate.png"/>
-            </Rectangle.Fill>
-            <Rectangle.Effect>
-                <DropShadowEffect ShadowDepth="6" Color="Black" Opacity="0.5" BlurRadius="5"/>
-
-                <!--<DropShadowEffect ShadowDepth="0" Color="#FFB2B2FF" Opacity="1" BlurRadius="20"/>-->
-            </Rectangle.Effect>
-        </Rectangle>
         <local:LogicComponent HorizontalAlignment="Left" Margin="287,37,0,0" VerticalAlignment="Top"/>
         <local:LogicComponent HorizontalAlignment="Left" Margin="441,105,0,0" VerticalAlignment="Top"/>
         <local:LogicComponent HorizontalAlignment="Left" Margin="583,55,0,0" VerticalAlignment="Top"/>
         <local:LogicComponent HorizontalAlignment="Left" Margin="583,217,0,0" VerticalAlignment="Top"/>
-        <Rectangle HorizontalAlignment="Left" Height="83" Margin="362,244,0,0" VerticalAlignment="Top" Width="84">
-            <Rectangle.Fill>
-                <ImageBrush ImageSource="/Images/XOR Gate.png"/>
-            </Rectangle.Fill>
-            <Rectangle.Effect>
-                <DropShadowEffect ShadowDepth="6" Color="Black" Opacity="0.5" BlurRadius="5"/>
-
-                <!--<DropShadowEffect ShadowDepth="0" Color="#FFB2B2FF" Opacity="1" BlurRadius="20"/>-->
-            </Rectangle.Effect>
-        </Rectangle>
-        <Rectangle HorizontalAlignment="Left" Height="83" Margin="239,234,0,0" VerticalAlignment="Top" Width="83">
-            <Rectangle.Fill>
-                <ImageBrush ImageSource="/Images/Buffer Gate.png"/>
-            </Rectangle.Fill>
-            <Rectangle.Effect>
-                <DropShadowEffect ShadowDepth="6" Color="Black" Opacity="0.5" BlurRadius="5"/>
-
-                <!--<DropShadowEffect ShadowDepth="0" Color="#FFB2B2FF" Opacity="1" BlurRadius="20"/>-->
-            </Rectangle.Effect>
-        </Rectangle>
-        <Rectangle HorizontalAlignment="Left" Height="83" Margin="274,303,0,0" VerticalAlignment="Top" Width="83">
-            <Rectangle.Fill>
-                <ImageBrush ImageSource="/Images/OR Gate.png"/>
-            </Rectangle.Fill>
-            <Rectangle.Effect>
-
-                <!--<DropShadowEffect ShadowDepth="0" Color="#FFB2B2FF" Opacity="1" BlurRadius="20"/>-->
-                <DropShadowEffect ShadowDepth="6" Color="Black" Opacity="0.5" BlurRadius="5"/>
-
-            </Rectangle.Effect>
-        </Rectangle>
     </Grid>
 </Window>
