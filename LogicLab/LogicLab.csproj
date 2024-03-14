@@ -10,10 +10,16 @@
 
   <ItemGroup>
     <None Remove="AND Gate.png" />
+    <None Remove="Buffer Gate.png" />
+    <None Remove="Input.png" />
+    <None Remove="Output.png" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="AND Gate.png" />
+    <Resource Include="Buffer Gate.png" />
+    <Resource Include="Input.png" />
+    <Resource Include="Output.png" />
   </ItemGroup>
 
 </Project>

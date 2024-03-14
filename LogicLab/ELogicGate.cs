@@ -21,7 +21,7 @@ public readonly struct ELogicGate
     private ELogicGate(int value) => this.value = value;
 
     public static bool operator ==(ELogicGate lhs, ELogicGate rhs) => lhs.value == rhs.value;
-    public static bool operator !=(ELogicGate lhs, ELogicGate rhs) => !(lhs == rhs);
+    public static bool operator !=(ELogicGate lhs, ELogicGate rhs) => !(lhs == rhs);    
 
     public static ELogicGate operator |(ELogicGate lhs, ELogicGate rhs)
     {
@@ -31,6 +31,11 @@ public readonly struct ELogicGate
         var other = lhs == NOT ? rhs : lhs;
         return other.value % 2 == 0 ? new(other.value + 1) : new(other.value - 1);
     }
+    public static ELogicGate operator !(ELogicGate logicGate) => NOT | logicGate;
+    public readonly ELogicGate NegativeGate() => value % 2 == 1 ? this : !this;
+    public readonly ELogicGate PositiveGate() => value % 2 == 0 ? this : !this;
+
+
 
     public override readonly bool Equals(object? obj) => obj is ELogicGate other && value == other.value;
     public override readonly string ToString() => (LogicGateValue)value switch
