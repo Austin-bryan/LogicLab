@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-using System.Diagnostics;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -68,8 +66,6 @@ public partial class LogicComponent : UserControl
             ComponentSelector.DeselectAll(this);
             Select(shiftSelect: false);
         }
-        else if (!ShiftKey)
-            ComponentSelector.DeselectAll(this);
 
         dragger.DragStart(e);
     }
