@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System.ComponentModel;
+using System.Diagnostics;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -20,9 +22,17 @@ public partial class LogicComponent : UserControl
     {
         ShadowDepth = 0, Color = Color.FromArgb(255, 200, 200, 255), Opacity = 1, BlurRadius = 30
     };
+    private readonly ComponentDragger dragger;
     private DropShadowEffect animatingShadow;
+    private Point dragStart;
+    private bool isDragging;
 
-    public LogicComponent() => InitializeComponent();
+    public LogicComponent()
+    {
+        InitializeComponent();
+        animatingShadow = shadow;
+        dragger = new ComponentDragger(this);
+    }
 
     public void Select(bool shiftSelect)
     {
@@ -39,22 +49,6 @@ public partial class LogicComponent : UserControl
         BeginShadowAnimation(highlight, shadow);
         ComponentSelector.Deselect(this);
     }
-
-    private void MainImage_MouseDown(object sender, MouseButtonEventArgs e)
-    {
-     
-    }
-    public void Drag(Vector delta)
-    {
-        Margin = new(Margin.Left + delta.X, Margin.Top + delta.Y, Margin.Right, Margin.Bottom);
-    }
-    private void MainImage_MouseUp(object sender, MouseButtonEventArgs e)
-    {
-        var mw = Window.GetWindow(this) as MainWindow;
-        mw.DragEnd();
-
-    }
-
     private void BeginShadowAnimation(DropShadowEffect fromShadow, DropShadowEffect targetShadow)
     {
         TimeSpan animTime = TimeSpan.FromSeconds(0.125);
@@ -67,6 +61,10 @@ public partial class LogicComponent : UserControl
         Effect = animatingShadow;
     }
 
+    public void Drag(Vector delta)
+    {
+        Margin = new(Margin.Left + delta.X, Margin.Top + delta.Y, Margin.Right, Margin.Bottom);
+    }
     private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
     {
         if (!IsSelected && ShiftKey)
@@ -76,19 +74,41 @@ public partial class LogicComponent : UserControl
             ComponentSelector.DeselectAll(this);
             Select(shiftSelect: false);
         }
-        else if (IsSelected && ShiftKey)
-            Deselect();
         else if (!ShiftKey)
             ComponentSelector.DeselectAll(this);
 
         var mw = Window.GetWindow(this) as MainWindow;
 
+        isDragging = true;
         mw.draggingComponents = [this];
-        mw.DragStart(e.GetPosition(this));
-    }
 
+        dragger.DragStart(e);
+        //dragStart = PointToScreen(e.GetPosition(this));
+    }
     private void Grid_MouseUp(object sender, MouseButtonEventArgs e)
     {
+        isDragging = false;
+        var mw = Window.GetWindow(this) as MainWindow;
+        mw.DragEnd();
+        dragger.DragEnd();
+    }
 
+    private void Grid_MouseMove(object sender, MouseEventArgs e)
+    {
+        dragger.DragMove(e);
+        //if (isDragging)
+        //{
+        //    Point currentMousePosition = PointToScreen(e.GetPosition(this));
+        //    Vector delta = currentMousePosition - dragStart;
+        //    dragStart = currentMousePosition;
+            
+        //    Drag(delta);
+        //}
+    }
+
+    private void Grid_Loaded(object sender, RoutedEventArgs e)
+    {
+        var mw = Window.GetWindow(this) as MainWindow;
+        mw.MainGrid.MouseMove += Grid_MouseMove;
     }
 }

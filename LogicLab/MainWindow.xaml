@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:LogicLab"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid x:Name="mainGrid" Background="#FF2B2B2B" MouseMove="Grid_MouseMove" MouseUp="Grid_MouseUp" MouseDown="Grid_MouseDown">
+    <Grid x:Name="MainGrid" Background="#FF2B2B2B" MouseMove="Grid_MouseMove" MouseUp="Grid_MouseUp" MouseDown="Grid_MouseDown">
         <local:LogicComponent HorizontalAlignment="Left" Margin="115,73,0,0" VerticalAlignment="Top"/>
         <Rectangle HorizontalAlignment="Left" Height="83" Margin="317,0,0,0" VerticalAlignment="Center" Width="83">
             <Rectangle.Fill>
