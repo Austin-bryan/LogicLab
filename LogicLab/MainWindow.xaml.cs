@@ -9,9 +9,7 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         ComponentSelector.Grid = MainGrid;
-
     }
-
     private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
     {
         if (!Keyboard.Modifiers.HasFlag(ModifierKeys.Shift)

@@ -12,5 +12,9 @@
         <local:LogicComponent HorizontalAlignment="Left" Margin="441,105,0,0" VerticalAlignment="Top"/>
         <local:LogicComponent HorizontalAlignment="Left" Margin="583,55,0,0" VerticalAlignment="Top"/>
         <local:LogicComponent HorizontalAlignment="Left" Margin="583,217,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="82,257,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="210,207,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="330,282,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="441,247,0,0" VerticalAlignment="Top"/>
     </Grid>
 </Window>

@@ -28,6 +28,7 @@ public partial class LogicComponent : UserControl
         InitializeComponent();
         animatingShadow = shadow;
         dragger = new ComponentDragger(this);
+        Deselect();
     }
 
     public void Select(bool shiftSelect)
@@ -57,7 +58,7 @@ public partial class LogicComponent : UserControl
         Effect = animatingShadow;
     }
 
-    private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
+    protected virtual void Grid_MouseDown(object sender, MouseButtonEventArgs e)
     {
         if (!IsSelected && ShiftKey)
             Select(shiftSelect: true);
@@ -69,9 +70,9 @@ public partial class LogicComponent : UserControl
 
         dragger.DragStart(e);
     }
-    private void Grid_MouseUp(object sender, MouseButtonEventArgs e) => dragger.DragEnd();
-    private void Grid_MouseMove(object sender, MouseEventArgs e) => dragger.DragMove(e);
-    private void Grid_Loaded(object sender, RoutedEventArgs e)
+    protected virtual void Grid_MouseUp(object sender, MouseButtonEventArgs e) => dragger.DragEnd();
+    protected virtual void Grid_MouseMove(object sender, MouseEventArgs e) => dragger.DragMove(e);
+    protected virtual void Grid_Loaded(object sender, RoutedEventArgs e)
     {
         if (Window.GetWindow(this) is MainWindow mw)
             if (mw.MainGrid != null)

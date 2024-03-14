@@ -7,7 +7,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid MouseDown="Grid_MouseDown" MouseUp="Grid_MouseUp" MouseMove="Grid_MouseMove" Loaded="Grid_Loaded">
-        <Rectangle x:Name="MainImage" HorizontalAlignment="Left" Height="100" Stroke="White" VerticalAlignment="Top" Width="100" RadiusX="15" RadiusY="15" Fill="#FFA4A4A4" StrokeThickness="3"/>
-        <Label x:Name="debugLabel" Content="Label" HorizontalAlignment="Left" Margin="32,50,0,0" VerticalAlignment="Top"/>
+        <local:LogicComponentTemplate HorizontalAlignment="Left" VerticalAlignment="Top" Loaded="Grid_Loaded"/>
     </Grid>
 </UserControl>
