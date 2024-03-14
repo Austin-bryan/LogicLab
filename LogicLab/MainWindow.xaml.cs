@@ -32,5 +32,12 @@ public partial class MainWindow : Window
     }
 
     private void Grid_MouseUp(object sender, MouseButtonEventArgs e) => dragger.MouseUp(e);
-    private void Grid_MouseDown(object sender, MouseButtonEventArgs e) => dragger.MouseDown(e);
+    private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
+    {
+        dragger.MouseDown(e);
+
+        if (!Keyboard.Modifiers.HasFlag(ModifierKeys.Shift)
+            && e.OriginalSource == mainGrid)
+            ComponentSelector.DeselectAll();
+    }
 }

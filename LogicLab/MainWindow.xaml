@@ -18,5 +18,9 @@
                 <!--<DropShadowEffect ShadowDepth="0" Color="#FFB2B2FF" Opacity="1" BlurRadius="20"/>-->
             </Rectangle.Effect>
         </Rectangle>
+        <local:LogicComponent HorizontalAlignment="Left" Margin="287,37,0,0" VerticalAlignment="Top"/>
+        <local:LogicComponent HorizontalAlignment="Left" Margin="441,105,0,0" VerticalAlignment="Top"/>
+        <local:LogicComponent HorizontalAlignment="Left" Margin="583,55,0,0" VerticalAlignment="Top"/>
+        <local:LogicComponent HorizontalAlignment="Left" Margin="583,217,0,0" VerticalAlignment="Top"/>
     </Grid>
 </Window>
