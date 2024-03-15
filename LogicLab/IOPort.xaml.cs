@@ -3,6 +3,8 @@ using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using System.Windows.Media;
 using System.Windows.Input;
+using System.Windows.Media.Animation;
+using System.Windows.Shapes;
 
 namespace LogicLab;
 
@@ -62,7 +64,7 @@ public partial class IOPort : UserControl
         activeWire.Draw(portType, PointToScreen(e.GetPosition(this)));
         wires.Add(wire);
 
-        HideSprite();
+        ShowSprite(false);
     }
     private void Sprite_MouseUp(object sender, MouseButtonEventArgs e)
     {
@@ -73,13 +75,15 @@ public partial class IOPort : UserControl
         activeWire.SetPort(portType, this);
         wires.Add(activeWire);
 
-        HideSprite();
+        ShowSprite(false);
     }
 
-    private void HideSprite()
+    private void ShowSprite(bool visible)
     {
-        if (portType == EPortType.Input)
-            Sprite.Visibility = Visibility.Hidden;
+        if (portType != EPortType.Input)
+            return;
+
+        Sprite.BeginAnimation(OpacityProperty, new DoubleAnimation(visible ? 0 : 1, visible ? 1 : 0, TimeSpan.FromSeconds(0.5)));
     }
 
     private void Wire_MouseMove(object sender, MouseEventArgs e)
@@ -99,7 +103,7 @@ public partial class IOPort : UserControl
             activeWire.Remove();
             wires.Remove(activeWire);
             activeWire = null;
-            Sprite.Visibility = Visibility.Visible;
+            ShowSprite(true);
         }
     }
     private void Grid_Loaded(object sender, RoutedEventArgs e)

@@ -48,7 +48,7 @@ public partial class LogicComponent : UserControl
     protected virtual void OnDrag(MouseEventArgs e) { }
     private void BeginShadowAnimation(DropShadowEffect fromShadow, DropShadowEffect targetShadow)
     {
-        TimeSpan animTime = TimeSpan.FromSeconds(0.125);
+        TimeSpan animTime = TimeSpan.FromSeconds(0.25);
 
         animatingShadow = fromShadow.Clone();
         animatingShadow.BeginAnimation(DropShadowEffect.ShadowDepthProperty, new DoubleAnimation(targetShadow.ShadowDepth, animTime));
