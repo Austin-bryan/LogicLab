@@ -18,6 +18,7 @@ public partial class LogicComponent
 
         public void DragStart(MouseEventArgs e)
         {
+            return;
             dragStart = logicComponent.PointToScreen(e.GetPosition(logicComponent));
             isMouseDown = true;
 

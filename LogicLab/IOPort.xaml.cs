@@ -26,6 +26,7 @@ public partial class IOPort : UserControl
         Stroke = new SolidColorBrush(Color.FromRgb(10, 10, 10)),
         StrokeThickness = 10
     };
+    private Wire wire;
 
     public IOPort(EPortType portType)
     {
@@ -88,7 +89,8 @@ public partial class IOPort : UserControl
         if (!isPressed) 
             return;
 
-        DrawSmoothSpline(startPoint, PointToScreen(e.GetPosition(this)));
+        wire.Draw(PointToScreen(e.GetPosition(this)));
+        //DrawSmoothSpline(startPoint, PointToScreen(e.GetPosition(this)));
     }
     private void Wire_MouseUp(object sender, MouseEventArgs e)
     {
@@ -105,7 +107,9 @@ public partial class IOPort : UserControl
 
         startPoint = PointToScreen(e.GetPosition(this));
 
-        DrawSmoothSpline(startPoint, startPoint);
+        wire = new Wire(this.MainWindow(), startPoint);
+        wire.Draw(PointToScreen(e.GetPosition(this)));
+        //DrawSmoothSpline(startPoint, startPoint);
 
     }
     private void ClearSpline()
