@@ -10,6 +10,7 @@ public enum EPortType { Input, Output }
 
 public partial class IOPort : UserControl
 {
+    // TODO:: Remove dependency prop
     public static readonly DependencyProperty PortTypeProperty =
         DependencyProperty.Register("PortType", typeof(EPortType), typeof(IOPort), new PropertyMetadata(EPortType.Input));
 
@@ -22,6 +23,7 @@ public partial class IOPort : UserControl
     public Grid MainGrid => (Window.GetWindow(this) as MainWindow)?.MainGrid ?? throw new NullReferenceException("Null ref");
 
     private readonly SolidColorBrush idleColor, hoverColor;
+    private bool isPressed;
 
     public IOPort(EPortType portType)
     {
@@ -55,13 +57,23 @@ public partial class IOPort : UserControl
         Sprite.Fill = idleColor;
     }
 
-    private void Sprite_MouseMove(object sender, MouseEventArgs e)
+    private void Wire_MouseMove(object sender, MouseEventArgs e)
     {
+        if (!isPressed) 
+            return;
         DebugLabel.Content = e.GetPosition(this);
+    }
+    private void Wire_MouseUp(object sender, MouseEventArgs e)
+    {
+        isPressed = false;
+        MainGrid.MouseMove -= Wire_MouseMove;
+        MainGrid.MouseUp -= Wire_MouseUp;
     }
 
     private void Sprite_MouseDown(object sender, MouseEventArgs e)
     {
-        MainGrid.MouseMove += Sprite_MouseMove;
+        isPressed = true;
+        MainGrid.MouseMove += Wire_MouseMove;
+        MainGrid.MouseUp += Wire_MouseUp;
     }
 }

@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:LogicLab"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" Loaded="LogicComponent_Loaded">
-    <Grid x:Name="Grid" Loaded="Grid_Loaded" MouseMove="Grid_MouseMove" MouseUp="Grid_MouseUp" MouseDown="Grid_MouseDown" HorizontalAlignment="Center" VerticalAlignment="Center" Width="81">
+    <Grid x:Name="Grid" HorizontalAlignment="Center" VerticalAlignment="Center" Width="81" Loaded="Grid_Loaded">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition Width="0*"/>
@@ -22,7 +22,7 @@
                 </TransformGroup>
             </StackPanel.RenderTransform>
         </StackPanel>
-        <Rectangle x:Name="BackgroundSprite" HorizontalAlignment="Center" Height="50" Stroke="#FF0E0E0E" VerticalAlignment="Top" Width="50" RadiusX="10" RadiusY="10" StrokeThickness="2">
+        <Rectangle x:Name="BackgroundSprite" HorizontalAlignment="Center" Height="50" Stroke="#FF0E0E0E" VerticalAlignment="Top" Width="50" RadiusX="10" RadiusY="10" StrokeThickness="2" MouseDown="Gate_MouseDown" MouseMove="Gate_MouseMove" MouseUp="Gate_MouseUp">
             <Rectangle.Fill>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black" Offset="1"/>
@@ -30,7 +30,7 @@
                 </LinearGradientBrush>
             </Rectangle.Fill>
         </Rectangle>
-        <Rectangle x:Name="GateImage" HorizontalAlignment="Center" Height="30" Stroke="Black" VerticalAlignment="Center" Width="30" StrokeThickness="0">
+        <Rectangle x:Name="GateImage" HorizontalAlignment="Center" Height="30" Stroke="Black" VerticalAlignment="Center" Width="30" StrokeThickness="0" MouseDown="Gate_MouseDown" MouseMove="Gate_MouseMove" MouseUp="Gate_MouseUp">
             <Rectangle.Fill
     >
                 <ImageBrush

@@ -57,7 +57,7 @@ public partial class LogicComponent : UserControl
         Effect = animatingShadow;
     }
 
-    protected virtual void Grid_MouseDown(object sender, MouseButtonEventArgs e)
+    protected virtual void Gate_MouseDown(object sender, MouseButtonEventArgs e)
     {
         if (!IsSelected && ShiftKey)
             Select(shiftSelect: true);
@@ -69,12 +69,12 @@ public partial class LogicComponent : UserControl
 
         dragger.DragStart(e);
     }
-    protected virtual void Grid_MouseUp(object sender, MouseButtonEventArgs e) => dragger.DragEnd();
-    protected virtual void Grid_MouseMove(object sender, MouseEventArgs e) => dragger.DragMove(e);
+    protected virtual void Gate_MouseUp(object sender, MouseButtonEventArgs e) => dragger.DragEnd();
+    protected virtual void Gate_MouseMove(object sender, MouseEventArgs e) => dragger.DragMove(e);
     protected virtual void Grid_Loaded(object sender, RoutedEventArgs e)
     {
         if (Window.GetWindow(this) is MainWindow mw)
             if (mw.MainGrid != null)
-                mw.MainGrid.MouseMove += Grid_MouseMove;
+                mw.MainGrid.MouseMove += Gate_MouseMove;
     }
 }//113, 83

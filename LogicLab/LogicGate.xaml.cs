@@ -51,10 +51,9 @@ public partial class LogicGate : LogicComponent
 
     public void Negate() => gateType = !gateType; 
 
-    protected override void Grid_Loaded    (object sender, System.Windows.RoutedEventArgs e)            => base.Grid_Loaded(sender, e);
-    protected override void Grid_MouseDown (object sender, System.Windows.Input.MouseButtonEventArgs e) => base.Grid_MouseDown(sender, e);
-    protected override void Grid_MouseMove (object sender, System.Windows.Input.MouseEventArgs e)       => base.Grid_MouseMove(sender, e);
-    protected override void Grid_MouseUp   (object sender, System.Windows.Input.MouseButtonEventArgs e) => base.Grid_MouseUp(sender, e);
+    protected override void Gate_MouseDown (object sender, System.Windows.Input.MouseButtonEventArgs e) => base.Gate_MouseDown(sender, e);
+    protected override void Gate_MouseMove (object sender, System.Windows.Input.MouseEventArgs e)       => base.Gate_MouseMove(sender, e);
+    protected override void Gate_MouseUp   (object sender, System.Windows.Input.MouseButtonEventArgs e) => base.Gate_MouseUp(sender, e);
 
     private void SetInputAmount(int amount)
     {
@@ -97,5 +96,10 @@ public partial class LogicGate : LogicComponent
         outputPort.Margin = new Thickness(ActualWidth - 15, 0, 0, 0);
 
         ShowImage();
+    }
+
+    private void Gate_MouseMove(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    {
+
     }
 }
