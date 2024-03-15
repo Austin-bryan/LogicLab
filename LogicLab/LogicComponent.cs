@@ -45,6 +45,7 @@ public partial class LogicComponent : UserControl
         BeginShadowAnimation(highlight, shadow);
         ComponentSelector.Deselect(this);
     }
+    protected virtual void OnDrag(MouseEventArgs e) { }
     private void BeginShadowAnimation(DropShadowEffect fromShadow, DropShadowEffect targetShadow)
     {
         TimeSpan animTime = TimeSpan.FromSeconds(0.125);

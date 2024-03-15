@@ -35,7 +35,7 @@ public partial class LogicComponent
             Vector delta = mousePos - dragStart;
             dragStart = mousePos;
             Margin = new(Margin.Left + delta.X, Margin.Top + delta.Y, Margin.Right, Margin.Bottom);
-
+            logicComponent.OnDrag(e);
         }
         public void DragEnd()
         {
