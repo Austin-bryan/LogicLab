@@ -3,8 +3,6 @@ using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using System.Windows.Media;
 using System.Windows.Input;
-using System.Windows.Shapes;
-using System.Diagnostics;
 
 namespace LogicLab;
 
@@ -49,7 +47,7 @@ public partial class IOPort : UserControl
     {
         if (!isPressed) 
             return;
-        wire.Draw(PointToScreen(e.GetPosition(this)));
+        wire.Draw(portType, PointToScreen(e.GetPosition(this)));
     }
     private void Wire_MouseUp(object sender, MouseEventArgs e)
     {
@@ -66,7 +64,7 @@ public partial class IOPort : UserControl
 
         wire = new Wire(this.MainWindow(), PointToScreen(
             new Point(
-                Sprite.Margin.Left,
+                Sprite.Margin.Left + (portType == EPortType.Input ? ActualWidth : 0),
                 Sprite.Margin.Right + ActualHeight / 2)));
         activeWire = wire;
         wire.Draw(portType, PointToScreen(e.GetPosition(this)));
@@ -77,9 +75,9 @@ public partial class IOPort : UserControl
         if (activeWire == null)
             return;
 
-        activeWire.SetEndPoint(PointToScreen(
+        activeWire.SetEndPoint(portType, PointToScreen(
             new Point(
-                Sprite.Margin.Left + ActualWidth, 
+                Sprite.Margin.Left + (portType == EPortType.Input ? ActualWidth : 0), 
                 Sprite.Margin.Right + ActualHeight / 2)));
         activeWire = null;
 

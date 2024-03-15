@@ -26,15 +26,18 @@ public partial class Wire : LogicComponent
 
     public void SetEndPoint(EPortType portType, Point end)
     {
-        Draw(portType, end);
+        Draw(portType == EPortType.Input ? EPortType.Output : EPortType.Input, end);
     }
 
-    public void Draw(EPortType portType Point end)
+    public void Draw(EPortType portType, Point end)
     {
         const int offset = 25;
 
         Point start = new(startPoint.X, startPoint.Y - offset);
         end = new Point(end.X, end.Y - offset);
+
+        if (portType == EPortType.Input)
+            (start, end) = (end, start);
 
         PathGeometry pathGeometry = new();
         PathFigure pathFigure = new() { StartPoint = start };
