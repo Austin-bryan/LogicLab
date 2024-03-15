@@ -32,5 +32,6 @@
         <local:LogicGate HorizontalAlignment="Left" Margin="181,420,0,0" VerticalAlignment="Top"/>
         <local:LogicGate HorizontalAlignment="Left" Margin="305,420,0,0" VerticalAlignment="Top"/>
         <local:LogicGate HorizontalAlignment="Left" Margin="423,422,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="DebugLabel" Content="Label" HorizontalAlignment="Left" Margin="712,240,0,0" VerticalAlignment="Top" Foreground="White"/>
     </Grid>
 </Window>
