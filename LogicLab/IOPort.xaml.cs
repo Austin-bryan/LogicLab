@@ -4,6 +4,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media;
 using System.Windows.Input;
 using System.Windows.Shapes;
+using System.Diagnostics;
 
 namespace LogicLab;
 
@@ -15,18 +16,10 @@ public partial class IOPort : UserControl
 
     private readonly SolidColorBrush idleColor, hoverColor;
     private bool isPressed;
-    private Point startPoint;
-    private Path splinePath = new()
-    {
-        Stroke = new SolidColorBrush(Color.FromRgb(200, 200, 200)),
-        StrokeThickness = 5
-    };
-    private Path splineBorder = new()
-    {
-        Stroke = new SolidColorBrush(Color.FromRgb(10, 10, 10)),
-        StrokeThickness = 10
-    };
+
     private Wire wire;
+    private static Wire? activeWire;
+
 
     public IOPort(EPortType portType)
     {
@@ -49,48 +42,14 @@ public partial class IOPort : UserControl
         Sprite.Height *= 2.5;
         Sprite.Width *= 1.75;
     }
-    private void DrawSmoothSpline(Point start, Point end)
-    {
-        const int offset = 25;
-
-        start = new Point(start.X, start.Y - offset); 
-        end = new Point(end.X, end.Y - offset); 
-
-        PathGeometry pathGeometry = new();
-        PathFigure pathFigure = new();
-
-        pathFigure.StartPoint = start;
-
-        BezierSegment bezierSegment = new BezierSegment(
-            new Point(start.X + 50, start.Y), // Control point 1
-            new Point(end.X - 50, end.Y),     // Control point 2
-            end,                               // End point
-            true                                // IsStroked
-        );
-
-        pathFigure.Segments.Add(bezierSegment);
-        pathGeometry.Figures.Add(pathFigure);
-        splinePath.Data = pathGeometry;
-        splineBorder.Data = pathGeometry;
-    }
-
-    private void Sprite_MouseEnter(object sender, MouseEventArgs e)
-    {
-        Sprite.Fill = hoverColor;
-    }
-
-    private void Sprite_MouseLeave(object sender, MouseEventArgs e)
-    {
-        Sprite.Fill = idleColor;
-    }
+    private void Sprite_MouseEnter(object sender, MouseEventArgs e) => Sprite.Fill = hoverColor;
+    private void Sprite_MouseLeave(object sender, MouseEventArgs e) => Sprite.Fill = idleColor;
 
     private void Wire_MouseMove(object sender, MouseEventArgs e)
     {
         if (!isPressed) 
             return;
-
         wire.Draw(PointToScreen(e.GetPosition(this)));
-        //DrawSmoothSpline(startPoint, PointToScreen(e.GetPosition(this)));
     }
     private void Wire_MouseUp(object sender, MouseEventArgs e)
     {
@@ -105,25 +64,31 @@ public partial class IOPort : UserControl
         this.MainGrid().MouseMove += Wire_MouseMove;
         this.MainGrid().MouseUp += Wire_MouseUp;
 
-        startPoint = PointToScreen(e.GetPosition(this));
-
-        wire = new Wire(this.MainWindow(), startPoint);
-        wire.Draw(PointToScreen(e.GetPosition(this)));
-        //DrawSmoothSpline(startPoint, startPoint);
-
+        wire = new Wire(this.MainWindow(), PointToScreen(
+            new Point(
+                Sprite.Margin.Left,
+                Sprite.Margin.Right + ActualHeight / 2)));
+        activeWire = wire;
+        wire.Draw(portType, PointToScreen(e.GetPosition(this)));
     }
-    private void ClearSpline()
+
+    private void Sprite_MouseUp(object sender, MouseButtonEventArgs e)
     {
-        if (splinePath != null && this.MainGrid().Children.Contains(splinePath))
-        {
-            this.MainGrid().Children.Remove(splinePath);
-        }
+        if (activeWire == null)
+            return;
+
+        activeWire.SetEndPoint(PointToScreen(
+            new Point(
+                Sprite.Margin.Left + ActualWidth, 
+                Sprite.Margin.Right + ActualHeight / 2)));
+        activeWire = null;
+
+        if (portType == EPortType.Input)
+            Sprite.Visibility = Visibility.Hidden;
     }
 
     private void Grid_Loaded(object sender, RoutedEventArgs e)
     {
-        this.MainGrid().Children.Insert(0, splinePath);
-        this.MainGrid().Children.Insert(0, splineBorder);
-
+        
     }
 }

@@ -40,7 +40,7 @@ public partial class LogicComponent : UserControl
              ComponentSelector.ShiftSelect(this);
         else ComponentSelector.SingleSelect(this);
     }
-    public void Deselect()
+    public virtual void Deselect()
     {
         BeginShadowAnimation(highlight, shadow);
         ComponentSelector.Deselect(this);

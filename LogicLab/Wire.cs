@@ -10,33 +10,34 @@ public partial class Wire : LogicComponent
     private readonly Path splinePath = new()
     {
         Stroke = new SolidColorBrush(Color.FromRgb(200, 200, 200)),
-        StrokeThickness = 8
+        StrokeThickness = 4
     };
     public Wire(MainWindow mainWindow, Point startPoint)
     {
         Dragger = null;
         mainWindow.MainGrid.Children.Insert(0, splinePath);
 
-        this.startPoint = startPoint;
+        this.startPoint       = startPoint;
         splinePath.MouseDown += Spline_MouseDown;
-        splinePath.MouseUp += Gate_MouseUp;
-        splinePath.Effect = Effect;
+        splinePath.MouseUp   += Gate_MouseUp;
+        splinePath.Effect     = Effect;
     }
-
     private Point startPoint;
 
-    public void Draw(Point end)
+    public void SetEndPoint(EPortType portType, Point end)
+    {
+        Draw(portType, end);
+    }
+
+    public void Draw(EPortType portType Point end)
     {
         const int offset = 25;
 
-        Point start = new Point(startPoint.X, startPoint.Y - offset);
+        Point start = new(startPoint.X, startPoint.Y - offset);
         end = new Point(end.X, end.Y - offset);
 
         PathGeometry pathGeometry = new();
-        PathFigure pathFigure = new()
-        {
-            StartPoint = start
-        };
+        PathFigure pathFigure = new() { StartPoint = start };
 
         BezierSegment bezierSegment = new(
             new Point(start.X + 50, start.Y), // Control point 1
@@ -52,6 +53,11 @@ public partial class Wire : LogicComponent
     private void Spline_MouseDown(object sender, MouseButtonEventArgs e)
     {
         Gate_MouseDown(sender, e);
+        splinePath.Effect = Effect;
+    }
+    public override void Deselect()
+    {
+        base.Deselect();
         splinePath.Effect = Effect;
     }
 }

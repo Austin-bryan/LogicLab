@@ -33,12 +33,12 @@ public static class ComponentSelector
         // Create the selection rectangle
         selectionBox = new Rectangle
         {
-            Fill = new SolidColorBrush(Color.FromArgb(50, 0, 0, 255)), // Transparent blue fill
-            Stroke = Brushes.LightBlue, // Light blue border
-            StrokeThickness = 1,
-            Visibility = Visibility.Collapsed,
+            Fill                = new SolidColorBrush(Color.FromArgb(50, 0, 0, 255)), // Transparent blue fill
+            Stroke              = Brushes.LightBlue, // Light blue border
+            StrokeThickness     = 1,
+            Visibility          = Visibility.Collapsed,
             HorizontalAlignment = HorizontalAlignment.Left,
-            VerticalAlignment = VerticalAlignment.Top
+            VerticalAlignment   = VerticalAlignment.Top
         };
     }
 
@@ -67,9 +67,9 @@ public static class ComponentSelector
         Grid.CaptureMouse();
 
         // Initial placement of the drag selection box.
-        selectionBox.Width = 0;
-        selectionBox.Height = 0;
-        selectionBox.Margin = new(mouseDownPos.X, mouseDownPos.Y, 0, 0);
+        selectionBox.Width      = 0;
+        selectionBox.Height     = 0;
+        selectionBox.Margin     = new(mouseDownPos.X, mouseDownPos.Y, 0, 0);
         selectionBox.Visibility = Visibility.Visible;
     }
     public static void MouseMove(MouseEventArgs e)

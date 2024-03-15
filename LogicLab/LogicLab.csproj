@@ -17,6 +17,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="AND Gate.png" />
     <Resource Include="Buffer Gate.png" />
     <Resource Include="Input.png" />
