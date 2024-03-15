@@ -69,7 +69,7 @@ public partial class LogicGate : LogicComponent
 
         for (int i = 0; i < inputCount; i++)
         {
-            const int margin = 4;
+            const int margin = 0;
             var ioPort = new IOPort(EPortType.Input)
             {
                 Margin = new Thickness(0, margin, 0, margin)

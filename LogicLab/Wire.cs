@@ -19,20 +19,32 @@ public partial class Wire : LogicComponent
     private readonly Path splinePath = new()
     {
         Stroke = new SolidColorBrush(Color.FromRgb(200, 200, 200)),
-        StrokeThickness = 4
+        StrokeThickness = 2
+    };
+    private readonly Path splineCollider = new()
+    {
+        Stroke = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0)),
+        StrokeThickness = 15
     };
     public Wire(MainWindow mainWindow, Point startPoint)
     {
         Dragger = null;
         this.mainWindow = mainWindow;
         mainWindow.MainGrid.Children.Insert(0, splinePath);
+        mainWindow.MainGrid.Children.Insert(0, splineCollider);
 
-        this.startPoint       = startPoint;
-        splinePath.MouseDown += Spline_MouseDown;
-        splinePath.MouseUp   += Gate_MouseUp;
-        splinePath.Effect     = Effect;
+        splineCollider.MouseDown += Spline_MouseDown;
+        splineCollider.MouseUp   += Gate_MouseUp;
+        splinePath.MouseDown     += Spline_MouseDown;
+        splinePath.MouseUp       += Gate_MouseUp;
+        this.startPoint           = startPoint;
+        splinePath.Effect         = Effect;
     }
-    public void Remove() => mainWindow.MainGrid.Children.Remove(splinePath);
+    public void Remove()
+    {
+        mainWindow.MainGrid.Children.Remove(splinePath);
+        mainWindow.MainGrid.Children.Remove(splineCollider);
+    }
 
     public void SetEndPoint(EPortType portType, Point end)
     {
@@ -69,6 +81,7 @@ public partial class Wire : LogicComponent
         pathFigure.Segments.Add(bezierSegment);
         pathGeometry.Figures.Add(pathFigure);
         splinePath.Data = pathGeometry;
+        splineCollider.Data = pathGeometry;
     }
     private void Spline_MouseDown(object sender, MouseButtonEventArgs e)
     {

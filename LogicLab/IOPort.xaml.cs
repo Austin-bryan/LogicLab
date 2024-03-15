@@ -21,7 +21,6 @@ public partial class IOPort : UserControl
     private readonly List<Wire> wires = [];
     private static Wire? activeWire;
 
-
     public IOPort(EPortType portType)
     {
         InitializeComponent();
@@ -43,8 +42,45 @@ public partial class IOPort : UserControl
         Sprite.Height *= 2.5;
         Sprite.Width *= 1.75;
     }
+    public void OnDrag(MouseEventArgs e)
+    {
+        this.DebugLabel().Content += wires.Count.ToString();
+        wires.ForEach(w => w.SetEndPoint(portType, EndPoint));
+    }
+    
     private void Sprite_MouseEnter(object sender, MouseEventArgs e) => Sprite.Fill = hoverColor;
     private void Sprite_MouseLeave(object sender, MouseEventArgs e) => Sprite.Fill = idleColor;
+    private void Sprite_MouseDown(object sender, MouseEventArgs e)
+    {
+        isPressed = true;
+        this.MainGrid().MouseMove += Wire_MouseMove;
+        this.MainGrid().MouseUp += Wire_MouseUp;
+
+        Wire wire = new(this.MainWindow(), EndPoint);
+        wire.SetPort(portType, this);
+        activeWire = wire;
+        activeWire.Draw(portType, PointToScreen(e.GetPosition(this)));
+        wires.Add(wire);
+
+        HideSprite();
+    }
+    private void Sprite_MouseUp(object sender, MouseButtonEventArgs e)
+    {
+        if (activeWire == null)
+            return;
+
+        activeWire.SetEndPoint(portType, EndPoint);
+        activeWire.SetPort(portType, this);
+        wires.Add(activeWire);
+
+        HideSprite();
+    }
+
+    private void HideSprite()
+    {
+        if (portType == EPortType.Input)
+            Sprite.Visibility = Visibility.Hidden;
+    }
 
     private void Wire_MouseMove(object sender, MouseEventArgs e)
     {
@@ -63,43 +99,9 @@ public partial class IOPort : UserControl
             activeWire.Remove();
             wires.Remove(activeWire);
             activeWire = null;
+            Sprite.Visibility = Visibility.Visible;
         }
-        //MessageBox.Show(activeWire.ConnectedPorts.ContainsKey(EPortType.Input).ToString());
     }
-
-    private void Sprite_MouseDown(object sender, MouseEventArgs e)
-    {
-        isPressed = true;
-        this.MainGrid().MouseMove += Wire_MouseMove;
-        this.MainGrid().MouseUp += Wire_MouseUp;
-
-        Wire wire = new(this.MainWindow(), EndPoint);
-        wire.SetPort(portType, this);
-        activeWire = wire;
-        activeWire.Draw(portType, PointToScreen(e.GetPosition(this)));
-        wires.Add(wire);
-    }
-
-    private void Sprite_MouseUp(object sender, MouseButtonEventArgs e)
-    {
-        if (activeWire == null)
-            return;
-
-        activeWire.SetEndPoint(portType, EndPoint);
-        activeWire.SetPort(portType, this);
-        wires.Add(activeWire);
-
-        if (portType == EPortType.Input)
-            Sprite.Visibility = Visibility.Hidden;
-    }
-
-    public void OnDrag(MouseEventArgs e)
-    {
-        this.DebugLabel().Content += wires.Count.ToString();
-        //this.DebugLabel().Content = PointToScreen(e.GetPosition(this));
-        wires.ForEach(w => w.SetEndPoint(portType, EndPoint));
-    }
-
     private void Grid_Loaded(object sender, RoutedEventArgs e)
     {
         
