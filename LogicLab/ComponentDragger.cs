@@ -5,7 +5,7 @@ namespace LogicLab;
 
 public partial class LogicComponent
 {
-    private class ComponentDragger(LogicComponent logicComponent)
+    protected class ComponentDragger(LogicComponent logicComponent)
     {
         private Thickness Margin
         {
@@ -18,14 +18,13 @@ public partial class LogicComponent
 
         public void DragStart(MouseEventArgs e)
         {
-            return;
             dragStart = logicComponent.PointToScreen(e.GetPosition(logicComponent));
             isMouseDown = true;
 
             ComponentSelector.SelectedComponents
-                .Where(lc => lc != logicComponent && lc.dragger.isMouseDown == false)
+                .Where(lc => lc != logicComponent && lc.Dragger != null && lc.Dragger.isMouseDown == false)
                 .ToList()
-                .ForEach(lc => lc.dragger.DragStart(e));
+                .ForEach(lc => lc.Dragger?.DragStart(e));
         }
         public void DragMove(MouseEventArgs e)
         {
@@ -42,9 +41,9 @@ public partial class LogicComponent
         {
             isMouseDown = false;
             ComponentSelector.SelectedComponents
-                .Where(lc => lc != logicComponent && lc.dragger.isMouseDown == true)
+                .Where(lc => lc != logicComponent && lc.Dragger.isMouseDown == true)
                 .ToList()
-                .ForEach(lc => lc.dragger.DragEnd());
+                .ForEach(lc => lc.Dragger.DragEnd());
         }
     }
 }

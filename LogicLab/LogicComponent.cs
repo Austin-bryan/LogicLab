@@ -20,13 +20,13 @@ public partial class LogicComponent : UserControl
     {
         ShadowDepth = 0, Color = Color.FromArgb(255, 200, 200, 255), Opacity = 1, BlurRadius = 10
     };
-    private readonly ComponentDragger dragger;
+    protected ComponentDragger? Dragger;
     private DropShadowEffect animatingShadow;
 
     public LogicComponent()
     {
         animatingShadow = shadow;
-        dragger = new ComponentDragger(this);
+        Dragger = new ComponentDragger(this);
         Deselect();
     }
 
@@ -67,10 +67,10 @@ public partial class LogicComponent : UserControl
             Select(shiftSelect: false);
         }
 
-        dragger.DragStart(e);
+        Dragger?.DragStart(e);
     }
-    protected virtual void Gate_MouseUp(object sender, MouseButtonEventArgs e) => dragger.DragEnd();
-    protected virtual void Gate_MouseMove(object sender, MouseEventArgs e) => dragger.DragMove(e);
+    protected virtual void Gate_MouseUp(object sender, MouseButtonEventArgs e) => Dragger?.DragEnd();
+    protected virtual void Gate_MouseMove(object sender, MouseEventArgs e) => Dragger?.DragMove(e);
     protected virtual void Grid_Loaded(object sender, RoutedEventArgs e)
     {
         if (Window.GetWindow(this) is MainWindow mw)
