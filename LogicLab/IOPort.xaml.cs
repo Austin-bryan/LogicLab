@@ -13,9 +13,6 @@ public partial class IOPort : UserControl
 {
     private EPortType portType;
 
-    public Grid MainGrid => (Window.GetWindow(this) as MainWindow)?.MainGrid ?? throw new NullReferenceException("Null ref");
-    //public Label DebugLabel => (Window.GetWindow(this) as MainWindow)?.DebugLabel ?? throw new NullReferenceException("Null ref");
-
     private readonly SolidColorBrush idleColor, hoverColor;
     private bool isPressed;
     private Point startPoint;
@@ -28,7 +25,6 @@ public partial class IOPort : UserControl
     {
         Stroke = new SolidColorBrush(Color.FromRgb(10, 10, 10)),
         StrokeThickness = 10
-
     };
 
     public IOPort(EPortType portType)
@@ -97,15 +93,15 @@ public partial class IOPort : UserControl
     private void Wire_MouseUp(object sender, MouseEventArgs e)
     {
         isPressed = false;
-        MainGrid.MouseMove -= Wire_MouseMove;
-        MainGrid.MouseUp -= Wire_MouseUp;
+        this.MainGrid().MouseMove -= Wire_MouseMove;
+        this.MainGrid().MouseUp -= Wire_MouseUp;
     }
 
     private void Sprite_MouseDown(object sender, MouseEventArgs e)
     {
         isPressed = true;
-        MainGrid.MouseMove += Wire_MouseMove;
-        MainGrid.MouseUp += Wire_MouseUp;
+        this.MainGrid().MouseMove += Wire_MouseMove;
+        this.MainGrid().MouseUp += Wire_MouseUp;
 
         startPoint = PointToScreen(e.GetPosition(this));
 
@@ -114,16 +110,16 @@ public partial class IOPort : UserControl
     }
     private void ClearSpline()
     {
-        if (splinePath != null && MainGrid.Children.Contains(splinePath))
+        if (splinePath != null && this.MainGrid().Children.Contains(splinePath))
         {
-            MainGrid.Children.Remove(splinePath);
+            this.MainGrid().Children.Remove(splinePath);
         }
     }
 
     private void Grid_Loaded(object sender, RoutedEventArgs e)
     {
-        MainGrid.Children.Insert(0, splinePath);
-        MainGrid.Children.Insert(0, splineBorder);
+        this.MainGrid().Children.Insert(0, splinePath);
+        this.MainGrid().Children.Insert(0, splineBorder);
 
     }
 }
