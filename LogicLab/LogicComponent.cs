@@ -12,11 +12,11 @@ public partial class LogicComponent : UserControl
     private static bool ShiftKey => Keyboard.Modifiers.HasFlag(ModifierKeys.Shift);
     private bool IsSelected => ComponentSelector.IsSelected(this);
     
-    private readonly DropShadowEffect shadow = new()
+    public static readonly DropShadowEffect ShadowEffect = new()
     {
         ShadowDepth = 4, Color = Colors.Black, Opacity = 0.4, BlurRadius = 5
     };
-    private readonly DropShadowEffect highlight = new()
+    public static readonly DropShadowEffect HighlightEffect = new()
     {
         ShadowDepth = 0, Color = Color.FromArgb(255, 200, 200, 255), Opacity = 1, BlurRadius = 10
     };
@@ -25,7 +25,7 @@ public partial class LogicComponent : UserControl
 
     public LogicComponent()
     {
-        animatingShadow = shadow;
+        animatingShadow = ShadowEffect;
         dragger = new ComponentDragger(this);
         Deselect();
     }
@@ -34,7 +34,7 @@ public partial class LogicComponent : UserControl
     {
         if (IsSelected)
             return;
-        BeginShadowAnimation(shadow, highlight);
+        BeginShadowAnimation(ShadowEffect, HighlightEffect);
 
         if (shiftSelect)
              ComponentSelector.ShiftSelect(this);
@@ -42,7 +42,7 @@ public partial class LogicComponent : UserControl
     }
     public void Deselect()
     {
-        BeginShadowAnimation(highlight, shadow);
+        BeginShadowAnimation(HighlightEffect, ShadowEffect);
         ComponentSelector.Deselect(this);
     }
     private void BeginShadowAnimation(DropShadowEffect fromShadow, DropShadowEffect targetShadow)
