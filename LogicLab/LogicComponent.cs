@@ -18,7 +18,7 @@ public partial class LogicComponent : UserControl
     };
     private readonly DropShadowEffect highlight = new()
     {
-        ShadowDepth = 0, Color = Color.FromArgb(255, 200, 200, 255), Opacity = 1, BlurRadius = 15
+        ShadowDepth = 0, Color = Color.FromArgb(255, 200, 200, 255), Opacity = 1, BlurRadius = 10
     };
     private readonly ComponentDragger dragger;
     private DropShadowEffect animatingShadow;

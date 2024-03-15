@@ -5,48 +5,47 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:LogicLab"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Loaded="Grid_Loaded" MouseMove="Grid_MouseMove" MouseUp="Grid_MouseUp" MouseDown="Grid_MouseDown" Margin="0,0,10,0" HorizontalAlignment="Center" VerticalAlignment="Center">
+             d:DesignHeight="450" d:DesignWidth="800" Loaded="LogicComponent_Loaded">
+    <Grid x:Name="Grid" Loaded="Grid_Loaded" MouseMove="Grid_MouseMove" MouseUp="Grid_MouseUp" MouseDown="Grid_MouseDown" HorizontalAlignment="Center" VerticalAlignment="Center" Width="81">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition Width="0*"/>
         </Grid.ColumnDefinitions>
-        <Rectangle HorizontalAlignment="Left" Height="20" Margin="64,0,0,0" Stroke="Black" VerticalAlignment="Center" Width="16" StrokeThickness="0">
-            <Rectangle.Fill>
-                <ImageBrush ImageSource="/Output.png"/>
-            </Rectangle.Fill>
-        </Rectangle>
-        <Rectangle HorizontalAlignment="Left" Height="10" Margin="6,30,0,0" Stroke="Black" VerticalAlignment="Top" Width="10" StrokeThickness="0">
-            <Rectangle.Fill>
-                <ImageBrush ImageSource="/Input.png"/>
-            </Rectangle.Fill>
-        </Rectangle>
-        <Rectangle HorizontalAlignment="Left" Height="10" Margin="6,10,0,0" Stroke="Black" VerticalAlignment="Top" Width="10" StrokeThickness="0">
-            <Rectangle.Fill>
-                <ImageBrush ImageSource="/Input.png"/>
-            </Rectangle.Fill>
-        </Rectangle>
-        <Rectangle HorizontalAlignment="Center" Height="50" Stroke="#FF0E0E0E" VerticalAlignment="Top" Width="50" RadiusX="10" RadiusY="10" StrokeThickness="2">
+        <StackPanel x:Name="PortPanel" Margin="5,0,60,0" VerticalAlignment="Center"/>
+        <StackPanel x:Name="OutputPanel" Margin="65,0,3,0" VerticalAlignment="Center" Height="22" RenderTransformOrigin="0.5,0.5">
+            <StackPanel.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleY="1"/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </StackPanel.RenderTransform>
+        </StackPanel>
+        <Rectangle x:Name="BackgroundSprite" HorizontalAlignment="Center" Height="50" Stroke="#FF0E0E0E" VerticalAlignment="Top" Width="50" RadiusX="10" RadiusY="10" StrokeThickness="2">
             <Rectangle.Fill>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black" Offset="1"/>
-                    <GradientStop Color="#FF1F1F1F" Offset="0"/>
+                    <GradientStop Color="#FF282828" Offset="0"/>
                 </LinearGradientBrush>
             </Rectangle.Fill>
         </Rectangle>
-        <Rectangle x:Name="GateImage" HorizontalAlignment="Center" Height="34" Stroke="Black" VerticalAlignment="Center" Width="34" StrokeThickness="0">
+        <Rectangle x:Name="GateImage" HorizontalAlignment="Center" Height="30" Stroke="Black" VerticalAlignment="Center" Width="30" StrokeThickness="0">
+            <Rectangle.Fill
+    >
+                <ImageBrush
+    ImageSource="/XOR Gate.png"/>
+            </Rectangle.Fill>
             <Rectangle.Effect>
-                <DropShadowEffect ShadowDepth="0" BlurRadius="5" Color="Cyan" Opacity="0.75"/>
+                <DropShadowEffect ShadowDepth="0" BlurRadius="3" Color="Cyan" Opacity="0.75"/>
             </Rectangle.Effect>
             <Rectangle.OpacityMask>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="Black"/>
-                    <GradientStop Color="#595A5A5A" Offset="1"/>
+                    <GradientStop Color="#7F5A5A5A" Offset="1"/>
                 </LinearGradientBrush>
             </Rectangle.OpacityMask>
-            <Rectangle.Fill>
-                <ImageBrush ImageSource="/Buffer Gate.png"/>
-            </Rectangle.Fill>
+
         </Rectangle>
     </Grid>
 </local:LogicComponent>

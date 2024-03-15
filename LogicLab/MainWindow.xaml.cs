@@ -9,6 +9,7 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         ComponentSelector.Grid = MainGrid;
+        WindowState = WindowState.Maximized;
     }
     private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
     {

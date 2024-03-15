@@ -8,37 +8,94 @@ public partial class LogicGate : LogicComponent
 {
     private ELogicGate gateType;
 
-
     private static List<ELogicGate> deleteMe;
     private static int count = 0;
+    private int inputCount = 2;
+    private double startHeight;
 
     public LogicGate()
     {
         InitializeComponent();
-        deleteMe = [ELogicGate.Buffer,
-                    ELogicGate.AND,
-                    ELogicGate.OR,
-                    ELogicGate.XOR,
-                    ELogicGate.NAND,
-                    ELogicGate.NOR,
-                    ELogicGate.XNOR];
+        deleteMe = [
+            ELogicGate.Buffer,
+            ELogicGate.AND,
+            ELogicGate.OR,
+            ELogicGate.XOR,
+            ELogicGate.Buffer,
+            ELogicGate.AND,
+            ELogicGate.OR,
+            ELogicGate.XOR,
+            ELogicGate.Buffer,
+            ELogicGate.AND,
+            ELogicGate.OR,
+            ELogicGate.XOR,
+            ELogicGate.Buffer,
+            ELogicGate.AND,
+            ELogicGate.OR,
+            ELogicGate.XOR,
+            ELogicGate.Buffer,
+            ELogicGate.AND,
+            ELogicGate.OR,
+            ELogicGate.XOR];
 
-        gateType = deleteMe[count];
-        count++;
+        //deleteMe = [ELogicGate.Buffer,
+        //    ELogicGate.AND,
+        //    ELogicGate.OR,
+        //    ELogicGate.XOR,
+        //    ELogicGate.NAND,
+        //    ELogicGate.NOR,
+        //    ELogicGate.XNOR];
 
-        ShowImage();
+   
     }
 
-    protected override void Grid_Loaded(object sender, System.Windows.RoutedEventArgs e)                => base.Grid_Loaded(sender, e);
-    protected override void Grid_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)  => base.Grid_MouseDown(sender, e);
-    protected override void Grid_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)        => base.Grid_MouseMove(sender, e);
-    protected override void Grid_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)    => base.Grid_MouseUp(sender, e);
+    public void Negate() => gateType = !gateType; 
 
+    protected override void Grid_Loaded    (object sender, System.Windows.RoutedEventArgs e)            => base.Grid_Loaded(sender, e);
+    protected override void Grid_MouseDown (object sender, System.Windows.Input.MouseButtonEventArgs e) => base.Grid_MouseDown(sender, e);
+    protected override void Grid_MouseMove (object sender, System.Windows.Input.MouseEventArgs e)       => base.Grid_MouseMove(sender, e);
+    protected override void Grid_MouseUp   (object sender, System.Windows.Input.MouseButtonEventArgs e) => base.Grid_MouseUp(sender, e);
+
+    private void SetInputAmount(int amount)
+    {
+        if (gateType.IsSingleInput())
+             inputCount = 1;
+        else inputCount = amount;
+
+        int extraInputs = Math.Max(0, inputCount - 2);
+            
+        BackgroundSprite.Height = startHeight + extraInputs * 20;
+
+        for (int i = 0; i < inputCount; i++)
+        {
+            const int margin = 4;
+            var ioPort = new IOPort(EPortType.Input)
+            {
+                Margin = new Thickness(0, margin, 0, margin)
+            };
+            PortPanel.Children.Add(ioPort);
+        }
+    }
     private void ShowImage()
     {
         BitmapImage bitmapImage = new(new Uri($"Images/{gateType} Gate.png", UriKind.Relative));
         ImageBrush imageBrush = new(bitmapImage);
-
         GateImage.Fill = imageBrush;
+    }
+
+    private void LogicComponent_Loaded(object sender, RoutedEventArgs e)
+    {
+        startHeight = ActualHeight;
+
+        gateType = deleteMe[count];
+        SetInputAmount(2 + (int)Math.Floor(count / 4.0));
+        count++;
+
+        var outputPort = new IOPort(EPortType.Output);
+        Grid.Children.Insert(0, outputPort);
+        outputPort.VerticalAlignment = VerticalAlignment.Center;
+        outputPort.Margin = new Thickness(ActualWidth - 15, 0, 0, 0);
+
+        ShowImage();
     }
 }

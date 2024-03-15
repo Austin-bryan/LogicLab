@@ -6,15 +6,31 @@
         xmlns:local="clr-namespace:LogicLab"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid x:Name="MainGrid" Background="#FF2B2B2B" MouseDown="Grid_MouseDown" MouseMove="MainGrid_MouseMove" MouseUp="MainGrid_MouseUp">
-        <local:LogicComponent HorizontalAlignment="Left" Margin="115,73,0,0" VerticalAlignment="Top"/>
+    <Grid x:Name="MainGrid" Background="#FF2B2B2B" MouseDown="Grid_MouseDown" MouseMove="MainGrid_MouseMove" MouseUp="MainGrid_MouseUp" Margin="0,0,-224,-192">
+        <local:LogicComponent HorizontalAlignment="Left" Margin="182,69,0,0" VerticalAlignment="Top"/>
         <local:LogicComponent HorizontalAlignment="Left" Margin="287,37,0,0" VerticalAlignment="Top"/>
         <local:LogicComponent HorizontalAlignment="Left" Margin="441,105,0,0" VerticalAlignment="Top"/>
         <local:LogicComponent HorizontalAlignment="Left" Margin="583,55,0,0" VerticalAlignment="Top"/>
         <local:LogicComponent HorizontalAlignment="Left" Margin="583,217,0,0" VerticalAlignment="Top"/>
-        <local:LogicGate HorizontalAlignment="Left" Margin="82,257,0,0" VerticalAlignment="Top"/>
-        <local:LogicGate HorizontalAlignment="Left" Margin="210,207,0,0" VerticalAlignment="Top"/>
-        <local:LogicGate HorizontalAlignment="Left" Margin="330,282,0,0" VerticalAlignment="Top"/>
-        <local:LogicGate HorizontalAlignment="Left" Margin="441,247,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="64,15,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="181,15,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="305,15,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="423,17,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="64,70,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="181,70,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="305,70,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="423,72,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="64,144,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="181,144,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="305,144,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="423,146,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="64,275,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="181,275,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="305,275,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="423,277,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="64,420,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="181,420,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="305,420,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="423,422,0,0" VerticalAlignment="Top"/>
     </Grid>
 </Window>

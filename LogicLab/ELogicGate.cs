@@ -34,8 +34,7 @@ public readonly struct ELogicGate
     public static ELogicGate operator !(ELogicGate logicGate) => NOT | logicGate;
     public readonly ELogicGate NegativeGate() => value % 2 == 1 ? this : !this;
     public readonly ELogicGate PositiveGate() => value % 2 == 0 ? this : !this;
-
-
+    public readonly bool IsSingleInput()      => value <= 1;
 
     public override readonly bool Equals(object? obj) => obj is ELogicGate other && value == other.value;
     public override readonly string ToString() => (LogicGateValue)value switch

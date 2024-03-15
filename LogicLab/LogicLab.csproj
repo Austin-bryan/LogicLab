@@ -13,6 +13,7 @@
     <None Remove="Buffer Gate.png" />
     <None Remove="Input.png" />
     <None Remove="Output.png" />
+    <None Remove="XOR Gate.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,6 +21,7 @@
     <Resource Include="Buffer Gate.png" />
     <Resource Include="Input.png" />
     <Resource Include="Output.png" />
+    <Resource Include="XOR Gate.png" />
   </ItemGroup>
 
 </Project>
