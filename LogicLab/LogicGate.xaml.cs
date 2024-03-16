@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -68,14 +69,7 @@ public partial class LogicGate : LogicComponent
         BackgroundSprite.Height = startHeight + extraInputs * 20;
 
         for (int i = 0; i < inputCount; i++)
-        {
-            const int margin = 0;
-            var ioPort = new IOPort(EPortType.Input)
-            {
-                Margin = new Thickness(0, margin, 0, margin)
-            };
-            PortPanel.Children.Add(ioPort);
-        }
+            PortPanel.Children.Add(new IOPort(EPortType.Input));
     }
     private void ShowImage()
     {
@@ -83,9 +77,8 @@ public partial class LogicGate : LogicComponent
         ImageBrush imageBrush = new(bitmapImage);
         GateImage.Fill = imageBrush;
     }
-    protected override void OnDrag(MouseEventArgs e)
+    public override void OnDrag(MouseEventArgs e)
     {
-        this.DebugLabel().Content = ": ";
         PortPanel.Children.OfType<IOPort>().ToList().ForEach(io => io.OnDrag(e));
         outputPort.OnDrag(e);
     }
@@ -101,7 +94,6 @@ public partial class LogicGate : LogicComponent
         outputPort = new IOPort(EPortType.Output);
         Grid.Children.Insert(0, outputPort);
         outputPort.VerticalAlignment = VerticalAlignment.Center;
-        outputPort.Margin = new Thickness(ActualWidth - 15, 0, 0, 0);
 
         ShowImage();
     }

@@ -5,6 +5,7 @@ using System.Windows.Media;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using System.Diagnostics;
 
 namespace LogicLab;
 
@@ -44,12 +45,11 @@ public partial class IOPort : UserControl
         Sprite.Height *= 2.5;
         Sprite.Width *= 1.75;
     }
-    public void OnDrag(MouseEventArgs e)
+    public void OnDrag(MouseEventArgs deleteMe)
     {
-        this.DebugLabel().Content += wires.Count.ToString();
         wires.ForEach(w => w.SetEndPoint(portType, EndPoint));
     }
-    
+
     private void Sprite_MouseEnter(object sender, MouseEventArgs e) => Sprite.Fill = hoverColor;
     private void Sprite_MouseLeave(object sender, MouseEventArgs e) => Sprite.Fill = idleColor;
     private void Sprite_MouseDown(object sender, MouseEventArgs e)
@@ -83,7 +83,10 @@ public partial class IOPort : UserControl
         if (portType != EPortType.Input)
             return;
 
-        Sprite.BeginAnimation(OpacityProperty, new DoubleAnimation(visible ? 0 : 1, visible ? 1 : 0, TimeSpan.FromSeconds(0.5)));
+        Sprite.BeginAnimation(OpacityProperty,
+            new DoubleAnimation(fromValue: visible ? 0 : 1,
+                                toValue: visible ? 1 : 0, 
+                                duration: TimeSpan.FromSeconds(0.5)));
     }
 
     private void Wire_MouseMove(object sender, MouseEventArgs e)
@@ -108,6 +111,8 @@ public partial class IOPort : UserControl
     }
     private void Grid_Loaded(object sender, RoutedEventArgs e)
     {
-        
+        if (portType == EPortType.Output)
+            Margin = new Thickness(ActualWidth - ActualWidth / 5, -ActualHeight / 4, 0, 0);
+
     }
 }

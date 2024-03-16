@@ -46,8 +46,10 @@ public partial class Wire : LogicComponent
         mainWindow.MainGrid.Children.Remove(splineCollider);
     }
 
-    public void SetEndPoint(EPortType portType, Point end)
+    public async void SetEndPoint(EPortType portType, Point end)
     {
+        await Task.Delay(1);
+        mainWindow.DebugLabel.Content = end;
         Draw(portType == EPortType.Input ? EPortType.Output : EPortType.Input, end);
     }
 
@@ -61,7 +63,7 @@ public partial class Wire : LogicComponent
         const int offset = 25;
 
         Point startPoint = connectedPorts.ContainsKey(EPortType.Output)
-            ? new(Output.EndPoint.X, Output.EndPoint.Y - offset)
+            ? new(Output.EndPoint.X, Output.EndPoint.Y - 3 * Output.Sprite.ActualHeight / 4)
             : new(endPoint.X, endPoint.Y - offset);
             //: new(this.startPoint.X, this.startPoint.Y - offset);
         endPoint = connectedPorts.ContainsKey(EPortType.Input)

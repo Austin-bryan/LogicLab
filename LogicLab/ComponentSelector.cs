@@ -57,6 +57,49 @@ public static class ComponentSelector
     }
     public static void ShiftSelect(LogicComponent logicComponent) => selectedComponents.Add(logicComponent);
 
+    public static void AlignLeft()
+    {
+        double min = selectedComponents.Min(lc => lc.Margin.Left);
+        selectedComponents.ForEach(lc => lc.SetLeft(min));
+        selectedComponents.ForEach(lc => lc.OnDrag(null));
+    }
+    public static void AlignUp()
+    {
+        double min = selectedComponents.Min(lc => lc.Margin.Top);
+        selectedComponents.ForEach(lc => lc.SetTop(min));
+        selectedComponents.ForEach(lc => lc.OnDrag(null));
+    }
+ 
+    public static void AlignRight()
+    {
+        double max = selectedComponents.Max(lc => lc.Margin.Left);
+        selectedComponents.ForEach(lc => lc.SetLeft(max));
+        selectedComponents.ForEach(lc => lc.OnDrag(null));
+    }
+
+    public static void AlignDown()
+    {
+        double max = selectedComponents.Max(lc => lc.Margin.Top);
+        selectedComponents.ForEach(lc => lc.SetTop(max));
+        selectedComponents.ForEach(lc => lc.OnDrag(null));
+    }
+
+
+    public static void AlignCenter()
+    {
+        double maxHeight = selectedComponents.Max(lc => lc.ActualHeight);
+        double center = selectedComponents.Where(lc => lc.ActualHeight == maxHeight).ToList()[0].GetTop() + maxHeight / 2;
+        selectedComponents.ForEach(lc =>
+        {
+            double lcCenter = (lc.GetTop() + lc.ActualHeight / 2);
+            lc.AddTop(center - lcCenter);
+        });
+        selectedComponents.ForEach(lc => lc.OnDrag(null));
+    }
+
+    public static void AlignMiddle() => throw new NotImplementedException();
+
+
     public static void MouseDown(MouseButtonEventArgs e)
     {
         if (e.OriginalSource is not System.Windows.Controls.Grid)
