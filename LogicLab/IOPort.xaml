@@ -7,9 +7,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Loaded="Grid_Loaded">
-        <Rectangle x:Name="OverlapDetector" HorizontalAlignment="Left" Height="20" Stroke="Black" VerticalAlignment="Top" Width="10" StrokeThickness="0" Fill="#0000CAFF" Cursor="Cross" MouseEnter="Sprite_MouseEnter" MouseLeave="Sprite_MouseLeave" MouseDown="Sprite_MouseDown" MouseUp="Sprite_MouseUp" OpacityMask="#7F000000"/>
+        <Rectangle x:Name="OverlapDetector" HorizontalAlignment="Left" Height="20" Stroke="Black" VerticalAlignment="Top" Width="40" StrokeThickness="0" Fill="Transparent" Cursor="Cross" MouseEnter="Sprite_MouseEnter" MouseLeave="Sprite_MouseLeave" MouseDown="Sprite_MouseDown" MouseUp="Sprite_MouseUp" OpacityMask="#7F000000"/>
 
-        <Rectangle x:Name="Sprite" HorizontalAlignment="Left" Height="10" Stroke="Black" VerticalAlignment="Top" Width="10" StrokeThickness="0" Fill="#FF00CAFF" Margin="0,5,0,0" Cursor="Cross" MouseEnter="Sprite_MouseEnter" MouseLeave="Sprite_MouseLeave" MouseDown="Sprite_MouseDown" MouseUp="Sprite_MouseUp"/>
+        <Rectangle x:Name="Sprite" HorizontalAlignment="Left" Height="12" Stroke="Black" VerticalAlignment="Top" Width="12" StrokeThickness="0" Fill="#FF00CAFF" Margin="14,4,0,0" Cursor="Cross" MouseEnter="Sprite_MouseEnter" MouseLeave="Sprite_MouseLeave" MouseDown="Sprite_MouseDown" MouseUp="Sprite_MouseUp"/>
 
     </Grid>
 </UserControl>

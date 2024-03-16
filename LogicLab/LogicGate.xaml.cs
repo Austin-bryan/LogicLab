@@ -24,7 +24,7 @@ public partial class LogicGate : LogicComponent
     private readonly DropShadowEffect outputGlow = new()
     {
         ShadowDepth = 0, Color = Colors.Blue, Opacity = 1, BlurRadius = 10
-    };
+    }; 
 
     public LogicGate()
     {
@@ -119,7 +119,7 @@ public partial class LogicGate : LogicComponent
         count++;
 
         outputPort = new IOPort(EPortType.Output);
-        Grid.Children.Insert(0, outputPort);
+        Grid.Children.Add(outputPort);
         outputPort.VerticalAlignment = VerticalAlignment.Center;
 
         ShowImage();

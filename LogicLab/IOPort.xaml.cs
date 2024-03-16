@@ -14,7 +14,7 @@ public enum EPortType { Input, Output }
 public partial class IOPort : UserControl
 {
     public Point EndPoint => PointToScreen(new(
-                Sprite.Margin.Left + (portType == EPortType.Input ? ActualWidth : 0),
+                Sprite.Margin.Left + (portType == EPortType.Input ? ActualWidth / 4 : 0),
                 Sprite.Margin.Right + ActualHeight / 2));
     private EPortType portType;
 
@@ -44,6 +44,9 @@ public partial class IOPort : UserControl
         // You may need to adjust the hover size as per your requirements
         Sprite.Height *= 2.5;
         Sprite.Width *= 1.75;
+
+        OverlapDetector.Height *= 2.5;
+        OverlapDetector.Width *= 1.75;
     }
     public void OnDrag(MouseEventArgs deleteMe)
     {
@@ -112,7 +115,9 @@ public partial class IOPort : UserControl
     private void Grid_Loaded(object sender, RoutedEventArgs e)
     {
         if (portType == EPortType.Output)
-            Margin = new Thickness(ActualWidth - ActualWidth / 5, -ActualHeight / 4, 0, 0);
-
+        {
+            Margin = new Thickness(ActualWidth - ActualWidth / 2.8, 0, 0, 0);
+            Sprite.Margin = new Thickness(OverlapDetector.Width / 6, OverlapDetector.Height / 6, 0, 0);
+        }
     }
 }

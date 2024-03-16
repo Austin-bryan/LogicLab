@@ -11,7 +11,6 @@
             <ColumnDefinition/>
             <ColumnDefinition Width="0*"/>
         </Grid.ColumnDefinitions>
-        <StackPanel x:Name="PortPanel" Margin="5,0,60,0" VerticalAlignment="Center"/>
         <StackPanel x:Name="OutputPanel" Margin="65,0,3,0" VerticalAlignment="Center" Height="22" RenderTransformOrigin="0.5,0.5">
             <StackPanel.RenderTransform>
                 <TransformGroup>
@@ -48,5 +47,6 @@
             </Rectangle.OpacityMask>
 
         </Rectangle>
+        <StackPanel x:Name="PortPanel" Margin="-9,0,48,0" VerticalAlignment="Center"/>
     </Grid>
 </local:LogicComponent>
