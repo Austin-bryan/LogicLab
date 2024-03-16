@@ -30,13 +30,14 @@
                 </LinearGradientBrush>
             </Rectangle.Fill>
         </Rectangle>
-        <Rectangle x:Name="GateImage" HorizontalAlignment="Center" Height="30" Stroke="Black" VerticalAlignment="Center" Width="30" StrokeThickness="0" MouseDown="Gate_MouseDown" MouseMove="Gate_MouseMove" MouseUp="Gate_MouseUp">
+        <Rectangle x:Name="Sprite" HorizontalAlignment="Center" Height="30" Stroke="Black" VerticalAlignment="Center" Width="30" StrokeThickness="0" MouseDown="Gate_MouseDown" MouseMove="Gate_MouseMove" MouseUp="Gate_MouseUp">
             <Rectangle.Fill
     >
                 <ImageBrush
     ImageSource="/XOR Gate.png"/>
             </Rectangle.Fill>
             <Rectangle.Effect>
+                <!--<DropShadowEffect ShadowDepth="0" BlurRadius="9" Color="Blue" Opacity="1.0"/>-->
                 <DropShadowEffect ShadowDepth="0" BlurRadius="3" Color="Cyan" Opacity="0.75"/>
             </Rectangle.Effect>
             <Rectangle.OpacityMask>

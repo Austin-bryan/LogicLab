@@ -49,7 +49,6 @@ public partial class Wire : LogicComponent
     public async void SetEndPoint(EPortType portType, Point end)
     {
         await Task.Delay(1);
-        mainWindow.DebugLabel.Content = end;
         Draw(portType == EPortType.Input ? EPortType.Output : EPortType.Input, end);
     }
 
@@ -58,7 +57,7 @@ public partial class Wire : LogicComponent
         connectedPorts.TryAdd(portType, ioPort);
     }
 
-    public void Draw(EPortType portType, Point endPoint)
+    public void Draw(EPortType deleteMe, Point endPoint)
     {
         const int offset = 25;
 
@@ -73,10 +72,16 @@ public partial class Wire : LogicComponent
         PathGeometry pathGeometry = new();
         PathFigure pathFigure = new() { StartPoint = startPoint };
 
+        // The largre control point distance, the more bendy the wire
+        // This sets it so the wire is more bendy as the input and output get further away, improving readability
+        double distance = CalculateDistance(startPoint, endPoint);
+        double alpha = Math.Min(distance, 500) / 500;
+        double controlPointDistance = Lerp(10, 250, alpha * alpha);
+
         BezierSegment bezierSegment = new(
-            new Point(startPoint.X + 50, startPoint.Y), // Control point 1
-            new Point(endPoint.X - 50, endPoint.Y),     // Control point 2
-            endPoint,                                   // End point
+            new Point(startPoint.X + controlPointDistance, startPoint.Y), // Control point 1
+            new Point(endPoint.X - controlPointDistance, endPoint.Y),     // Control point 2
+            endPoint,                                 
             isStroked: true
         );
 
@@ -84,6 +89,16 @@ public partial class Wire : LogicComponent
         pathGeometry.Figures.Add(pathFigure);
         splinePath.Data = pathGeometry;
         splineCollider.Data = pathGeometry;
+    }
+    public static double Lerp(double min, double max, double alpha)
+    {
+        alpha = Math.Max(0, Math.Min(alpha, 1));
+
+        return min + (max - min) * alpha;
+    }
+    private static double CalculateDistance(Point p1, Point p2)
+    {
+        return Math.Sqrt(Math.Pow(p2.X - p1.X, 2) + Math.Pow(p2.Y - p1.Y, 2));
     }
     private void Spline_MouseDown(object sender, MouseButtonEventArgs e)
     {
