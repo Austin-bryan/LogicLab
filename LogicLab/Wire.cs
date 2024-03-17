@@ -39,6 +39,7 @@ public partial class Wire : LogicComponent
         splinePath.MouseUp       += Gate_MouseUp;
         this.startPoint           = startPoint;
         splinePath.Effect         = Effect;
+        mainWindow.DebugLabel.Content = 0;
     }
     public void Remove()
     {
@@ -57,8 +58,20 @@ public partial class Wire : LogicComponent
         connectedPorts.TryAdd(portType, ioPort);
     }
 
+    private long lastRedrawTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+    private const int debounceThreshold = 32; // 16 milliseconds for 60 frames per second
+
+
     public void Draw(EPortType deleteMe, Point endPoint)
     {
+        long currentTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+        
+        if (currentTime - lastRedrawTime <= debounceThreshold)
+            return;
+
+        lastRedrawTime = currentTime;
+
+        mainWindow.DebugLabel.Content = (int)(mainWindow.DebugLabel.Content) + 1;
         const int offset = 25;
 
         Point startPoint = connectedPorts.ContainsKey(EPortType.Output)
@@ -72,7 +85,6 @@ public partial class Wire : LogicComponent
         PathGeometry pathGeometry = new();
         PathFigure pathFigure = new() { StartPoint = startPoint };
 
-        // The largre control point distance, the more bendy the wire
         // This sets it so the wire is more bendy as the input and output get further away, improving readability
         double distance = CalculateDistance(startPoint, endPoint);
         double alpha = Math.Min(distance, 500) / 500;
@@ -93,7 +105,6 @@ public partial class Wire : LogicComponent
     public static double Lerp(double min, double max, double alpha)
     {
         alpha = Math.Max(0, Math.Min(alpha, 1));
-
         return min + (max - min) * alpha;
     }
     private static double CalculateDistance(Point p1, Point p2)
