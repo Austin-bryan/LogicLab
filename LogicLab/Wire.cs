@@ -79,7 +79,7 @@ public partial class Wire : LogicComponent
         // This sets it so the wire is more bendy as the input and output get further away, improving readability
         double distance = CalculateDistance(startPoint, endPoint);
         double alpha = Math.Min(distance, 500) / 500;
-        double controlPointDistance = Lerp(10, 250, alpha * alpha);
+        double controlPointDistance = Lerp(20, 250, alpha * alpha);
 
         BezierSegment bezierSegment = new(
             new Point(startPoint.X + controlPointDistance, startPoint.Y), // Control point 1

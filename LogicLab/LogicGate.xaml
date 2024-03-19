@@ -22,17 +22,16 @@
             </StackPanel.RenderTransform>
         </StackPanel>
         <Rectangle x:Name="BackgroundSprite" HorizontalAlignment="Center" Height="50" Stroke="Black" VerticalAlignment="Top" Width="50" RadiusX="10" RadiusY="10" StrokeThickness="2" MouseDown="Gate_MouseDown" MouseMove="Gate_MouseMove" MouseUp="Gate_MouseUp" Fill="#FF1E1E1E"/>
-        <Rectangle x:Name="Sprite" HorizontalAlignment="Center" Height="30" Stroke="Black" VerticalAlignment="Center" Width="30" StrokeThickness="0" MouseDown="Gate_MouseDown" MouseMove="Gate_MouseMove" MouseUp="Gate_MouseUp" OpacityMask="Black">
-            <Rectangle.Fill
-    >
-                <ImageBrush
-    ImageSource="/XOR Gate.png"/>
+        <Rectangle x:Name="Sprite" HorizontalAlignment="Left" Height="30" VerticalAlignment="Center" Width="30" StrokeThickness="0" MouseDown="Gate_MouseDown" MouseMove="Gate_MouseMove" MouseUp="Gate_MouseUp" RenderOptions.EdgeMode="Aliased" RenderOptions.BitmapScalingMode="HighQuality" Margin="24,0,0,0">
+            <Rectangle.Fill>
+                <ImageBrush ImageSource="/AND Gate.png"/>
             </Rectangle.Fill>
-            <Rectangle.Effect>
-            <DropShadowEffect ShadowDepth="0" BlurRadius="2" Color="Cyan" Opacity="0.75"/>
-            </Rectangle.Effect>
+            <!--<Rectangle.Effect>
+                <DropShadowEffect ShadowDepth="0" BlurRadius="2" Color="Cyan" Opacity="0.75"/>
+            </Rectangle.Effect>-->
 
         </Rectangle>
-        <StackPanel x:Name="PortPanel" Margin="-9,0,48,0" VerticalAlignment="Center"/>
+        <StackPanel x:Name="PortPanel" Margin="-11,0,57,0" VerticalAlignment="Center"/>
+        <Ellipse x:Name="NegateDot" HorizontalAlignment="Left" Height="5" Margin="51,0,0,0" VerticalAlignment="Center" Width="5" Fill="White" Visibility="Hidden"/>
     </Grid>
 </local:LogicComponent>

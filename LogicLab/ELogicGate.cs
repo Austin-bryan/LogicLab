@@ -39,22 +39,25 @@ public readonly struct ELogicGate
         return other.value % 2 == 0 ? new(other.value + 1) : new(other.value - 1);
     }
     public static ELogicGate operator !(ELogicGate logicGate) => NOT | logicGate;
-    public readonly ELogicGate NegativeGate() => value % 2 == 1 ? this : !this;
-    public readonly ELogicGate PositiveGate() => value % 2 == 0 ? this : !this;
+    public readonly ELogicGate NegativeGate() => IsNegative()  ? this : !this;
+    public readonly ELogicGate PositiveGate() => !IsNegative() ? this : !this;
+    public readonly bool IsNegative()         => value % 2 == 1;
     public readonly bool IsSingleInput()      => value <= 1;
 
     public override readonly bool Equals(object? obj) => obj is ELogicGate other && value == other.value;
-    public override readonly string ToString() => (LogicGateValue)value switch
+    public override readonly string ToString() => ((LogicGateValue)value).ToString();
+
+    public bool ApplyGate(List<bool?> signals) => (LogicGateValue)value switch
     {
-        LogicGateValue.Buffer => "Buffer",
-        LogicGateValue.NOT    => "NOT",
-        LogicGateValue.AND    => "AND",
-        LogicGateValue.OR     => "OR",
-        LogicGateValue.XOR    => "XOR",
-        LogicGateValue.NAND   => "NAND",
-        LogicGateValue.NOR    => "NOR",
-        LogicGateValue.XNOR   => "XNOR",
-        _ => throw new InvalidOperationException("Invalid Logic Gate Value")
+        LogicGateValue.Buffer => signals[0] == true,
+        LogicGateValue.AND    => signals.All(b => b == true),
+        LogicGateValue.OR     => signals.Any(b => b == true),
+        LogicGateValue.XOR    => signals.Aggregate((acc, curr) => acc ^ curr) == true,
+        LogicGateValue.NOT    => !Buffer.ApplyGate(signals),
+        LogicGateValue.NAND   => !AND.ApplyGate(signals),
+        LogicGateValue.NOR    => !OR.ApplyGate(signals),
+        LogicGateValue.XNOR   => !XOR.ApplyGate(signals),
+        _ => throw new InvalidOperationException("Invalid logic gate")
     };
 
     public override readonly int GetHashCode() => HashCode.Combine(value);

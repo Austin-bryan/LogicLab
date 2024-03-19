@@ -7,11 +7,6 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="650" Width="993">
     <Grid x:Name="MainGrid" Background="#FF2B2B2B" MouseDown="Grid_MouseDown" MouseMove="MainGrid_MouseMove" MouseUp="MainGrid_MouseUp" Margin="0,0,0,-6" PreviewKeyDown="MainGrid_PreviewKeyDown" KeyDown="MainGrid_KeyDown">
-        <local:LogicComponent HorizontalAlignment="Left" Margin="182,69,0,0" VerticalAlignment="Top"/>
-        <local:LogicComponent HorizontalAlignment="Left" Margin="287,37,0,0" VerticalAlignment="Top"/>
-        <local:LogicComponent HorizontalAlignment="Left" Margin="441,105,0,0" VerticalAlignment="Top"/>
-        <local:LogicComponent HorizontalAlignment="Left" Margin="583,55,0,0" VerticalAlignment="Top"/>
-        <local:LogicComponent HorizontalAlignment="Left" Margin="583,217,0,0" VerticalAlignment="Top"/>
         <local:LogicGate HorizontalAlignment="Left" Margin="64,15,0,0" VerticalAlignment="Top"/>
         <local:LogicGate HorizontalAlignment="Left" Margin="181,15,0,0" VerticalAlignment="Top"/>
         <local:LogicGate HorizontalAlignment="Left" Margin="305,15,0,0" VerticalAlignment="Top"/>

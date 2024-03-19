@@ -1,26 +1,29 @@
-﻿using System.Windows;
+﻿using System.Collections.Immutable;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Effects;
 
 namespace LogicLab;
 
-public partial class LogicComponent : UserControl
+public abstract partial class LogicComponent : UserControl
 {
     private static bool ShiftKey => Keyboard.Modifiers.HasFlag(ModifierKeys.Shift);
     private bool IsSelected => ComponentSelector.IsSelected(this);
-    
-    private readonly DropShadowEffect shadow = new()
-    {
-        ShadowDepth = 4, Color = Colors.Black, Opacity = 0.4, BlurRadius = 5
-    };
-    private readonly DropShadowEffect highlight = new()
-    {
-        ShadowDepth = 0, Color = Color.FromArgb(255, 200, 200, 255), Opacity = 1, BlurRadius = 10
-    };
+
     protected ComponentDragger? Dragger;
+    protected ImmutableList<IOPort> InputPorts => inputPorts.ToImmutableList();
+    protected IOPort OutputPort => outputPort;
+    protected IOPort InputPort => InputPorts[0];
+    protected List<bool?> InputSignals => InputPorts.Select(ip => ip.Signal).ToList();
+
+    private readonly List<IOPort> inputPorts = [];
+    private readonly IOPort outputPort;
+    private readonly DropShadowEffect shadow = new() { ShadowDepth = 4, Color = Colors.Black, Opacity = 0.4, BlurRadius = 5 };
+    private readonly DropShadowEffect highlight = new() { ShadowDepth = 0, Color = Color.FromArgb(255, 200, 200, 255), Opacity = 1, BlurRadius = 10 };
     private DropShadowEffect animatingShadow;
 
     public LogicComponent()
@@ -44,6 +47,23 @@ public partial class LogicComponent : UserControl
     {
         BeginShadowAnimation(highlight, shadow);
         ComponentSelector.Deselect(this);
+    }
+    // Uses these methods to add input and output ports to logic components
+    protected IOPort AddInputPort(IAddChild addChild)
+    {
+        IOPort port = new(EPortType.Input);
+        addChild.AddChild(port);
+        inputPorts.Add(port);
+        
+        return port;
+    }
+    protected IOPort AddOutputPort(IAddChild addChild)
+    {
+        IOPort port = new(EPortType.Output);
+        addChild.AddChild(port);
+        inputPorts.Add(port);
+
+        return port;
     }
     public virtual void OnDrag(MouseEventArgs e) { }
     private void BeginShadowAnimation(DropShadowEffect fromShadow, DropShadowEffect targetShadow)

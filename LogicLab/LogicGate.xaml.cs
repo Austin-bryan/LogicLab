@@ -1,11 +1,7 @@
-﻿using System;
-using System.Diagnostics;
-using System.Security.Policy;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 
 namespace LogicLab;
@@ -65,7 +61,8 @@ public partial class LogicGate : LogicComponent
             //gradientBrush.GradientStops.Add(new GradientStop(Color.FromRgb(0, 10, 20), 1));
 
             // Solid version
-            BackgroundSprite.Fill = new SolidColorBrush(Color.FromRgb(0, 60, 100));
+            Negate();
+            BackgroundSprite.Fill = new SolidColorBrush(Color.FromRgb(100, 30, 30));
         }
 
         // Ignore this
@@ -80,7 +77,11 @@ public partial class LogicGate : LogicComponent
 
     }
 
-    public void Negate() => gateType = !gateType; 
+    public void Negate()
+    {
+        gateType = !gateType;
+        NegateDot.Visibility = gateType.IsNegative() ? Visibility.Visible : Visibility.Hidden;
+    }
 
     // Forward events to Logic Component to get highlight and drop shadow features.
     protected override void Gate_MouseDown (object sender, MouseButtonEventArgs e) => base.Gate_MouseDown(sender, e);
@@ -100,7 +101,7 @@ public partial class LogicGate : LogicComponent
         BackgroundSprite.Height = startHeight + extraInputs * 20;
 
         for (int i = 0; i < inputCount; i++)
-            PortPanel.Children.Add(new IOPort(EPortType.Input));
+            AddInputPort(PortPanel);
     }
     private void ShowImage()
     {
@@ -111,7 +112,7 @@ public partial class LogicGate : LogicComponent
     public override void OnDrag(MouseEventArgs e)
     {
         // Forward drag function to input and output ports
-        PortPanel.Children.OfType<IOPort>().ToList().ForEach(io => io.OnDrag(e));
+        InputPorts.ForEach(io => io.OnDrag(e));
         outputPort.OnDrag(e);
     }
 
@@ -121,10 +122,10 @@ public partial class LogicGate : LogicComponent
 
         // This is super temp
         gateType = thisWillBeDeletedLater[count];
-        count++;
         
         // Create and organize ports
         SetInputAmount(2 + (int)Math.Floor(count / 4.0));
+        count++;
         outputPort = new IOPort(EPortType.Output);
         Grid.Children.Add(outputPort);
         outputPort.VerticalAlignment = VerticalAlignment.Center;

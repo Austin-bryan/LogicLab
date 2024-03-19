@@ -14,6 +14,8 @@ public partial class IOPort : UserControl
     public Point WireConnection => PointToScreen(new(
                 Sprite.Margin.Left + (portType == EPortType.Input ? ActualWidth / 4 : 0),
                 Sprite.Margin.Right + ActualHeight / 2));
+
+    public bool? Signal { get; private set; }
     private EPortType portType;
 
     private readonly SolidColorBrush idleColor, hoverColor;
@@ -123,7 +125,7 @@ public partial class IOPort : UserControl
     {
         if (portType == EPortType.Output)
         {
-            Margin = new Thickness(ActualWidth - ActualWidth / 2.8, 0, 0, 0);
+            Margin = new Thickness(ActualWidth - ActualWidth / 3, 0, 0, 0);
             Sprite.Margin = new Thickness(OverlapDetector.Width / 6, OverlapDetector.Height / 6, 0, 0);
         }
     }
