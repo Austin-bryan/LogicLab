@@ -23,6 +23,6 @@
         </Rectangle>
         <StackPanel x:Name="InputPanel" Margin="-11,0,57,0" VerticalAlignment="Center"/>
         <StackPanel x:Name="OutputPanel" Margin="54,0,2,0" VerticalAlignment="Center"/>
-        <Ellipse x:Name="NegateDot" HorizontalAlignment="Left" Height="5" Margin="51,0,0,0" VerticalAlignment="Center" Width="5" Fill="White" Visibility="Hidden"/>
+        <Ellipse x:Name="NegateDot" HorizontalAlignment="Left" Height="5" Margin="51,0,0,0" VerticalAlignment="Center" Width="5" Fill="White" Visibility="Hidden" MouseDown="Gate_MouseDown" MouseMove="Gate_MouseMove" MouseUp="Gate_MouseUp"/>
     </Grid>
 </local:LogicComponent>
