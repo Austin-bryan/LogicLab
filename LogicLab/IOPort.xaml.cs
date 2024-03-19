@@ -15,19 +15,20 @@ public partial class IOPort : UserControl
                 Sprite.Margin.Left + (portType == EPortType.Input ? ActualWidth / 4 : 0),
                 Sprite.Margin.Right + ActualHeight / 2));
 
-    public bool? Signal { get; private set; }
+    public bool? Signal { get; set; } = null;
     private EPortType portType;
-
+    private readonly LogicComponent owningComponent;
     private readonly SolidColorBrush idleColor, hoverColor;
     private bool isPressed;
 
     private readonly List<Wire> wires = [];
     private static Wire? activeWire;
 
-    public IOPort(EPortType portType)
+    public IOPort(EPortType portType, LogicComponent owningComponent)
     {
         InitializeComponent();
 
+        this.owningComponent = owningComponent;
         idleColor     = new SolidColorBrush(Color.FromRgb(9, 180, 255));
         hoverColor    = new SolidColorBrush(Color.FromRgb(59, 230, 255));
         this.portType = portType;
@@ -85,6 +86,13 @@ public partial class IOPort : UserControl
         activeWire.SetPort(portType, this);
         wires.Add(activeWire);
 
+        if (activeWire.Output != null)
+        {
+            Signal = activeWire.Output.Signal;
+            //MessageBox.Show(Signal.ToString());
+        }
+        owningComponent.OnInputChange(this);
+
         ShowSprite(false);
     }
 
@@ -125,7 +133,7 @@ public partial class IOPort : UserControl
     {
         if (portType == EPortType.Output)
         {
-            Margin = new Thickness(ActualWidth - ActualWidth / 3, 0, 0, 0);
+            //Margin = new Thickness(ActualWidth - ActualWidth / 3, 0, 0, 0);
             Sprite.Margin = new Thickness(OverlapDetector.Width / 6, OverlapDetector.Height / 6, 0, 0);
         }
     }

@@ -14,8 +14,8 @@ public partial class Wire : LogicComponent
     // If there is a connected port, return it, else return null.
     // An input port is missing if the user is dragging from the output port
     // but hasn't selected an input port yet
-    private IOPort? Output => connectedPorts.TryGetValue(EPortType.Output);
-    private IOPort? Input => connectedPorts.TryGetValue(EPortType.Input);
+    public IOPort? Output => connectedPorts.TryGetValue(EPortType.Output);
+    public IOPort? Input => connectedPorts.TryGetValue(EPortType.Input);
     private Point startPoint;
     private readonly MainWindow mainWindow;
 

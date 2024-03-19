@@ -21,7 +21,7 @@ public abstract partial class LogicComponent : UserControl
     protected List<bool?> InputSignals => InputPorts.Select(ip => ip.Signal).ToList();
 
     private readonly List<IOPort> inputPorts = [];
-    private readonly IOPort outputPort;
+    private IOPort outputPort;
     private readonly DropShadowEffect shadow = new() { ShadowDepth = 4, Color = Colors.Black, Opacity = 0.4, BlurRadius = 5 };
     private readonly DropShadowEffect highlight = new() { ShadowDepth = 0, Color = Color.FromArgb(255, 200, 200, 255), Opacity = 1, BlurRadius = 10 };
     private DropShadowEffect animatingShadow;
@@ -51,7 +51,7 @@ public abstract partial class LogicComponent : UserControl
     // Uses these methods to add input and output ports to logic components
     protected IOPort AddInputPort(IAddChild addChild)
     {
-        IOPort port = new(EPortType.Input);
+        IOPort port = new(EPortType.Input, this);
         addChild.AddChild(port);
         inputPorts.Add(port);
         
@@ -59,11 +59,15 @@ public abstract partial class LogicComponent : UserControl
     }
     protected IOPort AddOutputPort(IAddChild addChild)
     {
-        IOPort port = new(EPortType.Output);
+        IOPort port = new(EPortType.Output, this);
         addChild.AddChild(port);
-        inputPorts.Add(port);
+        outputPort = port;
 
         return port;
+    }
+    public virtual void OnInputChange(IOPort changedPort)
+    {
+
     }
     public virtual void OnDrag(MouseEventArgs e) { }
     private void BeginShadowAnimation(DropShadowEffect fromShadow, DropShadowEffect targetShadow)

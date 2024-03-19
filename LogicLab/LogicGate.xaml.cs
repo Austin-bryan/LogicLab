@@ -10,14 +10,15 @@ public enum ESignal { Off = 0, On = 1 };    // This will be deleted, replaced wi
 
 public partial class LogicGate : LogicComponent
 {
-    private ELogicGate gateType;
+    public ELogicGate GateType { get; private set; }
 
+    private bool OutputSignal => GateType.ApplyGate(InputSignals);
+    //private bool OutputSignal => gateType == ELogicGate.NOT ? true : gateType.ApplyGate(InputSignals);
     private static List<ELogicGate> thisWillBeDeletedLater; // This is just a placeholder, will be replaced by the logic gate creator menu
     private static int count = 0;                           // I have no clue what this does, but it will also be deleted later.
     private int inputCount = 2;                             // # of inputs, default is 2, but NOT and BUFFER have a min and max of 1
     private double startHeight;                             // Logic gates grow based on input size, this caches the startsize
     private IOPort outputPort;
-
 
     public LogicGate()
     {
@@ -45,42 +46,13 @@ public partial class LogicGate : LogicComponent
             ELogicGate.OR,
             ELogicGate.XOR];
 
-        Random random = new();
-        int randomNumber = random.Next();
-
-        // This randomly assigns some logic gates to be automically on. This is incredibly placeholder. 
-        if (randomNumber % 2 == 0)
-        {
-            // Gradiant version
-            //LinearGradientBrush gradientBrush = new()
-            //{
-            //    StartPoint = new Point(0, 0),
-            //    EndPoint = new Point(1, 1)
-            //};
-            //gradientBrush.GradientStops.Add(new GradientStop(Color.FromRgb(0, 60, 120), 0));
-            //gradientBrush.GradientStops.Add(new GradientStop(Color.FromRgb(0, 10, 20), 1));
-
-            // Solid version
-            Negate();
-            BackgroundSprite.Fill = new SolidColorBrush(Color.FromRgb(100, 30, 30));
-        }
-
-        // Ignore this
-        //deleteMe = [ELogicGate.Buffer,
-        //    ELogicGate.AND,
-        //    ELogicGate.OR,
-        //    ELogicGate.XOR,
-        //    ELogicGate.NAND,
-        //    ELogicGate.NOR,
-        //    ELogicGate.XNOR];
-
-
+  
     }
 
     public void Negate()
     {
-        gateType = !gateType;
-        NegateDot.Visibility = gateType.IsNegative() ? Visibility.Visible : Visibility.Hidden;
+        GateType = !GateType;
+        NegateDot.Visibility = GateType.IsNegative() ? Visibility.Visible : Visibility.Hidden;
     }
 
     // Forward events to Logic Component to get highlight and drop shadow features.
@@ -90,7 +62,7 @@ public partial class LogicGate : LogicComponent
 
     private void SetInputAmount(int amount)
     {
-        if (gateType.IsSingleInput())   // Force NOT and BUFFER 1 input
+        if (GateType.IsSingleInput())   // Force NOT and BUFFER 1 input
              inputCount = 1;
         else inputCount = amount;
 
@@ -101,19 +73,32 @@ public partial class LogicGate : LogicComponent
         BackgroundSprite.Height = startHeight + extraInputs * 20;
 
         for (int i = 0; i < inputCount; i++)
-            AddInputPort(PortPanel);
+            AddInputPort(InputPanel);
+    }
+    public override void OnInputChange(IOPort changedPort)
+    {
+        if (OutputSignal)
+        {
+            BackgroundSprite.Fill = new SolidColorBrush(Color.FromRgb(150, 150, 30));
+            OutputPort.Signal = true;
+        }
+        else
+        {
+            BackgroundSprite.Fill = new SolidColorBrush(Color.FromRgb(30, 30, 30));
+            OutputPort.Signal = false;
+        }
     }
     private void ShowImage()
     {
         // Loads the correct sprite. Will eventually need to show negative gates
-        BitmapImage bitmapImage = new(new Uri($"Images/{gateType} Gate.png", UriKind.Relative));
+        BitmapImage bitmapImage = new(new Uri($"Images/{GateType} Gate.png", UriKind.Relative));
         Sprite.Fill = new ImageBrush(bitmapImage);
     }
     public override void OnDrag(MouseEventArgs e)
     {
         // Forward drag function to input and output ports
         InputPorts.ForEach(io => io.OnDrag(e));
-        outputPort.OnDrag(e);
+        OutputPort.OnDrag(e);
     }
 
     private void LogicComponent_Loaded(object sender, RoutedEventArgs e)
@@ -121,16 +106,28 @@ public partial class LogicGate : LogicComponent
         startHeight = ActualHeight;
 
         // This is super temp
-        gateType = thisWillBeDeletedLater[count];
+        GateType = thisWillBeDeletedLater[count];
         
         // Create and organize ports
         SetInputAmount(2 + (int)Math.Floor(count / 4.0));
         count++;
-        outputPort = new IOPort(EPortType.Output);
-        Grid.Children.Add(outputPort);
-        outputPort.VerticalAlignment = VerticalAlignment.Center;
+        AddOutputPort(OutputPanel);
+        //OutputPort.SetTop(ActualHeight / 2 - OutputPort.ActualHeight / 2);
+        //OutputPort.SetLeft(BackgroundSprite.Width);
 
         ShowImage();
+        Random random = new();
+        int randomNumber = random.Next();
+
+        // This randomly assigns some logic gates to be automically on. This is incredibly placeholder. 
+        if (randomNumber % 2 == 0)
+        {
+            Negate();
+            OutputPort.Signal = true;
+            OnInputChange(InputPanel.Children[0] as IOPort);
+            //BackgroundSprite.Fill = new SolidColorBrush(Color.FromRgb(100, 30, 30));
+        }
+
     }
 
     private void Gate_MouseMove(object sender, System.Windows.Input.MouseButtonEventArgs e)
