@@ -5,10 +5,7 @@ namespace LogicLab;
 
 public static class ExtensionMethods
 {
-    public static MainWindow MainWindow(this UserControl userControl)
-    {
-        return Window.GetWindow(userControl) as MainWindow ?? throw new NullReferenceException("Null ref");
-    }
+    public static MainWindow MainWindow(this UserControl userControl) => Window.GetWindow(userControl) as MainWindow ?? throw new NullReferenceException("Null ref");
 
     public static Label DebugLabel(this UserControl userControl) => userControl.MainWindow().DebugLabel;
     public static Grid MainGrid(this UserControl userControl) => userControl.MainWindow().MainGrid;
@@ -32,4 +29,6 @@ public static class ExtensionMethods
     public static void SubTop    (this Control control, double x) => control.AddTop(-x);
     public static void SubRight  (this Control control, double x) => control.AddRight(-x);
     public static void SubBottom (this Control control, double x) => control.AddBottom(-x);
+
+    public static U? TryGetValue<T, U>(this Dictionary<T, U> dict, T key) where T : notnull => dict.TryGetValue(key, out U? value) ? value : default;
 }

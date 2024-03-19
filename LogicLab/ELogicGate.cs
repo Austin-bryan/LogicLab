@@ -2,6 +2,13 @@
 
 public readonly struct ELogicGate
 {
+    // The goal of this class is to be used like an enum. 
+    // Even numbers are BUFFER, AND OR, XOR
+    // Odd numbers are NOT NAND NOT XNOR
+    // Adding a 1 makes a gate negative
+    // Subtracting a 1 makes a negative gate positive.
+    // This class behaves like a enum, but with extra methods and functional overload, allowing you to do 
+    // !ELogicGate.AND which returns ELogicGate.NAND
     private enum LogicGateValue
     {
         Buffer = 0, NOT = 1, AND = 2, OR = 4, XOR = 6,

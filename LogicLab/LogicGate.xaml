@@ -21,30 +21,16 @@
                 </TransformGroup>
             </StackPanel.RenderTransform>
         </StackPanel>
-        <Rectangle x:Name="BackgroundSprite" HorizontalAlignment="Center" Height="50" Stroke="#FF0E0E0E" VerticalAlignment="Top" Width="50" RadiusX="10" RadiusY="10" StrokeThickness="2" MouseDown="Gate_MouseDown" MouseMove="Gate_MouseMove" MouseUp="Gate_MouseUp">
-            <Rectangle.Fill>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="Black" Offset="1"/>
-                    <GradientStop Color="#FF282828" Offset="0"/>
-                </LinearGradientBrush>
-            </Rectangle.Fill>
-        </Rectangle>
-        <Rectangle x:Name="Sprite" HorizontalAlignment="Center" Height="30" Stroke="Black" VerticalAlignment="Center" Width="30" StrokeThickness="0" MouseDown="Gate_MouseDown" MouseMove="Gate_MouseMove" MouseUp="Gate_MouseUp">
+        <Rectangle x:Name="BackgroundSprite" HorizontalAlignment="Center" Height="50" Stroke="Black" VerticalAlignment="Top" Width="50" RadiusX="10" RadiusY="10" StrokeThickness="2" MouseDown="Gate_MouseDown" MouseMove="Gate_MouseMove" MouseUp="Gate_MouseUp" Fill="#FF1E1E1E"/>
+        <Rectangle x:Name="Sprite" HorizontalAlignment="Center" Height="30" Stroke="Black" VerticalAlignment="Center" Width="30" StrokeThickness="0" MouseDown="Gate_MouseDown" MouseMove="Gate_MouseMove" MouseUp="Gate_MouseUp" OpacityMask="Black">
             <Rectangle.Fill
     >
                 <ImageBrush
     ImageSource="/XOR Gate.png"/>
             </Rectangle.Fill>
             <Rectangle.Effect>
-                <!--<DropShadowEffect ShadowDepth="0" BlurRadius="9" Color="Blue" Opacity="1.0"/>-->
-                <DropShadowEffect ShadowDepth="0" BlurRadius="3" Color="Cyan" Opacity="0.75"/>
+            <DropShadowEffect ShadowDepth="0" BlurRadius="2" Color="Cyan" Opacity="0.75"/>
             </Rectangle.Effect>
-            <Rectangle.OpacityMask>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="Black"/>
-                    <GradientStop Color="#7F5A5A5A" Offset="1"/>
-                </LinearGradientBrush>
-            </Rectangle.OpacityMask>
 
         </Rectangle>
         <StackPanel x:Name="PortPanel" Margin="-9,0,48,0" VerticalAlignment="Center"/>

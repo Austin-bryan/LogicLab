@@ -8,19 +8,24 @@ namespace LogicLab;
 
 public partial class Wire : LogicComponent
 {
-    private readonly Dictionary<EPortType, IOPort> connectedPorts = [];
-    public ReadOnlyDictionary<EPortType, IOPort> ConnectedPorts => connectedPorts.AsReadOnly();
+    private readonly Dictionary<EPortType, IOPort> connectedPorts = [];                         // Each wire is connected to two ports
+    public ReadOnlyDictionary<EPortType, IOPort> ConnectedPorts => connectedPorts.AsReadOnly(); // This prevents public access from mutating the list
 
-    public IOPort Output => connectedPorts[EPortType.Output];
-    public IOPort Input => connectedPorts[EPortType.Input];
+    // If there is a connected port, return it, else return null.
+    // An input port is missing if the user is dragging from the output port
+    // but hasn't selected an input port yet
+    private IOPort? Output => connectedPorts.TryGetValue(EPortType.Output);
+    private IOPort? Input => connectedPorts.TryGetValue(EPortType.Input);
     private Point startPoint;
-    private MainWindow mainWindow;
+    private readonly MainWindow mainWindow;
 
+    // The visual for the wire
     private readonly Path splinePath = new()
     {
         Stroke = new SolidColorBrush(Color.FromRgb(200, 200, 200)),
         StrokeThickness = 2
     };
+    // The hit detector for the wire
     private readonly Path splineCollider = new()
     {
         Stroke = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0)),
@@ -28,18 +33,18 @@ public partial class Wire : LogicComponent
     };
     public Wire(MainWindow mainWindow, Point startPoint)
     {
-        Dragger = null;
+        Dragger = null;     // Dragger is a class that allows logic components to be dragged. Setting it null prevents it from being dragged
         this.mainWindow = mainWindow;
-        mainWindow.MainGrid.Children.Insert(0, splinePath);
+        mainWindow.MainGrid.Children.Insert(0, splinePath); 
         mainWindow.MainGrid.Children.Insert(0, splineCollider);
 
+        // Add events to splines
         splineCollider.MouseDown += Spline_MouseDown;
         splineCollider.MouseUp   += Gate_MouseUp;
         splinePath.MouseDown     += Spline_MouseDown;
         splinePath.MouseUp       += Gate_MouseUp;
         this.startPoint           = startPoint;
-        splinePath.Effect         = Effect;
-        mainWindow.DebugLabel.Content = 0;
+        splinePath.Effect         = Effect;         // Gives drop shadow
     }
     public void Remove()
     {
@@ -47,25 +52,29 @@ public partial class Wire : LogicComponent
         mainWindow.MainGrid.Children.Remove(splineCollider);
     }
 
-    public async void SetEndPoint(EPortType portType, Point end)
+    public async void SetEndPoint(EPortType portType, Point endPoint)
     {
-        await Task.Delay(1);
-        Draw(portType == EPortType.Input ? EPortType.Output : EPortType.Input, end);
+        // Pretty sure this 1 millisecond delay is no longer needed.
+        //await Task.Delay(1);
+        // 
+
+        // Since this is likely no longer going to be async, this function will most likely be deleted,
+        // and whatever calls SendEndPoint() will just directly call Draw() instead
+        Draw(endPoint);
     }
 
     public void SetPort(EPortType portType, IOPort ioPort) => connectedPorts.TryAdd(portType, ioPort);
 
-    public void Draw(EPortType deleteMe, Point endPoint)
+    public void Draw(Point anchor)
     {
-        mainWindow.DebugLabel.Content = (int)(mainWindow.DebugLabel.Content) + 1;
+        // Anchor will be either the port position thats connected to the wire, or the mouse position
         const int offset = 25;
 
-        Point startPoint = connectedPorts.ContainsKey(EPortType.Output)
-            ? new(Output.EndPoint.X, Output.EndPoint.Y - 3 * Output.Sprite.ActualHeight / 4)
-            : new(endPoint.X, endPoint.Y - offset);
-        endPoint = connectedPorts.ContainsKey(EPortType.Input)
-            ? new(Input.EndPoint.X, Input.EndPoint.Y - offset)
-            : new Point(endPoint.X, endPoint.Y - offset);
+        // If a port is null, use the mouse position for the end of a spline. At least one port will be non null.
+        // If neither are null, the user has connected this wire to two gates. 
+        Point startPoint = new(Output?.WireConnection.X ?? anchor.X, 
+                               Output?.WireConnection.Y - 3 * Output?.Sprite.ActualHeight / 4 ?? anchor.Y - offset);
+        Point endPoint = new(Input?.WireConnection.X ?? anchor.X, Input?.WireConnection.Y - offset ?? anchor.Y - offset);
 
         // This sets it so the wire is more bendy as the input and output get further away, improving readability
         double distance = CalculateDistance(startPoint, endPoint);
@@ -79,6 +88,7 @@ public partial class Wire : LogicComponent
             isStroked: true
         );
 
+        // Adds bezier to visual
         PathFigure pathFigure = new() { StartPoint = startPoint };
         PathGeometry pathGeometry = new();
 
@@ -87,22 +97,18 @@ public partial class Wire : LogicComponent
         splinePath.Data = pathGeometry;
         splineCollider.Data = pathGeometry;
     }
-    public static double Lerp(double min, double max, double alpha)
-    {
-        alpha = Math.Max(0, Math.Min(alpha, 1));
-        return min + (max - min) * alpha;
-    }
-    private static double CalculateDistance(Point p1, Point p2)
-    {
-        return Math.Sqrt(Math.Pow(p2.X - p1.X, 2) + Math.Pow(p2.Y - p1.Y, 2));
-    }
+    private static double Lerp(double min, double max, double alpha) => min + (max - min) * Math.Max(0, Math.Min(alpha, 1));
+    private static double CalculateDistance(Point p1, Point p2) => Math.Sqrt(Math.Pow(p2.X - p1.X, 2) + Math.Pow(p2.Y - p1.Y, 2));
+    
     private void Spline_MouseDown(object sender, MouseButtonEventArgs e)
     {
+        // Highlight effect
         Gate_MouseDown(sender, e);
         splinePath.Effect = Effect;
     }
     public override void Deselect()
     {
+        // Return to shadow effect
         base.Deselect();
         splinePath.Effect = Effect;
     }

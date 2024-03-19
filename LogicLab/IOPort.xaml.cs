@@ -4,8 +4,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-using System.Diagnostics;
 
 namespace LogicLab;
 
@@ -13,7 +11,7 @@ public enum EPortType { Input, Output }
 
 public partial class IOPort : UserControl
 {
-    public Point EndPoint => PointToScreen(new(
+    public Point WireConnection => PointToScreen(new(
                 Sprite.Margin.Left + (portType == EPortType.Input ? ActualWidth / 4 : 0),
                 Sprite.Margin.Right + ActualHeight / 2));
     private EPortType portType;
@@ -41,7 +39,7 @@ public partial class IOPort : UserControl
         if (portType == EPortType.Input)
             return;
 
-        // You may need to adjust the hover size as per your requirements
+        // Rescale output port
         Sprite.Height *= 2.5;
         Sprite.Width *= 1.75;
 
@@ -50,7 +48,8 @@ public partial class IOPort : UserControl
     }
     public void OnDrag(MouseEventArgs deleteMe)
     {
-        wires.ForEach(w => w.SetEndPoint(portType, EndPoint));
+        // Redraw all wires
+        wires.ForEach(w => w.SetEndPoint(portType, WireConnection));
     }
 
     private void Sprite_MouseEnter(object sender, MouseEventArgs e) => Sprite.Fill = hoverColor;
@@ -58,13 +57,17 @@ public partial class IOPort : UserControl
     private void Sprite_MouseDown(object sender, MouseEventArgs e)
     {
         isPressed = true;
+
         this.MainGrid().MouseMove += Wire_MouseMove;
         this.MainGrid().MouseUp += Wire_MouseUp;
 
-        Wire wire = new(this.MainWindow(), EndPoint);
+        // Create new wire, and mark this as a port
+        Wire wire = new(this.MainWindow(), WireConnection);
         wire.SetPort(portType, this);
+
+        // Active wire is the one currently being dragged
         activeWire = wire;
-        activeWire.Draw(portType, PointToScreen(e.GetPosition(this)));
+        activeWire.Draw(PointToScreen(e.GetPosition(this)));
         wires.Add(wire);
 
         ShowSprite(false);
@@ -74,7 +77,9 @@ public partial class IOPort : UserControl
         if (activeWire == null)
             return;
 
-        activeWire.SetEndPoint(portType, EndPoint);
+        // If the user releases their mouse on this port, and there's an active wire
+        // connect that wire to this port, making a fully connected wire
+        activeWire.SetEndPoint(portType, WireConnection);
         activeWire.SetPort(portType, this);
         wires.Add(activeWire);
 
@@ -96,7 +101,8 @@ public partial class IOPort : UserControl
     {
         if (!isPressed) 
             return;
-        activeWire?.Draw(portType, PointToScreen(e.GetPosition(this)));
+        // Redraw if there user is dragging the logic gate, and theres no active wire
+        activeWire?.Draw(PointToScreen(e.GetPosition(this)));
     }
     private void Wire_MouseUp(object sender, MouseEventArgs e)
     {
@@ -104,9 +110,10 @@ public partial class IOPort : UserControl
         this.MainGrid().MouseMove -= Wire_MouseMove;
         this.MainGrid().MouseUp -= Wire_MouseUp;
 
-        if (activeWire?.ConnectedPorts.ContainsKey(portType == EPortType.Output ? EPortType.Input : EPortType.Output) == false)
+        bool wireIsHalfConneceted = activeWire?.ConnectedPorts.ContainsKey(portType == EPortType.Output ? EPortType.Input : EPortType.Output) == false;
+        if (wireIsHalfConneceted)
         {
-            activeWire.Remove();
+            activeWire?.Remove();
             wires.Remove(activeWire);
             activeWire = null;
             ShowSprite(true);

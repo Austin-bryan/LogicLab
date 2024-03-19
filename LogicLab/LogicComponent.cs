@@ -26,7 +26,7 @@ public partial class LogicComponent : UserControl
     public LogicComponent()
     {
         animatingShadow = shadow;
-        Dragger = new ComponentDragger(this);
+        Dragger = new ComponentDragger(this);   // Enables dragging
         Deselect();
     }
 
@@ -48,6 +48,7 @@ public partial class LogicComponent : UserControl
     public virtual void OnDrag(MouseEventArgs e) { }
     private void BeginShadowAnimation(DropShadowEffect fromShadow, DropShadowEffect targetShadow)
     {
+        // Animates from shadow to highlight or back
         TimeSpan animTime = TimeSpan.FromSeconds(0.25);
 
         animatingShadow = fromShadow.Clone();
@@ -74,6 +75,7 @@ public partial class LogicComponent : UserControl
     protected virtual void Gate_MouseMove(object sender, MouseEventArgs e) => Dragger?.DragMove(e);
     protected virtual void Grid_Loaded(object sender, RoutedEventArgs e)
     {
+        // Subscribe to mouse move, that way the mouse move will fire even if the cursor goes out of bounds, when dragging
         if (Window.GetWindow(this) is MainWindow mw)
             if (mw.MainGrid != null)
                 mw.MainGrid.MouseMove += Gate_MouseMove;

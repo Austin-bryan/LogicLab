@@ -7,6 +7,7 @@ public partial class LogicComponent
 {
     protected class ComponentDragger(LogicComponent logicComponent)
     {
+        // Forward Margin to component. Note, WPF doesn't use positions, they use margins where Margin.Left is X, and Margin.Top is Y.
         private Thickness Margin
         {
             get => logicComponent.Margin;
@@ -21,6 +22,8 @@ public partial class LogicComponent
             dragStart = logicComponent.PointToScreen(e.GetPosition(logicComponent));
             isMouseDown = true;
 
+            // This makes it so when all gates are selected, and one is moved, move all of them
+            // Certain conditions are in place to avoid an infinite loop
             ComponentSelector.SelectedComponents
                 .Where(lc => lc != logicComponent && lc.Dragger != null && lc.Dragger.isMouseDown == false)
                 .ToList()
@@ -31,17 +34,21 @@ public partial class LogicComponent
             if (!isMouseDown)
                 return;
 
+            // We have to convert to screen space from the local space to be able to properly drag
             Point mousePos = logicComponent.PointToScreen(e.GetPosition(logicComponent));
-            Vector delta = mousePos - dragStart;
-            dragStart = mousePos;
-            Margin = new(Margin.Left + delta.X, Margin.Top + delta.Y, Margin.Right, Margin.Bottom);
+            Vector delta   = mousePos - dragStart;
+            dragStart      = mousePos;
+            Margin         = new(Margin.Left + delta.X, Margin.Top + delta.Y, Margin.Right, Margin.Bottom);
+
             logicComponent.OnDrag(e);
         }
         public void DragEnd()
         {
             isMouseDown = false;
+
+            // Calls drag end on all selected logic components
             ComponentSelector.SelectedComponents
-                .Where(lc => lc != logicComponent && lc.Dragger.isMouseDown == true)
+                .Where(lc => lc != logicComponent && lc.Dragger.isMouseDown)
                 .ToList()
                 .ForEach(lc => lc.Dragger.DragEnd());
         }

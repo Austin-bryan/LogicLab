@@ -14,6 +14,9 @@ public partial class MainWindow : Window
     }
     private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
     {
+        // Deslect if they tap on the background without the shift key
+        // Checking for original source prevents this from being fired if the user clicks on a control within the grid,
+        // only if they click on the grid directly
         if (!Keyboard.Modifiers.HasFlag(ModifierKeys.Shift)
             && e.OriginalSource == MainGrid)
             ComponentSelector.DeselectAll();
@@ -34,6 +37,7 @@ public partial class MainWindow : Window
 
         if (Keyboard.Modifiers != ModifierKeys.Shift)
             return;
+        // Shortcuts for alignment of logic gates
         switch (e.Key)
         {
         case Key.A: ComponentSelector.AlignLeft();   break;
