@@ -51,6 +51,9 @@ public partial class LogicGate : LogicComponent
             ELogicGate.OR,
             ELogicGate.XOR];
 
+        //for (int i = 0; i < Grid.Children.Count; i++)
+            //Grid.Children[i].Visibility = Visibility.Hidden;
+        
         Random random = new();
         int randomNumber = random.Next();
 

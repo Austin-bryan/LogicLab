@@ -53,37 +53,19 @@ public partial class Wire : LogicComponent
         Draw(portType == EPortType.Input ? EPortType.Output : EPortType.Input, end);
     }
 
-    public void SetPort(EPortType portType, IOPort ioPort)
-    {
-        connectedPorts.TryAdd(portType, ioPort);
-    }
-
-    private long lastRedrawTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-    private const int debounceThreshold = 32; // 16 milliseconds for 60 frames per second
-
+    public void SetPort(EPortType portType, IOPort ioPort) => connectedPorts.TryAdd(portType, ioPort);
 
     public void Draw(EPortType deleteMe, Point endPoint)
     {
-        long currentTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-        
-        if (currentTime - lastRedrawTime <= debounceThreshold)
-            return;
-
-        lastRedrawTime = currentTime;
-
         mainWindow.DebugLabel.Content = (int)(mainWindow.DebugLabel.Content) + 1;
         const int offset = 25;
 
         Point startPoint = connectedPorts.ContainsKey(EPortType.Output)
             ? new(Output.EndPoint.X, Output.EndPoint.Y - 3 * Output.Sprite.ActualHeight / 4)
             : new(endPoint.X, endPoint.Y - offset);
-            //: new(this.startPoint.X, this.startPoint.Y - offset);
         endPoint = connectedPorts.ContainsKey(EPortType.Input)
             ? new(Input.EndPoint.X, Input.EndPoint.Y - offset)
             : new Point(endPoint.X, endPoint.Y - offset);
-
-        PathGeometry pathGeometry = new();
-        PathFigure pathFigure = new() { StartPoint = startPoint };
 
         // This sets it so the wire is more bendy as the input and output get further away, improving readability
         double distance = CalculateDistance(startPoint, endPoint);
@@ -96,6 +78,9 @@ public partial class Wire : LogicComponent
             endPoint,                                 
             isStroked: true
         );
+
+        PathFigure pathFigure = new() { StartPoint = startPoint };
+        PathGeometry pathGeometry = new();
 
         pathFigure.Segments.Add(bezierSegment);
         pathGeometry.Figures.Add(pathFigure);
