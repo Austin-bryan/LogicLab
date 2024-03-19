@@ -57,6 +57,7 @@ public static class ComponentSelector
     }
     public static void ShiftSelect(LogicComponent logicComponent) => selectedComponents.Add(logicComponent);
 
+    // Aligning behaviour
     public static void AlignLeft()
     {
         double min = selectedComponents.Min(lc => lc.Margin.Left);
