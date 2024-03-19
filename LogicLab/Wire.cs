@@ -20,10 +20,15 @@ public partial class Wire : LogicComponent
     private readonly MainWindow mainWindow;
 
     // The visual for the wire
-    private readonly Path splinePath = new()
+    private readonly Path offWire = new()
     {
         Stroke = new SolidColorBrush(Color.FromRgb(200, 200, 200)),
         StrokeThickness = 2
+    };
+    private readonly Path onWire = new()
+    {
+        Stroke = new SolidColorBrush(Color.FromRgb(200, 200, 0)),
+        StrokeThickness = 4
     };
     // The hit detector for the wire
     private readonly Path splineCollider = new()
@@ -35,20 +40,22 @@ public partial class Wire : LogicComponent
     {
         Dragger = null;     // Dragger is a class that allows logic components to be dragged. Setting it null prevents it from being dragged
         this.mainWindow = mainWindow;
-        mainWindow.MainGrid.Children.Insert(0, splinePath); 
+        mainWindow.MainGrid.Children.Insert(0, offWire); 
+        mainWindow.MainGrid.Children.Insert(0, onWire); 
         mainWindow.MainGrid.Children.Insert(0, splineCollider);
 
         // Add events to splines
         splineCollider.MouseDown += Spline_MouseDown;
         splineCollider.MouseUp   += Gate_MouseUp;
-        splinePath.MouseDown     += Spline_MouseDown;
-        splinePath.MouseUp       += Gate_MouseUp;
+        offWire.MouseDown        += Spline_MouseDown;
+        offWire.MouseUp          += Gate_MouseUp;
         this.startPoint           = startPoint;
-        splinePath.Effect         = Effect;         // Gives drop shadow
+        offWire.Effect            = Effect;         // Gives drop shadow
     }
     public void Remove()
     {
-        mainWindow.MainGrid.Children.Remove(splinePath);
+        mainWindow.MainGrid.Children.Remove(offWire);
+        mainWindow.MainGrid.Children.Remove(onWire);
         mainWindow.MainGrid.Children.Remove(splineCollider);
     }
 
@@ -65,7 +72,7 @@ public partial class Wire : LogicComponent
 
     public void SetPort(EPortType portType, IOPort ioPort) => connectedPorts.TryAdd(portType, ioPort);
 
-    public void Draw(Point anchor)
+    public void Draw(Point anchor, bool? signal = false)
     {
         // Anchor will be either the port position thats connected to the wire, or the mouse position
         const int offset = 25;
@@ -94,7 +101,13 @@ public partial class Wire : LogicComponent
 
         pathFigure.Segments.Add(bezierSegment);
         pathGeometry.Figures.Add(pathFigure);
-        splinePath.Data = pathGeometry;
+
+        onWire.Visibility = offWire.Visibility = Visibility.Hidden;
+        
+        Path wire = signal == true ? onWire : offWire;
+        wire.Data = pathGeometry;
+        wire.Visibility = Visibility.Visible;
+
         splineCollider.Data = pathGeometry;
     }
     private static double Lerp(double min, double max, double alpha) => min + (max - min) * Math.Max(0, Math.Min(alpha, 1));
@@ -104,12 +117,12 @@ public partial class Wire : LogicComponent
     {
         // Highlight effect
         Gate_MouseDown(sender, e);
-        splinePath.Effect = Effect;
+        offWire.Effect = Effect;
     }
     public override void Deselect()
     {
         // Return to shadow effect
         base.Deselect();
-        splinePath.Effect = Effect;
+        offWire.Effect = Effect;
     }
 }

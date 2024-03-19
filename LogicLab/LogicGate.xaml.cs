@@ -79,12 +79,12 @@ public partial class LogicGate : LogicComponent
     {
         if (OutputSignal)
         {
-            BackgroundSprite.Fill = new SolidColorBrush(Color.FromRgb(150, 150, 30));
+            //BackgroundSprite.Fill = new SolidColorBrush(Color.FromRgb(150, 150, 30));
             OutputPort.Signal = true;
         }
         else
         {
-            BackgroundSprite.Fill = new SolidColorBrush(Color.FromRgb(30, 30, 30));
+            //BackgroundSprite.Fill = new SolidColorBrush(Color.FromRgb(30, 30, 30));
             OutputPort.Signal = false;
         }
     }
@@ -120,7 +120,7 @@ public partial class LogicGate : LogicComponent
         int randomNumber = random.Next();
 
         // This randomly assigns some logic gates to be automically on. This is incredibly placeholder. 
-        if (randomNumber % 2 == 0)
+        if (randomNumber % 2 == 0 && GateType == ELogicGate.Buffer)
         {
             Negate();
             OutputPort.Signal = true;

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:LogicLab"
         mc:Ignorable="d"
         Title="MainWindow" Height="650" Width="993">
-    <Grid x:Name="MainGrid" Background="#FF2B2B2B" MouseDown="Grid_MouseDown" MouseMove="MainGrid_MouseMove" MouseUp="MainGrid_MouseUp" Margin="0,0,0,-6" PreviewKeyDown="MainGrid_PreviewKeyDown" KeyDown="MainGrid_KeyDown">
+    <Grid x:Name="MainGrid" Background="#FF2B2B2B" MouseDown="Grid_MouseDown" MouseMove="MainGrid_MouseMove" MouseUp="MainGrid_MouseUp" Margin="0,0,-278,-268" PreviewKeyDown="MainGrid_PreviewKeyDown" KeyDown="MainGrid_KeyDown">
         <local:LogicGate HorizontalAlignment="Left" Margin="64,15,0,0" VerticalAlignment="Top"/>
         <local:LogicGate HorizontalAlignment="Left" Margin="181,15,0,0" VerticalAlignment="Top"/>
         <local:LogicGate HorizontalAlignment="Left" Margin="305,15,0,0" VerticalAlignment="Top"/>
@@ -27,6 +27,6 @@
         <local:LogicGate HorizontalAlignment="Left" Margin="181,420,0,0" VerticalAlignment="Top"/>
         <local:LogicGate HorizontalAlignment="Left" Margin="305,420,0,0" VerticalAlignment="Top"/>
         <local:LogicGate HorizontalAlignment="Left" Margin="423,422,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="DebugLabel" Content="Label" HorizontalAlignment="Left" Margin="712,240,0,0" VerticalAlignment="Top" Foreground="White"/>
+        <Label x:Name="DebugLabel" Content="Label" HorizontalAlignment="Left" Margin="712,240,0,0" VerticalAlignment="Top" Foreground="White" Width="533" Height="535"/>
     </Grid>
 </Window>

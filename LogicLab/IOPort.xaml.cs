@@ -4,6 +4,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
+using System.Collections.Immutable;
 
 namespace LogicLab;
 
@@ -15,7 +16,44 @@ public partial class IOPort : UserControl
                 Sprite.Margin.Left + (portType == EPortType.Input ? ActualWidth / 4 : 0),
                 Sprite.Margin.Right + ActualHeight / 2));
 
-    public bool? Signal { get; set; } = null;
+    public bool? Signal
+    {
+        get => _signal;
+        set
+        {
+            _signal = value;
+
+            (owningComponent as LogicGate).BackgroundSprite.Fill = 
+                value == true ? new SolidColorBrush(Color.FromRgb(150, 150, 30))
+                              : new SolidColorBrush(Color.FromRgb(30, 30, 30));
+
+            if (portType == EPortType.Output)
+            {
+                foreach (var port in ConnectedPorts)
+                    if (port.portType == EPortType.Input)
+                        port.Signal = value;
+
+                foreach (var wire in wires)
+                {
+                    if (wire.Output == this)
+                        wire.Draw(new(0, 0), value);
+                }
+            }
+            else owningComponent.OnInputChange(this);
+        }
+    }
+    public ImmutableList<IOPort> ConnectedPorts
+    {
+        get
+        {
+            List<IOPort> connectedPorts = [];
+            foreach (var wire in wires)
+                foreach (var port in wire.ConnectedPorts.Values)
+                    connectedPorts.Add(port);
+            return [.. connectedPorts];
+        }
+    }
+
     private EPortType portType;
     private readonly LogicComponent owningComponent;
     private readonly SolidColorBrush idleColor, hoverColor;
@@ -23,6 +61,7 @@ public partial class IOPort : UserControl
 
     private readonly List<Wire> wires = [];
     private static Wire? activeWire;
+    private bool? _signal = null;
 
     public IOPort(EPortType portType, LogicComponent owningComponent)
     {
@@ -52,7 +91,10 @@ public partial class IOPort : UserControl
     public void OnDrag(MouseEventArgs deleteMe)
     {
         // Redraw all wires
-        wires.ForEach(w => w.SetEndPoint(portType, WireConnection));
+        // TODO:: This causes the redraw for both output and input ports, when only one is needed
+        // What needs to happen is the port should find out if the port being dragged is input or output
+        // From there, only that port type is allowed to redraw
+        wires.ForEach(w => w.Draw(WireConnection, w.Output?.Signal));
     }
 
     private void Sprite_MouseEnter(object sender, MouseEventArgs e) => Sprite.Fill = hoverColor;
@@ -70,8 +112,10 @@ public partial class IOPort : UserControl
 
         // Active wire is the one currently being dragged
         activeWire = wire;
-        activeWire.Draw(PointToScreen(e.GetPosition(this)));
-        wires.Add(wire);
+        activeWire.Draw(PointToScreen(e.GetPosition(this)), Signal);
+
+        if (!wires.Contains(wire))
+            wires.Add(wire);
 
         ShowSprite(false);
     }
@@ -82,7 +126,6 @@ public partial class IOPort : UserControl
 
         // If the user releases their mouse on this port, and there's an active wire
         // connect that wire to this port, making a fully connected wire
-        activeWire.SetEndPoint(portType, WireConnection);
         activeWire.SetPort(portType, this);
         wires.Add(activeWire);
 
@@ -92,6 +135,7 @@ public partial class IOPort : UserControl
             //MessageBox.Show(Signal.ToString());
         }
         owningComponent.OnInputChange(this);
+        activeWire.Draw(WireConnection, Signal);
 
         ShowSprite(false);
     }
@@ -111,8 +155,8 @@ public partial class IOPort : UserControl
     {
         if (!isPressed) 
             return;
-        // Redraw if there user is dragging the logic gate, and theres no active wire
-        activeWire?.Draw(PointToScreen(e.GetPosition(this)));
+        // Redraw if there user is dragging the logic gate, and theres an active wire
+        activeWire?.Draw(PointToScreen(e.GetPosition(this)), Signal);
     }
     private void Wire_MouseUp(object sender, MouseEventArgs e)
     {
@@ -131,6 +175,8 @@ public partial class IOPort : UserControl
     }
     private void Grid_Loaded(object sender, RoutedEventArgs e)
     {
+        this.MainWindow().DebugLabel.Content = "";
+
         if (portType == EPortType.Output)
         {
             //Margin = new Thickness(ActualWidth - ActualWidth / 3, 0, 0, 0);
