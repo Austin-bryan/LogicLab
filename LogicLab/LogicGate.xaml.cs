@@ -45,8 +45,6 @@ public partial class LogicGate : LogicComponent
             ELogicGate.AND,
             ELogicGate.OR,
             ELogicGate.XOR];
-
-  
     }
 
     public void Negate()
@@ -77,16 +75,7 @@ public partial class LogicGate : LogicComponent
     }
     public override void OnInputChange(IOPort changedPort)
     {
-        if (OutputSignal)
-        {
-            //BackgroundSprite.Fill = new SolidColorBrush(Color.FromRgb(150, 150, 30));
-            OutputPort.Signal = true;
-        }
-        else
-        {
-            //BackgroundSprite.Fill = new SolidColorBrush(Color.FromRgb(30, 30, 30));
-            OutputPort.Signal = false;
-        }
+        OutputPort.Signal = OutputSignal;
     }
     private void ShowImage()
     {
