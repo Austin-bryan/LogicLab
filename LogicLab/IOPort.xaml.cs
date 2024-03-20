@@ -88,7 +88,7 @@ public partial class IOPort : UserControl
         OverlapDetector.Height *= 2.5;
         OverlapDetector.Width *= 1.75;
     }
-    public void OnDrag(MouseEventArgs deleteMe)
+    public void OnDrag()
     {
         // Redraw all wires
         // TODO:: This causes the redraw for both output and input ports, when only one is needed
@@ -126,19 +126,31 @@ public partial class IOPort : UserControl
 
         ShowSprite(false);
 
+        // If plugged into an input port, remove all wires already connected there.
+        if (portType == EPortType.Input)
+            RemoveWires(this);
+        // Enforce 1 wire per input
+        else   
+        {
+            RemoveWires(activeWire.Input);
+            activeWire.Input.wires.Add(activeWire);
+        }
+
         // If the user releases their mouse on this port, and there's an active wire
         // connect that wire to this port, making a fully connected wire
         activeWire.SetPort(portType, this);
         wires.Add(activeWire);
 
         if (activeWire.Output != null)
-        {
             Signal = activeWire.Output.Signal;
-            //MessageBox.Show(Signal.ToString());
-        }
         owningComponent.OnInputChange(this);
         activeWire.Draw(WireConnection, Signal);
 
+        static void RemoveWires(IOPort port)
+        {
+            port.wires.Where(w => w != activeWire).ToList().ForEach(w => w.Remove());
+            port.wires.Clear();
+        }
     }
 
     private void ShowSprite(bool visible)
