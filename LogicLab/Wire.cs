@@ -59,17 +59,6 @@ public partial class Wire : LogicComponent
         mainWindow.MainGrid.Children.Remove(splineCollider);
     }
 
-    public async void SetEndPoint(EPortType portType, Point endPoint)
-    {
-        // Pretty sure this 1 millisecond delay is no longer needed.
-        //await Task.Delay(1);
-        // 
-
-        // Since this is likely no longer going to be async, this function will most likely be deleted,
-        // and whatever calls SendEndPoint() will just directly call Draw() instead
-        Draw(endPoint);
-    }
-
     public void SetPort(EPortType portType, IOPort ioPort) => connectedPorts.TryAdd(portType, ioPort);
 
     public void Draw(Point anchor, bool? signal = false)

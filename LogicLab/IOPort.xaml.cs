@@ -13,7 +13,7 @@ public enum EPortType { Input, Output }
 public partial class IOPort : UserControl
 {
     public Point WireConnection => PointToScreen(new(
-                Sprite.Margin.Left + (portType == EPortType.Input ? ActualWidth / 4 : 0),
+                Sprite.Margin.Left + (portType == EPortType.Input ? ActualWidth / 2 : 0),
                 Sprite.Margin.Right + ActualHeight / 2));
 
     public bool? Signal
@@ -106,6 +106,8 @@ public partial class IOPort : UserControl
         this.MainGrid().MouseMove += Wire_MouseMove;
         this.MainGrid().MouseUp += Wire_MouseUp;
 
+        ShowSprite(false);
+
         // Create new wire, and mark this as a port
         Wire wire = new(this.MainWindow(), WireConnection);
         wire.SetPort(portType, this);
@@ -116,13 +118,13 @@ public partial class IOPort : UserControl
 
         if (!wires.Contains(wire))
             wires.Add(wire);
-
-        ShowSprite(false);
     }
     private void Sprite_MouseUp(object sender, MouseButtonEventArgs e)
     {
         if (activeWire == null)
             return;
+
+        ShowSprite(false);
 
         // If the user releases their mouse on this port, and there's an active wire
         // connect that wire to this port, making a fully connected wire
@@ -137,7 +139,6 @@ public partial class IOPort : UserControl
         owningComponent.OnInputChange(this);
         activeWire.Draw(WireConnection, Signal);
 
-        ShowSprite(false);
     }
 
     private void ShowSprite(bool visible)
@@ -145,10 +146,11 @@ public partial class IOPort : UserControl
         if (portType != EPortType.Input)
             return;
 
-        Sprite.BeginAnimation(OpacityProperty,
-            new DoubleAnimation(fromValue: visible ? 0 : 1,
-                                toValue: visible ? 1 : 0, 
-                                duration: TimeSpan.FromSeconds(0.5)));
+        if (wires.Count == 0)
+            Sprite.BeginAnimation(OpacityProperty,
+                new DoubleAnimation(fromValue: visible ? 0 : 1,
+                                    toValue: visible ? 1 : 0, 
+                                    duration: TimeSpan.FromSeconds(0.5)));
     }
 
     private void Wire_MouseMove(object sender, MouseEventArgs e)
