@@ -74,8 +74,18 @@ public partial class Wire : LogicComponent
 
         // This sets it so the wire is more bendy as the input and output get further away, improving readability
         double distance = CalculateDistance(startPoint, endPoint);
-        double alpha = Math.Min(distance, 500) / 500;
-        double controlPointDistance = Lerp(20, 250, alpha * alpha);
+
+        // This changes the min and max distance if the wire is going backwards to make it easier to see
+        double backwardsAlpha = endPoint.X / startPoint.X;
+        backwardsAlpha -= 0.0;
+        backwardsAlpha = Math.Min(backwardsAlpha, 1.5);
+        backwardsAlpha = Math.Max(backwardsAlpha, 0.8);
+        
+        double maxDistance = Lerp(16000, 500, backwardsAlpha);
+        double minDistance = Lerp(600, 20, backwardsAlpha);
+        mainWindow.DebugLabel.Content = backwardsAlpha;
+        double alpha = Math.Min(distance, maxDistance) / maxDistance;
+        double controlPointDistance = Lerp(minDistance, maxDistance / 2, alpha * alpha);
 
         BezierSegment bezierSegment = new(
             new Point(startPoint.X + controlPointDistance, startPoint.Y), // Control point 1
