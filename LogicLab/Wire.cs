@@ -73,13 +73,18 @@ public partial class Wire : LogicComponent
         double distance = CalculateDistance(startPoint, endPoint);
 
         // This changes the min and max distance if the wire is going backwards to make it easier to see
-        double backwardsAlpha = endPoint.X / startPoint.X;
-        backwardsAlpha -= 0.0;
-        backwardsAlpha = Math.Min(backwardsAlpha, 1.5);
-        backwardsAlpha = Math.Max(backwardsAlpha, 0.8);
-        
-        double maxDistance      = Lerp(16000, 500, backwardsAlpha);
-        double minDistance      = Lerp(600, 20, backwardsAlpha);
+
+        IOPort port = Output ?? Input;
+        (Point start, Point end) localized = (port.PointFromScreen(startPoint), port.PointFromScreen(endPoint));
+
+        double backwardsAlpha = -localized.end.X / -localized.start.X;
+        backwardsAlpha = Math.Min(backwardsAlpha, 2.0);
+        backwardsAlpha = Math.Max(backwardsAlpha, 0.0);
+        mainWindow.DebugLabel.Content = backwardsAlpha;
+
+
+        double maxDistance      = Lerp(2000, 500, backwardsAlpha);
+        double minDistance      = Lerp(100, 20, backwardsAlpha);
         double alpha            = Math.Min(distance, maxDistance) / maxDistance;
         double controlPointDist = Lerp(minDistance, maxDistance / 2, alpha * alpha);
 
