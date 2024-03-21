@@ -12,7 +12,7 @@ public partial class LogicGate : LogicComponent
 {
     public ELogicGate GateType { get; private set; }
 
-    private bool OutputSignal => GateType.ApplyGate(InputSignals);
+    private bool? OutputSignal => GateType.ApplyGate(InputSignals);
     //private bool OutputSignal => gateType == ELogicGate.NOT ? true : gateType.ApplyGate(InputSignals);
     private static List<ELogicGate> thisWillBeDeletedLater; // This is just a placeholder, will be replaced by the logic gate creator menu
     private static int count = 0;                           // I have no clue what this does, but it will also be deleted later.
@@ -114,9 +114,9 @@ public partial class LogicGate : LogicComponent
             Negate();
             OutputPort.Signal = true;
             OnInputChange(InputPanel.Children[0] as IOPort);
-            //BackgroundSprite.Fill = new SolidColorBrush(Color.FromRgb(100, 30, 30));
         }
-
+        if (GateType == ELogicGate.Buffer)
+            OutputPort.Signal = false;
     }
 
     private void Gate_MouseMove(object sender, System.Windows.Input.MouseButtonEventArgs e)

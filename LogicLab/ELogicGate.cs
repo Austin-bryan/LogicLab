@@ -49,18 +49,29 @@ public readonly struct ELogicGate
     public override readonly bool Equals(object? obj) => obj is ELogicGate other && value == other.value;
     public override readonly string ToString() => ((LogicGateValue)value).ToString();
 
-    public bool ApplyGate(List<bool?> signals) => (LogicGateValue)value switch
+    public bool? ApplyGate(List<bool?> signals)
     {
-        LogicGateValue.Buffer => signals[0] == true,
-        LogicGateValue.AND    => signals.All(b => b == true),
-        LogicGateValue.OR     => signals.Any(b => b == true),
-        LogicGateValue.XOR    => signals.Where(signal => signal != null)
-                                        .Aggregate(false, (acc, curr) => acc ^ (curr == true)),
-        LogicGateValue.NOT    => !Buffer.ApplyGate(signals),
-        LogicGateValue.NAND   => !AND.ApplyGate(signals),
-        LogicGateValue.NOR    => !OR.ApplyGate(signals),
-        LogicGateValue.XNOR   => !XOR.ApplyGate(signals),
-        _ => throw new InvalidOperationException("Invalid logic gate"),
-    };
+        // TODO:: Delete this once proper inputs are inplace
+        if (this == NOT && signals[0] == null)
+            return true;
+        if (this == Buffer && signals[0] == null)
+            return false;
+        if (signals.All(b => b == null))
+            return null;
+        return (LogicGateValue)value switch
+        {
+            LogicGateValue.Buffer => signals[0] == true,
+            LogicGateValue.AND    => signals.All(b => b == true),
+            LogicGateValue.OR     => signals.Any(b => b == true),
+            LogicGateValue.XOR    => signals.Where(signal => signal != null)
+                                            .Aggregate(false, (acc, curr) => acc ^ (curr == true)),
+            LogicGateValue.NOT  => !Buffer.ApplyGate(signals),
+            LogicGateValue.NAND => !AND.ApplyGate(signals),
+            LogicGateValue.NOR  => !OR.ApplyGate(signals),
+            LogicGateValue.XNOR => !XOR.ApplyGate(signals),
+            _ => throw new InvalidOperationException("Invalid logic gate"),
+        };
+    }
+
     public override readonly int GetHashCode() => HashCode.Combine(value);
 }

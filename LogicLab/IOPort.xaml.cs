@@ -22,26 +22,41 @@ public partial class IOPort : UserControl
         set
         {
             _signal = value;
-
-            (owningComponent as LogicGate).BackgroundSprite.Fill = 
-                value == true ? new SolidColorBrush(Color.FromRgb(150, 150, 30))
-                              : new SolidColorBrush(Color.FromRgb(30, 30, 30));
-
-            if (portType == EPortType.Output)
-            {
-                foreach (var port in ConnectedPorts)
-                    if (port.portType == EPortType.Input)
-                        port.Signal = value;
-
-                foreach (var wire in wires)
-                {
-                    if (wire.Output == this)
-                        wire.Draw(new(0, 0), value);
-                }
-            }
-            else owningComponent.OnInputChange(this);
+            UpdateBackground(value);
+            ProcessSignalAsync(value);
         }
     }
+
+    private async void ProcessSignalAsync(bool? signal)
+    {
+        if (portType != EPortType.Output)
+            owningComponent.OnInputChange(this);        
+        else
+        {
+            await Task.Delay(10);
+            foreach (var port in ConnectedPorts)
+            {
+                if (port.portType == EPortType.Input)
+                {
+                    port.Signal = signal;
+                    await Task.Delay(100); // Example asynchronous operation
+                }
+            }
+
+            foreach (var wire in wires)
+                if (wire.Output == this)
+                    wire.Draw(new(0, 0), signal);
+        }
+    }
+
+    private void UpdateBackground(bool? signal)
+    {
+        (owningComponent as LogicGate).BackgroundSprite.Fill =
+            signal == true ? new SolidColorBrush(Color.FromRgb(150, 150, 30))
+                           : new SolidColorBrush(Color.FromRgb(30, 30, 30));
+    }
+
+
     public ImmutableList<IOPort> ConnectedPorts
     {
         get

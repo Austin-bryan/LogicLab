@@ -23,7 +23,7 @@ public abstract partial class LogicComponent : UserControl
     private readonly List<IOPort> inputPorts = [];
     private IOPort outputPort;
     private readonly DropShadowEffect shadow = new() { ShadowDepth = 4, Color = Colors.Black, Opacity = 0.4, BlurRadius = 5 };
-    private readonly DropShadowEffect highlight = new() { ShadowDepth = 0, Color = Color.FromArgb(255, 200, 200, 255), Opacity = 1, BlurRadius = 10 };
+    private readonly DropShadowEffect highlight = new() { ShadowDepth = 0, Color = Color.FromRgb(200, 200, 255), Opacity = 1, BlurRadius = 10 };
     private DropShadowEffect animatingShadow;
 
     public LogicComponent()
@@ -77,10 +77,10 @@ public abstract partial class LogicComponent : UserControl
 
         animatingShadow = fromShadow.Clone();
         animatingShadow.BeginAnimation(DropShadowEffect.ShadowDepthProperty, new DoubleAnimation(targetShadow.ShadowDepth, animTime));
-        animatingShadow.BeginAnimation(DropShadowEffect.ColorProperty,       new ColorAnimation (targetShadow.Color, animTime));
-        animatingShadow.BeginAnimation(DropShadowEffect.OpacityProperty,     new DoubleAnimation(targetShadow.Opacity,animTime));
-        animatingShadow.BeginAnimation(DropShadowEffect.BlurRadiusProperty,  new DoubleAnimation(targetShadow.BlurRadius, animTime));
-        Effect = animatingShadow;
+        animatingShadow.BeginAnimation(DropShadowEffect.ColorProperty,       new ColorAnimation (targetShadow.Color,       animTime));
+        animatingShadow.BeginAnimation(DropShadowEffect.OpacityProperty,     new DoubleAnimation(targetShadow.Opacity     ,animTime));
+        animatingShadow.BeginAnimation(DropShadowEffect.BlurRadiusProperty,  new DoubleAnimation(targetShadow.BlurRadius,  animTime));
+        Effect = animatingShadow;                                                                                         
     }
 
     protected virtual void Gate_MouseDown(object sender, MouseButtonEventArgs e)

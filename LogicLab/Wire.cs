@@ -20,47 +20,44 @@ public partial class Wire : LogicComponent
     private readonly MainWindow mainWindow;
 
     // The visual for the wire
-    private readonly Path offWire = new()
+
+    private readonly SolidColorBrush offBrush   = new(Color.FromRgb(200, 200, 200)),
+                                     onBrush    = new(Color.FromRgb(200, 200, 0)),
+                                     errorBrush = new(Color.FromRgb(200, 50, 50));
+    private readonly Path mainSpline = new()
     {
         Stroke = new SolidColorBrush(Color.FromRgb(200, 200, 200)),
-        StrokeThickness = 2
-    };
-    private readonly Path onWire = new()
-    {
-        Stroke = new SolidColorBrush(Color.FromRgb(200, 200, 0)),
         StrokeThickness = 4
     };
-    // The hit detector for the wire
     private readonly Path splineCollider = new()
     {
         Stroke = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0)),
         StrokeThickness = 15
     };
+    
     public Wire(MainWindow mainWindow, Point startPoint)
     {
         Dragger = null;     // Dragger is a class that allows logic components to be dragged. Setting it null prevents it from being dragged
         this.mainWindow = mainWindow;
-        mainWindow.MainGrid.Children.Insert(0, offWire); 
-        mainWindow.MainGrid.Children.Insert(0, onWire); 
-        mainWindow.MainGrid.Children.Insert(0, splineCollider);
+        this.startPoint = startPoint;
 
-        // Add events to splines
-        splineCollider.MouseDown += Spline_MouseDown;
-        splineCollider.MouseUp   += Gate_MouseUp;
-        offWire.MouseDown        += Spline_MouseDown;
-        offWire.MouseUp          += Gate_MouseUp;
-        this.startPoint           = startPoint;
-        offWire.Effect            = Effect;         // Gives drop shadow
+        SetupWire(splineCollider);
+        SetupWire(mainSpline);
+
+        void SetupWire(Path path)
+        {
+            mainWindow.MainGrid.Children.Insert(0, path);
+            path.MouseDown += Spline_MouseDown;
+            path.MouseUp += Gate_MouseUp;
+            path.Effect = Effect;
+        }
     }
     public void Remove()
     {
-        mainWindow.MainGrid.Children.Remove(offWire);
-        mainWindow.MainGrid.Children.Remove(onWire);
+        mainWindow.MainGrid.Children.Remove(mainSpline);
         mainWindow.MainGrid.Children.Remove(splineCollider);
     }
-
     public void SetPort(EPortType portType, IOPort ioPort) => connectedPorts.TryAdd(portType, ioPort);
-
     public void Draw(Point anchor, bool? signal = false)
     {
         // Anchor will be either the port position thats connected to the wire, or the mouse position
@@ -81,15 +78,14 @@ public partial class Wire : LogicComponent
         backwardsAlpha = Math.Min(backwardsAlpha, 1.5);
         backwardsAlpha = Math.Max(backwardsAlpha, 0.8);
         
-        double maxDistance = Lerp(16000, 500, backwardsAlpha);
-        double minDistance = Lerp(600, 20, backwardsAlpha);
-        mainWindow.DebugLabel.Content = backwardsAlpha;
-        double alpha = Math.Min(distance, maxDistance) / maxDistance;
-        double controlPointDistance = Lerp(minDistance, maxDistance / 2, alpha * alpha);
+        double maxDistance      = Lerp(16000, 500, backwardsAlpha);
+        double minDistance      = Lerp(600, 20, backwardsAlpha);
+        double alpha            = Math.Min(distance, maxDistance) / maxDistance;
+        double controlPointDist = Lerp(minDistance, maxDistance / 2, alpha * alpha);
 
         BezierSegment bezierSegment = new(
-            new Point(startPoint.X + controlPointDistance, startPoint.Y), // Control point 1
-            new Point(endPoint.X - controlPointDistance, endPoint.Y),     // Control point 2
+            new Point(startPoint.X + controlPointDist, startPoint.Y), // Control point 1
+            new Point(endPoint.X - controlPointDist, endPoint.Y),     // Control point 2
             endPoint,                                 
             isStroked: true
         );
@@ -101,14 +97,18 @@ public partial class Wire : LogicComponent
         pathFigure.Segments.Add(bezierSegment);
         pathGeometry.Figures.Add(pathFigure);
 
-        onWire.Visibility = offWire.Visibility = Visibility.Hidden;
-        
-        Path wire = signal == true ? onWire : offWire;
-        wire.Data = pathGeometry;
-        wire.Visibility = Visibility.Visible;
-
-        splineCollider.Data = pathGeometry;
+        mainSpline.Stroke     = signal == true ? onBrush : signal == false ? offBrush : errorBrush;
+        mainSpline.Visibility = Visibility.Visible;
+        mainSpline.Data       = pathGeometry;
+        splineCollider.Data   = pathGeometry;
     }
+    public override void Deselect()
+    {
+        // Return to shadow effect
+        base.Deselect();
+        mainSpline.Effect = Effect;
+    }
+
     private static double Lerp(double min, double max, double alpha) => min + (max - min) * Math.Max(0, Math.Min(alpha, 1));
     private static double CalculateDistance(Point p1, Point p2) => Math.Sqrt(Math.Pow(p2.X - p1.X, 2) + Math.Pow(p2.Y - p1.Y, 2));
     
@@ -116,12 +116,7 @@ public partial class Wire : LogicComponent
     {
         // Highlight effect
         Gate_MouseDown(sender, e);
-        offWire.Effect = Effect;
-    }
-    public override void Deselect()
-    {
-        // Return to shadow effect
-        base.Deselect();
-        offWire.Effect = Effect;
+        mainSpline.Effect = Effect;
+        splineCollider.Effect = Effect;
     }
 }
