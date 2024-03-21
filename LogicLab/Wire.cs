@@ -77,11 +77,14 @@ public partial class Wire : LogicComponent
         IOPort port = Output ?? Input;
         (Point start, Point end) localized = (port.PointFromScreen(startPoint), port.PointFromScreen(endPoint));
 
-        double backwardsAlpha = -localized.end.X / -localized.start.X;
+        bool isDraggingFromInput = Output == null && Input != null;
+
+        double backwardsAlpha = isDraggingFromInput ? -localized.start.X / -localized.end.X : -localized.end.X / -localized.start.X;
         backwardsAlpha = Math.Min(backwardsAlpha, 2.0);
         backwardsAlpha = Math.Max(backwardsAlpha, 0.0);
-        mainWindow.DebugLabel.Content = backwardsAlpha;
 
+        if (isDraggingFromInput)
+            backwardsAlpha = 2 - backwardsAlpha;
 
         double maxDistance      = Lerp(2000, 500, backwardsAlpha);
         double minDistance      = Lerp(100, 20, backwardsAlpha);
@@ -102,7 +105,11 @@ public partial class Wire : LogicComponent
         pathFigure.Segments.Add(bezierSegment);
         pathGeometry.Figures.Add(pathFigure);
 
-        mainSpline.Stroke     = signal == true ? onBrush : signal == false ? offBrush : errorBrush;
+        mainSpline.Stroke = signal == true 
+            ? onBrush 
+            : signal == false || isDraggingFromInput
+            ? offBrush 
+            : errorBrush;
         mainSpline.Visibility = Visibility.Visible;
         mainSpline.Data       = pathGeometry;
         splineCollider.Data   = pathGeometry;
