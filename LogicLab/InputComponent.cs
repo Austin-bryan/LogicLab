@@ -18,5 +18,6 @@ public abstract class InputComponent : LogicComponent
     {
         AddOutputPort(ComponentGrid);
         OutputPort.SetLeft(BackgroundRect.ActualWidth / 2 + 14);
+        
     }
 }
