@@ -87,7 +87,7 @@ public partial class LogicGate : LogicComponent
     {
         // Forward drag function to input and output ports
         InputPorts.ForEach(io => io.OnDrag());
-        OutputPort.OnDrag();
+        OutputPort?.OnDrag();
     }
 
     private void LogicComponent_Loaded(object sender, RoutedEventArgs e)

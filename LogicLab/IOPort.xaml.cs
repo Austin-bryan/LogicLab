@@ -51,9 +51,10 @@ public partial class IOPort : UserControl
 
     private void UpdateBackground(bool? signal)
     {
-        (owningComponent as LogicGate).BackgroundSprite.Fill =
-            signal == true ? new SolidColorBrush(Color.FromRgb(150, 150, 30))
-                           : new SolidColorBrush(Color.FromRgb(30, 30, 30));
+        if (owningComponent is LogicGate logicGate)
+            logicGate.BackgroundSprite.Fill =
+                signal == true ? new SolidColorBrush(Color.FromRgb(150, 150, 30))
+                               : new SolidColorBrush(Color.FromRgb(30, 30, 30));
     }
 
 

@@ -28,5 +28,6 @@
         <local:LogicGate HorizontalAlignment="Left" Margin="181,420,0,0" VerticalAlignment="Top"/>
         <local:LogicGate HorizontalAlignment="Left" Margin="305,420,0,0" VerticalAlignment="Top"/>
         <local:LogicGate HorizontalAlignment="Left" Margin="423,422,0,0" VerticalAlignment="Top"/>
+        <local:InputToggle HorizontalAlignment="Left" Margin="181,545,0,0" VerticalAlignment="Top"/>
     </Grid>
 </Window>

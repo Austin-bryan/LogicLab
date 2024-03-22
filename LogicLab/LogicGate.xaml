@@ -14,7 +14,7 @@
         <Rectangle x:Name="BackgroundSprite" HorizontalAlignment="Center" Height="50" Stroke="Black" VerticalAlignment="Top" Width="50" RadiusX="10" RadiusY="10" StrokeThickness="2" MouseDown="Gate_MouseDown" MouseMove="Gate_MouseMove" MouseUp="Gate_MouseUp" Fill="#FF1E1E1E"/>
         <Rectangle x:Name="Sprite" HorizontalAlignment="Left" Height="30" VerticalAlignment="Center" Width="30" StrokeThickness="0" MouseDown="Gate_MouseDown" MouseMove="Gate_MouseMove" MouseUp="Gate_MouseUp" RenderOptions.EdgeMode="Aliased" RenderOptions.BitmapScalingMode="HighQuality" Margin="24,0,0,0">
             <Rectangle.Fill>
-                <ImageBrush ImageSource="/AND Gate.png"/>
+                <ImageBrush ImageSource="/Buffer Gate.png"/>
             </Rectangle.Fill>
             <!--<Rectangle.Effect>
                 <DropShadowEffect ShadowDepth="0" BlurRadius="2" Color="Cyan" Opacity="0.75"/>
