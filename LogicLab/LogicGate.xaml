@@ -15,18 +15,16 @@
             <Rectangle.ContextMenu>
             <ContextMenu>
                 <MenuItem Header="Align">
-                        <MenuItem Header="Left" />
-                        <MenuItem Header="Top" />
-                        <MenuItem Header="Right" />
-                        <MenuItem Header="Bottom" />
-                        <MenuItem Header="Center" />
+                        <MenuItem Header="Left" Click="AlignLeft"/>
+                        <MenuItem Header="Top" Click="AlignTop"/>
+                        <MenuItem Header="Right" Click="AlignRight"/>
+                        <MenuItem Header="Bottom" Click="AlignBottom"/>
+                        <MenuItem Header="Center" Click="AlignCenter"/>
                     </MenuItem>
                     <MenuItem Header="Rotate">
                         <MenuItem Header="Clockwise" />
                         <MenuItem Header="180" />
                         <MenuItem Header="Counter Clockwise" />
-                        <MenuItem Header="Bottom" />
-                        <MenuItem Header="Center" />
                     </MenuItem>
                 </ContextMenu>
             </Rectangle.ContextMenu>
@@ -38,7 +36,22 @@
             <!--<Rectangle.Effect>
                 <DropShadowEffect ShadowDepth="0" BlurRadius="2" Color="Cyan" Opacity="0.75"/>
             </Rectangle.Effect>-->
-
+            <Rectangle.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Align">
+                        <MenuItem Header="Left" Click="AlignLeft"/>
+                        <MenuItem Header="Top" Click="AlignTop"/>
+                        <MenuItem Header="Right" Click="AlignRight"/>
+                        <MenuItem Header="Bottom" Click="AlignBottom"/>
+                        <MenuItem Header="Center" Click="AlignCenter"/>
+                    </MenuItem>
+                    <MenuItem Header="Rotate">
+                        <MenuItem Header="Clockwise" />
+                        <MenuItem Header="180" />
+                        <MenuItem Header="Counter Clockwise" />
+                    </MenuItem>
+                </ContextMenu>
+            </Rectangle.ContextMenu>
         </Rectangle>
         <StackPanel x:Name="InputPanel" Margin="-11,0,57,0" VerticalAlignment="Center"/>
         <StackPanel x:Name="OutputPanel" Margin="54,0,2,0" VerticalAlignment="Center"/>

@@ -64,7 +64,7 @@ public static class ComponentSelector
         selectedComponents.ForEach(lc => lc.SetLeft(min));
         selectedComponents.ForEach(lc => lc.OnDrag(null));
     }
-    public static void AlignUp()
+    public static void AlignTop()
     {
         double min = selectedComponents.Min(lc => lc.Margin.Top);
         selectedComponents.ForEach(lc => lc.SetTop(min));
@@ -78,7 +78,7 @@ public static class ComponentSelector
         selectedComponents.ForEach(lc => lc.OnDrag(null));
     }
 
-    public static void AlignDown()
+    public static void AlignBottom()
     {
         double max = selectedComponents.Max(lc => lc.Margin.Top);
         selectedComponents.ForEach(lc => lc.SetTop(max));

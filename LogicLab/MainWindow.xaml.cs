@@ -40,9 +40,9 @@ public partial class MainWindow : Window
         switch (e.Key)
         {
         case Key.A: ComponentSelector.AlignLeft();   break;
-        case Key.W: ComponentSelector.AlignUp();     break;
+        case Key.W: ComponentSelector.AlignTop();     break;
         case Key.D: ComponentSelector.AlignRight();  break;
-        case Key.S: ComponentSelector.AlignDown();   break;
+        case Key.S: ComponentSelector.AlignBottom();   break;
         case Key.C: ComponentSelector.AlignCenter(); break;
         case Key.M: ComponentSelector.AlignMiddle(); break;
         default: break;

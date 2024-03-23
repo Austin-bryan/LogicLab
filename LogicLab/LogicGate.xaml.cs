@@ -77,6 +77,12 @@ public partial class LogicGate : LogicComponent
     {
         OutputPort.Signal = OutputSignal;
     }
+
+    private void AlignRight(object sender, RoutedEventArgs e) => ComponentSelector.AlignRight();
+    private void AlignTop(object sender, RoutedEventArgs e) => ComponentSelector.AlignTop();
+    private void AlignLeft(object sender, RoutedEventArgs e) => ComponentSelector.AlignLeft();
+    private void AlignCenter(object sender, RoutedEventArgs e) => ComponentSelector.AlignCenter();
+    private void AlignBottom(object sender, RoutedEventArgs e) => ComponentSelector.AlignBottom();
     private void ShowImage()
     {
         // Loads the correct sprite. Will eventually need to show negative gates
