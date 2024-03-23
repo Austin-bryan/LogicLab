@@ -37,6 +37,7 @@ public partial class LogicComponent
             // We have to convert to screen space from the local space to be able to properly drag
             Point mousePos = logicComponent.PointToScreen(e.GetPosition(logicComponent));
             Vector delta   = mousePos - dragStart;
+            logicComponent.MainWindow().DebugLabel.Content = delta;
             dragStart      = mousePos;
             Margin         = new(Margin.Left + delta.X, Margin.Top + delta.Y, Margin.Right, Margin.Bottom);
 

@@ -17,6 +17,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="bin\Debug\net8.0-windows\Images\AND Gate.png" />
+    <Content Include="bin\Debug\net8.0-windows\Images\Buffer Gate.png" />
+    <Content Include="bin\Debug\net8.0-windows\Images\Input.png" />
+    <Content Include="bin\Debug\net8.0-windows\Images\OR Gate.png" />
+    <Content Include="bin\Debug\net8.0-windows\Images\Output.png" />
+    <Content Include="bin\Debug\net8.0-windows\Images\XOR Gate.png" />
+    <Content Include="bin\Debug\net8.0-windows\Images\XOR.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
 

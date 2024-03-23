@@ -138,6 +138,10 @@ public partial class IOPort : UserControl
     {
         if (activeWire == null)
             return;
+        if (portType == EPortType.Output && activeWire.Output != null)
+            return;
+        if (portType == EPortType.Input && activeWire.Input != null)
+            return;
 
         ShowSprite(false);
 
