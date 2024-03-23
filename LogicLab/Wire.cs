@@ -37,12 +37,18 @@ public partial class Wire : LogicComponent
     };
     public override void ShowSignal(bool? signal)
     {
-        ColorAnimation colorAnim = new(signal == true ? onBrush.Color : signal == false ? offBrush.Color : errorBrush.Color, TimeSpan.FromSeconds(0.25));
+        Color color = signal == true
+            ? onBrush.Color
+            : signal == false
+            ? Color.FromRgb(200, 200, 200)
+            : Color.FromRgb(200, 50, 50);
+
+        ColorAnimation colorAnim = new(color, TimeSpan.FromSeconds(0.25));
         mainSpline.Stroke.BeginAnimation(SolidColorBrush.ColorProperty, colorAnim);
     }
     public Wire(MainWindow mainWindow, Point startPoint)
     {
-        Dragger = null;     // Dragger is a class that allows logic components to be dragged. Setting it null prevents it from being dragged
+        Dragger = null;     // Disables dragging for wires
         this.mainWindow = mainWindow;
         this.startPoint = startPoint;
 

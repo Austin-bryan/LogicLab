@@ -30,15 +30,14 @@ public static class ComponentSelector
 
     static ComponentSelector()
     {
-        // Create the selection rectangle
         selectionBox = new Rectangle
         {
-            Fill                = new SolidColorBrush(Color.FromArgb(50, 0, 0, 255)), // Transparent blue fill
-            Stroke              = Brushes.LightBlue, // Light blue border
-            StrokeThickness     = 1,
+            Fill                = new SolidColorBrush(Color.FromArgb(50, 0, 0, 255)),
+            Stroke              = Brushes.LightBlue, 
             Visibility          = Visibility.Collapsed,
+            StrokeThickness     = 1,
+            VerticalAlignment   = VerticalAlignment.Top,
             HorizontalAlignment = HorizontalAlignment.Left,
-            VerticalAlignment   = VerticalAlignment.Top
         };
     }
 

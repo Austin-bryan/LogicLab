@@ -41,7 +41,6 @@ public partial class IOPort : UserControl
             foreach (var wire in wires)
                 if (wire.Output == this)
                     wire.ShowSignal(signal);
-                    //wire.Draw(new(0, 0), signal);
         }
     }
 
@@ -139,10 +138,8 @@ public partial class IOPort : UserControl
 
         ShowSprite(false);
 
-        // If plugged into an input port, remove all wires already connected there.
         if (portType == EPortType.Input)
             RemoveWires(this);
-        // Enforce 1 wire per input
         else   
         {
             RemoveWires(activeWire.Input);
@@ -156,6 +153,9 @@ public partial class IOPort : UserControl
 
         if (activeWire.Output != null)
             Signal = activeWire.Output.Signal;
+        if (activeWire.Input != null)
+            activeWire.Input.Signal = Signal;
+
         owningComponent.OnInputChange(this);
         activeWire.Draw(WireConnection, Signal);
 
@@ -170,7 +170,6 @@ public partial class IOPort : UserControl
     {
         if (portType != EPortType.Input)
             return;
-
         if (wires.Count == 0)
             Sprite.BeginAnimation(OpacityProperty,
                 new DoubleAnimation(fromValue: visible ? 0 : 1,
@@ -205,9 +204,6 @@ public partial class IOPort : UserControl
         this.MainWindow().DebugLabel.Content = "";
 
         if (portType == EPortType.Output)
-        {
-            //Margin = new Thickness(ActualWidth - ActualWidth / 3, 0, 0, 0);
             Sprite.Margin = new Thickness(OverlapDetector.Width / 6, OverlapDetector.Height / 6, 0, 0);
-        }
     }
 }
