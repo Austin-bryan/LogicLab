@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 
 namespace LogicLab;
@@ -34,7 +35,11 @@ public partial class Wire : LogicComponent
         Stroke = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0)),
         StrokeThickness = 15
     };
-    
+    public override void ShowSignal(bool? signal)
+    {
+        ColorAnimation colorAnim = new(signal == true ? onBrush.Color : signal == false ? offBrush.Color : errorBrush.Color, TimeSpan.FromSeconds(0.25));
+        mainSpline.Stroke.BeginAnimation(SolidColorBrush.ColorProperty, colorAnim);
+    }
     public Wire(MainWindow mainWindow, Point startPoint)
     {
         Dragger = null;     // Dragger is a class that allows logic components to be dragged. Setting it null prevents it from being dragged

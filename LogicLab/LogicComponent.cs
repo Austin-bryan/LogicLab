@@ -6,6 +6,7 @@ using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Effects;
+using System.Windows.Shapes;
 
 namespace LogicLab;
 
@@ -33,6 +34,7 @@ public abstract partial class LogicComponent : UserControl
         Deselect();
     }
 
+    public abstract void ShowSignal(bool? signal);
     public void Select(bool shiftSelect)
     {
         if (IsSelected)

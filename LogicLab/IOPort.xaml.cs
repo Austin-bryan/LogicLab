@@ -35,25 +35,19 @@ public partial class IOPort : UserControl
         {
             await Task.Delay(10);
             foreach (var port in ConnectedPorts)
-            {
                 if (port.portType == EPortType.Input)
-                {
                     port.Signal = signal;
-                    await Task.Delay(100); // Example asynchronous operation
-                }
-            }
 
             foreach (var wire in wires)
                 if (wire.Output == this)
-                    wire.Draw(new(0, 0), signal);
+                    wire.ShowSignal(signal);
+                    //wire.Draw(new(0, 0), signal);
         }
     }
 
     private void UpdateBackground(bool? signal)
     {
-        (owningComponent as LogicGate).BackgroundSprite.Fill =
-            signal == true ? new SolidColorBrush(Color.FromRgb(150, 150, 30))
-                           : new SolidColorBrush(Color.FromRgb(30, 30, 30));
+        owningComponent.ShowSignal(signal);
     }
 
 

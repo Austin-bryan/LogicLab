@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 
 namespace LogicLab;
@@ -82,6 +83,11 @@ public partial class LogicGate : LogicComponent
         // Loads the correct sprite. Will eventually need to show negative gates
         BitmapImage bitmapImage = new(new Uri($"Images/{GateType} Gate.png", UriKind.Relative));
         Sprite.Fill = new ImageBrush(bitmapImage);
+    }
+    public override void ShowSignal(bool? signal)
+    {
+        Color targetColor = signal == true ? Color.FromRgb(150, 150, 30) : Color.FromRgb(30, 30, 30);
+        BackgroundSprite.Fill.BeginAnimation(SolidColorBrush.ColorProperty, new ColorAnimation(targetColor, TimeSpan.FromSeconds(0.25)));
     }
     public override void OnDrag(MouseEventArgs e)
     {
