@@ -129,4 +129,13 @@ public partial class LogicGate : LogicComponent
     {
 
     }
+
+    private void Background_MouseMove(object sender, MouseEventArgs e)
+    {
+        Gate_MouseMove(sender, e);
+
+        if (e.GetPosition(this).Y > ActualHeight - 20)
+            Cursor = Cursors.SizeNS;
+        else Cursor = Cursors.SizeAll;
+    }
 }
