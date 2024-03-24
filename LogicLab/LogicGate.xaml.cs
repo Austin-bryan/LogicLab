@@ -1,7 +1,9 @@
-﻿using System.Windows;
+﻿using System.Collections.Immutable;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 
 namespace LogicLab;
@@ -19,38 +21,42 @@ public partial class LogicGate : LogicComponent
     private int inputCount = 2;                             // # of inputs, default is 2, but NOT and BUFFER have a min and max of 1
     private double startHeight;                             // Logic gates grow based on input size, this caches the startsize
     private IOPort outputPort;
+    private bool canResize;
+    private bool isResizing;
+    private Point startResize;
+    private bool mouseDown;
 
     public LogicGate()
     {
         InitializeComponent();
         // Dont worry about this too much, this is temp. Just using this to populate the world with different gate types.
         thisWillBeDeletedLater = [
-            ELogicGate.Buffer,
-            ELogicGate.AND,
-            ELogicGate.OR,
-            ELogicGate.XOR,
-            ELogicGate.Buffer,
-            ELogicGate.AND,
-            ELogicGate.OR,
-            ELogicGate.XOR,
-            ELogicGate.Buffer,
-            ELogicGate.AND,
-            ELogicGate.OR,
-            ELogicGate.XOR,
-            ELogicGate.Buffer,
-            ELogicGate.AND,
-            ELogicGate.OR,
-            ELogicGate.XOR,
-            ELogicGate.Buffer,
-            ELogicGate.AND,
-            ELogicGate.OR,
-            ELogicGate.XOR];
+            ELogicGate.Buffer, ELogicGate.AND, ELogicGate.OR, ELogicGate.XOR,
+            ELogicGate.Buffer, ELogicGate.AND, ELogicGate.OR, ELogicGate.XOR,
+            ELogicGate.Buffer, ELogicGate.AND, ELogicGate.OR, ELogicGate.XOR,
+            ELogicGate.Buffer, ELogicGate.AND, ELogicGate.OR, ELogicGate.XOR,
+            ELogicGate.Buffer, ELogicGate.AND, ELogicGate.OR, ELogicGate.XOR];
     }
 
     public void Negate()
     {
         GateType = !GateType;
         NegateDot.Visibility = GateType.IsNegative() ? Visibility.Visible : Visibility.Hidden;
+    }
+    public override void OnInputChange(IOPort changedPort)
+    {
+        OutputPort.Signal = OutputSignal;
+    }
+    public override void ShowSignal(bool? signal)
+    {
+        Color targetColor = signal == true ? Color.FromRgb(150, 150, 30) : Color.FromRgb(30, 30, 30);
+        BackgroundSprite.Fill.BeginAnimation(SolidColorBrush.ColorProperty, new ColorAnimation(targetColor, TimeSpan.FromSeconds(0.25)));
+    }
+    public override void OnDrag(MouseEventArgs e)
+    {
+        // Forward drag function to input and output ports
+        InputPorts.ForEach(io => io.OnDrag());
+        OutputPort.OnDrag();
     }
 
     // Forward events to Logic Component to get highlight and drop shadow features.
@@ -73,23 +79,90 @@ public partial class LogicGate : LogicComponent
         for (int i = 0; i < inputCount; i++)
             AddInputPort(InputPanel);
     }
-    public override void OnInputChange(IOPort changedPort)
-    {
-        OutputPort.Signal = OutputSignal;
-    }
     private void ShowImage()
     {
-        // Loads the correct sprite. Will eventually need to show negative gates
         BitmapImage bitmapImage = new(new Uri($"Images/{GateType} Gate.png", UriKind.Relative));
         Sprite.Fill = new ImageBrush(bitmapImage);
     }
-    public override void OnDrag(MouseEventArgs e)
+    private void Gate_MouseMove(object sender, System.Windows.Input.MouseButtonEventArgs e)
     {
-        // Forward drag function to input and output ports
-        InputPorts.ForEach(io => io.OnDrag());
-        OutputPort?.OnDrag();
-    }
 
+    }
+    
+    private async void Background_MouseMove(object sender, MouseEventArgs e)
+    {
+        if (isResizing)
+        {
+            Vector delta = e.GetPosition(this) - startResize;
+
+            double deltaY = Math.Abs(delta.Y);
+            while (deltaY > InputPort.ActualHeight) 
+            {
+                if (delta.Y > 0)
+                {
+                    AddInputPort(InputPanel);
+                    BackgroundSprite.Height += InputPort.ActualHeight;  
+                }
+                else if (TryRemoveEmptyInputPort())
+                {
+                    BackgroundSprite.Height -= InputPort.ActualHeight;
+                    this.MainWindow().DebugLabel.Content += "Refresh!";
+                    //InputPanel.Children.ToList().OfType<IOPort>().ToList().ForEach(iPort => iPort.RefreshWire());
+                }
+
+                deltaY -= Math.Sign(deltaY) * InputPort.ActualHeight; 
+                startResize = e.GetPosition(this);
+            }
+        }
+        else if (e.GetPosition(this).Y > ActualHeight - 20)
+        {
+            Cursor = Cursors.SizeNS;
+            canResize = true;
+        }
+        else
+        {
+            Cursor = Cursors.SizeAll;
+            canResize = false;
+            Gate_MouseMove(sender, e);
+        }
+    }
+    private void Background_MouseDown(object sender, MouseButtonEventArgs e)
+    {
+        mouseDown = true;
+        if (!canResize)
+            Gate_MouseDown(sender, e);
+        else
+        {
+            isResizing = true;
+            startResize = e.GetPosition(this);
+        }
+    }
+    private void Background_MouseUp(object sender, MouseButtonEventArgs e)
+    {
+        if (!mouseDown)
+            return;
+        mouseDown = false;
+        if (isResizing)
+             isResizing = false;
+        else Gate_MouseUp(sender, e);
+    }
+    private bool TryRemoveEmptyInputPort()
+    {
+        var ports = InputPanel.Children.ToList()
+                                       .OfType<IOPort>()
+                                       .ToImmutableList()
+                                       .Reverse();
+        foreach (var inputPort in ports)
+        {
+            if (inputPort.Connectionless)
+            {
+                InputPanel.Children.Remove(inputPort);
+                return true;
+            }
+        }
+        return false;
+    }
+    
     private void LogicComponent_Loaded(object sender, RoutedEventArgs e)
     {
         startHeight = ActualHeight;
@@ -101,8 +174,6 @@ public partial class LogicGate : LogicComponent
         SetInputAmount(2 + (int)Math.Floor(count / 4.0));
         count++;
         AddOutputPort(OutputPanel);
-        //OutputPort.SetTop(ActualHeight / 2 - OutputPort.ActualHeight / 2);
-        //OutputPort.SetLeft(BackgroundSprite.Width);
 
         ShowImage();
         Random random = new();
@@ -117,10 +188,8 @@ public partial class LogicGate : LogicComponent
         }
         if (GateType == ELogicGate.Buffer)
             OutputPort.Signal = false;
-    }
 
-    private void Gate_MouseMove(object sender, System.Windows.Input.MouseButtonEventArgs e)
-    {
-
+        this.MainGrid().MouseMove += Background_MouseMove;
+        this.MainGrid().MouseUp += Background_MouseUp;
     }
 }

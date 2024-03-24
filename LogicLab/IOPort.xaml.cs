@@ -22,10 +22,11 @@ public partial class IOPort : UserControl
         set
         {
             _signal = value;
-            UpdateBackground(value);
+            owningComponent.ShowSignal(value);
             ProcessSignalAsync(value);
         }
     }
+    public bool Connectionless => wires.Count == 0;
 
     private async void ProcessSignalAsync(bool? signal)
     {
@@ -35,19 +36,15 @@ public partial class IOPort : UserControl
         {
             await Task.Delay(10);
             foreach (var port in ConnectedPorts)
-            {
                 if (port.portType == EPortType.Input)
-                {
                     port.Signal = signal;
-                    await Task.Delay(100); // Example asynchronous operation
-                }
-            }
 
             foreach (var wire in wires)
                 if (wire.Output == this)
-                    wire.Draw(new(0, 0), signal);
+                    wire.ShowSignal(signal);
         }
     }
+    private void ShowSignal(bool? signal) => owningComponent.ShowSignal(signal);
 
     private void UpdateBackground(bool? signal)
     {
@@ -84,9 +81,9 @@ public partial class IOPort : UserControl
         InitializeComponent();
 
         this.owningComponent = owningComponent;
-        idleColor     = new SolidColorBrush(Color.FromRgb(9, 180, 255));
-        hoverColor    = new SolidColorBrush(Color.FromRgb(59, 230, 255));
-        this.portType = portType;
+        idleColor            = new SolidColorBrush(Color.FromRgb(9, 180, 255));
+        hoverColor           = new SolidColorBrush(Color.FromRgb(59, 230, 255));
+        this.portType        = portType;
 
         BitmapImage bitmapImage = new(new Uri($"Images/{this.portType}.png", UriKind.Relative));
         ImageBrush imageBrush = new(bitmapImage);
@@ -106,7 +103,6 @@ public partial class IOPort : UserControl
     }
     public void OnDrag()
     {
-        // Redraw all wires
         // TODO:: This causes the redraw for both output and input ports, when only one is needed
         // What needs to happen is the port should find out if the port being dragged is input or output
         // From there, only that port type is allowed to redraw
@@ -139,13 +135,15 @@ public partial class IOPort : UserControl
     {
         if (activeWire == null)
             return;
+        if (portType == EPortType.Output && activeWire.Output != null)
+            return;
+        if (portType == EPortType.Input && activeWire.Input != null)
+            return;
 
         ShowSprite(false);
 
-        // If plugged into an input port, remove all wires already connected there.
         if (portType == EPortType.Input)
             RemoveWires(this);
-        // Enforce 1 wire per input
         else   
         {
             RemoveWires(activeWire.Input);
@@ -159,6 +157,9 @@ public partial class IOPort : UserControl
 
         if (activeWire.Output != null)
             Signal = activeWire.Output.Signal;
+        if (activeWire.Input != null)
+            activeWire.Input.Signal = Signal;
+
         owningComponent.OnInputChange(this);
         activeWire.Draw(WireConnection, Signal);
 
@@ -168,12 +169,12 @@ public partial class IOPort : UserControl
             port.wires.Clear();
         }
     }
+    public void RefreshWire() => wires.ForEach(w => w.Draw(WireConnection));
 
     private void ShowSprite(bool visible)
     {
         if (portType != EPortType.Input)
             return;
-
         if (wires.Count == 0)
             Sprite.BeginAnimation(OpacityProperty,
                 new DoubleAnimation(fromValue: visible ? 0 : 1,
@@ -205,12 +206,7 @@ public partial class IOPort : UserControl
     }
     private void Grid_Loaded(object sender, RoutedEventArgs e)
     {
-        this.MainWindow().DebugLabel.Content = "";
-
         if (portType == EPortType.Output)
-        {
-            //Margin = new Thickness(ActualWidth - ActualWidth / 3, 0, 0, 0);
             Sprite.Margin = new Thickness(OverlapDetector.Width / 6, OverlapDetector.Height / 6, 0, 0);
-        }
     }
 }

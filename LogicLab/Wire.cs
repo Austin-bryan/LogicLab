@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 
 namespace LogicLab;
@@ -20,7 +21,6 @@ public partial class Wire : LogicComponent
     private readonly MainWindow mainWindow;
 
     // The visual for the wire
-
     private readonly SolidColorBrush offBrush   = new(Color.FromRgb(200, 200, 200)),
                                      onBrush    = new(Color.FromRgb(200, 200, 0)),
                                      errorBrush = new(Color.FromRgb(200, 50, 50));
@@ -34,10 +34,10 @@ public partial class Wire : LogicComponent
         Stroke = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0)),
         StrokeThickness = 15
     };
-    
+
     public Wire(MainWindow mainWindow, Point startPoint)
     {
-        Dragger = null;     // Dragger is a class that allows logic components to be dragged. Setting it null prevents it from being dragged
+        Dragger = null;                  // Disables dragging for wires
         this.mainWindow = mainWindow;
         this.startPoint = startPoint;
 
@@ -52,6 +52,7 @@ public partial class Wire : LogicComponent
             path.Effect = Effect;
         }
     }
+
     public void Remove()
     {
         mainWindow.MainGrid.Children.Remove(mainSpline);
@@ -63,16 +64,11 @@ public partial class Wire : LogicComponent
         // Anchor will be either the port position thats connected to the wire, or the mouse position
         const int offset = 25;
 
-        // If a port is null, use the mouse position for the end of a spline. At least one port will be non null.
-        // If neither are null, the user has connected this wire to two gates. 
         Point startPoint = new(Output?.WireConnection.X ?? anchor.X, 
                                Output?.WireConnection.Y - 3 * Output?.Sprite.ActualHeight / 4 ?? anchor.Y - offset);
         Point endPoint = new(Input?.WireConnection.X ?? anchor.X, Input?.WireConnection.Y - offset ?? anchor.Y - offset);
 
-        // This sets it so the wire is more bendy as the input and output get further away, improving readability
         double distance = CalculateDistance(startPoint, endPoint);
-
-        // This changes the min and max distance if the wire is going backwards to make it easier to see
 
         IOPort port = Output ?? Input;
         (Point start, Point end) localized = (port.PointFromScreen(startPoint), port.PointFromScreen(endPoint));
@@ -113,6 +109,18 @@ public partial class Wire : LogicComponent
         mainSpline.Visibility = Visibility.Visible;
         mainSpline.Data       = pathGeometry;
         splineCollider.Data   = pathGeometry;
+    }
+    
+    public override void ShowSignal(bool? signal)
+    {
+        Color color = signal == true
+            ? onBrush.Color
+            : signal == false
+            ? Color.FromRgb(200, 200, 200)
+            : Color.FromRgb(200, 50, 50);
+
+        ColorAnimation colorAnim = new(color, TimeSpan.FromSeconds(0.25));
+        mainSpline.Stroke.BeginAnimation(SolidColorBrush.ColorProperty, colorAnim);
     }
     public override void Deselect()
     {
