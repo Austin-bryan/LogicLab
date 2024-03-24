@@ -8,7 +8,7 @@ public abstract class OutputComponent : LogicComponent
 {
     protected abstract Grid ComponentGrid { get; }
     protected abstract Rectangle BackgroundRect { get; }
-    public abstract void ShowSignal(bool? signal);
+    //public abstract void ShowSignal(bool? signal);
     protected OutputComponent() : base()
     {
 

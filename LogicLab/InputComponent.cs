@@ -8,6 +8,7 @@ public abstract class InputComponent : LogicComponent
 {
     protected abstract Grid ComponentGrid { get; }
     protected abstract Rectangle BackgroundRect { get; }
+    public override void ShowSignal(bool? signal) { }
     protected InputComponent() : base()
     {
 

@@ -3,6 +3,8 @@ using System.Windows.Shapes;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
+using System.Windows.Media.Animation;
+using System.Windows.Media;
 namespace LogicLab;
 
 public partial class InputToggle
@@ -42,9 +44,17 @@ public partial class InputToggle
 
         Gate_MouseDown(sender, e);
     }
+
+    private void ChangeColor(bool? signal)
+    {
+        Color targetColor = signal == true ? Color.FromRgb(150, 150, 30) : Color.FromRgb(30, 30, 30);
+        BackgroundSprite.Fill.BeginAnimation(SolidColorBrush.ColorProperty, new ColorAnimation(targetColor, TimeSpan.FromSeconds(0.25)));
+    }
+
     private void Toggle_MouseUp(object sender, MouseButtonEventArgs e)
     {
         if (ShouldToggle) OutputPort.Signal = !OutputPort.Signal;
+        ChangeColor(OutputPort.Signal);
 
         Gate_MouseUp(sender, e);
     }
