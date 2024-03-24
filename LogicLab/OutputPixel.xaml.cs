@@ -9,6 +9,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -25,5 +26,17 @@ public partial class OutputPixel
     protected override void Grid_Loaded(object sender, RoutedEventArgs e)
     {
         OnLoaded();
+    }
+    public override void ShowSignal(bool? signal)
+    {
+        Color targetColor = signal == true ? Color.FromRgb(150, 150, 30) : Color.FromRgb(30, 30, 30);
+        BackgroundSprite.Fill.BeginAnimation(SolidColorBrush.ColorProperty, new ColorAnimation(targetColor, TimeSpan.FromSeconds(0.25)));
+    }
+    private void InputSignalChanged()
+    {
+        if (InputPort.Signal == true)
+        {
+            ShowSignal(InputPort.Signal);
+        }
     }
 }

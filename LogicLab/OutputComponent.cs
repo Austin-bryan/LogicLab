@@ -8,6 +8,7 @@ public abstract class OutputComponent : LogicComponent
 {
     protected abstract Grid ComponentGrid { get; }
     protected abstract Rectangle BackgroundRect { get; }
+    public abstract void ShowSignal(bool? signal);
     protected OutputComponent() : base()
     {
 
@@ -15,6 +16,8 @@ public abstract class OutputComponent : LogicComponent
     protected void OnLoaded()
     {
         AddInputPort(ComponentGrid);
-        InputPort.SetRight(BackgroundRect.ActualWidth / 2 + 14);
+        InputPort.SetLeft(/*-BackgroundRect.ActualWidth / 2*/ - 26);
+        InputPort.SetTop(BackgroundRect.ActualHeight / 2 - 8);
     }
+    
 }

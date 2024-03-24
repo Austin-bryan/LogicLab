@@ -25,6 +25,7 @@ public partial class InputToggle
     private void Background_MouseDown(object sender, MouseButtonEventArgs e)
     {
         Gate_MouseDown(sender, e);
+        //TODO: make wire update position when moves
     }
 
     private void Toggle_MouseDown(object sender, MouseButtonEventArgs e)
