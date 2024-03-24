@@ -16,10 +16,10 @@ public abstract partial class LogicComponent : UserControl
     private bool IsSelected => ComponentSelector.IsSelected(this);
 
     protected ComponentDragger? Dragger;
+    protected IOPort InputPort                 => InputPorts[0];
+    protected IOPort OutputPort                => outputPort;
+    protected List<bool?> InputSignals         => InputPorts.Select(ip => ip.Signal).ToList();
     protected ImmutableList<IOPort> InputPorts => inputPorts.ToImmutableList();
-    protected IOPort OutputPort => outputPort;
-    protected IOPort InputPort => InputPorts[0];
-    protected List<bool?> InputSignals => InputPorts.Select(ip => ip.Signal).ToList();
 
     private readonly List<IOPort> inputPorts = [];
     private IOPort outputPort;

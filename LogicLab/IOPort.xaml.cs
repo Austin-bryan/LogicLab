@@ -22,10 +22,11 @@ public partial class IOPort : UserControl
         set
         {
             _signal = value;
-            UpdateBackground(value);
+            owningComponent.ShowSignal(value);
             ProcessSignalAsync(value);
         }
     }
+    public bool Connectionless => wires.Count == 0;
 
     private async void ProcessSignalAsync(bool? signal)
     {
@@ -43,12 +44,7 @@ public partial class IOPort : UserControl
                     wire.ShowSignal(signal);
         }
     }
-
-    private void UpdateBackground(bool? signal)
-    {
-        owningComponent.ShowSignal(signal);
-    }
-
+    private void ShowSignal(bool? signal) => owningComponent.ShowSignal(signal);
 
     public ImmutableList<IOPort> ConnectedPorts
     {
@@ -76,9 +72,9 @@ public partial class IOPort : UserControl
         InitializeComponent();
 
         this.owningComponent = owningComponent;
-        idleColor     = new SolidColorBrush(Color.FromRgb(9, 180, 255));
-        hoverColor    = new SolidColorBrush(Color.FromRgb(59, 230, 255));
-        this.portType = portType;
+        idleColor            = new SolidColorBrush(Color.FromRgb(9, 180, 255));
+        hoverColor           = new SolidColorBrush(Color.FromRgb(59, 230, 255));
+        this.portType        = portType;
 
         BitmapImage bitmapImage = new(new Uri($"Images/{this.portType}.png", UriKind.Relative));
         ImageBrush imageBrush = new(bitmapImage);
@@ -98,7 +94,6 @@ public partial class IOPort : UserControl
     }
     public void OnDrag()
     {
-        // Redraw all wires
         // TODO:: This causes the redraw for both output and input ports, when only one is needed
         // What needs to happen is the port should find out if the port being dragged is input or output
         // From there, only that port type is allowed to redraw
@@ -165,6 +160,7 @@ public partial class IOPort : UserControl
             port.wires.Clear();
         }
     }
+    public void RefreshWire() => wires.ForEach(w => w.Draw(WireConnection));
 
     private void ShowSprite(bool visible)
     {
@@ -201,8 +197,6 @@ public partial class IOPort : UserControl
     }
     private void Grid_Loaded(object sender, RoutedEventArgs e)
     {
-        this.MainWindow().DebugLabel.Content = "";
-
         if (portType == EPortType.Output)
             Sprite.Margin = new Thickness(OverlapDetector.Width / 6, OverlapDetector.Height / 6, 0, 0);
     }

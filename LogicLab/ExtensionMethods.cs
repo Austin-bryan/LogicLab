@@ -9,6 +9,14 @@ public static class ExtensionMethods
 
     public static Label DebugLabel(this UserControl userControl) => userControl.MainWindow().DebugLabel;
     public static Grid MainGrid(this UserControl userControl) => userControl.MainWindow().MainGrid;
+    public static List<UIElement> ToList(this UIElementCollection uec)
+    {
+        List<UIElement> list = [];
+
+        foreach (UIElement element in uec)
+            list.Add(element);
+        return list;
+    }
 
     public static void SetLeft   (this Control control, double x) => control.Margin = new Thickness(x, control.Margin.Top, control.Margin.Right, control.Margin.Bottom);
     public static void SetTop    (this Control control, double x) => control.Margin = new Thickness(control.Margin.Left, x, control.Margin.Right, control.Margin.Bottom);
