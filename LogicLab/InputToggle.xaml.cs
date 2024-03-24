@@ -3,7 +3,6 @@ using System.Windows.Shapes;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
-
 namespace LogicLab;
 
 public partial class InputToggle

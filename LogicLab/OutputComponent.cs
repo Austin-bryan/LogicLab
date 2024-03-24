@@ -4,17 +4,17 @@ using System.Windows;
 using System.Windows.Input;
 
 namespace LogicLab;
-public abstract class InputComponent : LogicComponent
+public abstract class OutputComponent : LogicComponent
 {
     protected abstract Grid ComponentGrid { get; }
     protected abstract Rectangle BackgroundRect { get; }
-    protected InputComponent() : base()
+    protected OutputComponent() : base()
     {
 
     }
     protected void OnLoaded()
     {
-        AddOutputPort(ComponentGrid);
-        OutputPort.SetLeft(BackgroundRect.ActualWidth / 2 + 14);
+        AddInputPort(ComponentGrid);
+        InputPort.SetRight(BackgroundRect.ActualWidth / 2 + 14);
     }
 }
