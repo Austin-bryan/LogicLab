@@ -1,6 +1,8 @@
 ﻿using System.Windows;
 using System.Windows.Shapes;
 using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace LogicLab;
 
@@ -8,6 +10,8 @@ public partial class InputToggle
 {
     protected override Grid ComponentGrid => Grid;
     protected override Rectangle BackgroundRect => BackgroundSprite;
+
+    private bool ShouldToggle = false;
 
     public InputToggle()
     {
@@ -19,9 +23,29 @@ public partial class InputToggle
         OutputPort.Signal = false;
     }
 
-    private void Gate_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    private void Background_MouseDown(object sender, MouseButtonEventArgs e)
     {
-        //TODO: make this work and make it draggable
-        OutputPort.Signal = !OutputPort.Signal;
+        Gate_MouseDown(sender, e);
+    }
+
+    private void Toggle_MouseDown(object sender, MouseButtonEventArgs e)
+    {
+        ShouldToggle = true;
+        DispatcherTimer timer = new();
+        timer.Interval = new TimeSpan(0, 0, 0, 0, 200);//delays for 2 milliseconds
+        timer.Start();
+        timer.Tick += (sender, args) =>
+        {
+            timer.Stop();
+            ShouldToggle = false;
+        };
+
+        Gate_MouseDown(sender, e);
+    }
+    private void Toggle_MouseUp(object sender, MouseButtonEventArgs e)
+    {
+        if (ShouldToggle) OutputPort.Signal = !OutputPort.Signal;
+
+        Gate_MouseUp(sender, e);
     }
 }
