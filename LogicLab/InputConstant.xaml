@@ -1,4 +1,4 @@
-﻿<local:InputComponent x:Class="LogicLab.InputConstant"
+﻿<local:OutputComponent x:Class="LogicLab.InputConstant"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -10,4 +10,4 @@
         <Rectangle x:Name="BackgroundSprite" HorizontalAlignment="Left" Height="50" Stroke="Black" VerticalAlignment="Top" Width="50" RadiusX="10" RadiusY="10" StrokeThickness="2" MouseDown="Gate_MouseDown" MouseMove="Gate_MouseMove" MouseUp="Gate_MouseUp" Fill="#FF1E1E1E"/>
 
     </Grid>
-</local:InputComponent>
+</local:OutputComponent>

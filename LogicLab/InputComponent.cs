@@ -1,21 +1,21 @@
-﻿using System.Windows.Shapes;
+﻿using System.Windows;
+using System.Windows.Shapes;
 using System.Windows.Controls;
-using System.Windows;
-using System.Windows.Input;
+using System.Windows.Media;
 
 namespace LogicLab;
 public abstract class InputComponent : LogicComponent
 {
     protected abstract Grid ComponentGrid { get; }
     protected abstract Rectangle BackgroundRect { get; }
-    public override void ShowSignal(bool? signal) { }
-    protected InputComponent() : base()
-    {
 
-    }
-    protected void OnLoaded()
+    protected InputComponent() : base() { }
+    protected async void OnLoaded()
     {
-        AddOutputPort(ComponentGrid);
-        OutputPort.SetLeft(BackgroundRect.ActualWidth / 2 + 14);
+        AddInputPort(ComponentGrid);
+        BackgroundRect.Fill = new SolidColorBrush(Color.FromArgb(100, 0, 0, 0));
+        InputPort.SetLeft(-BackgroundRect.ActualWidth / 2);
+        await Task.Delay(100);
+        InputPort.SetTop(BackgroundRect.ActualHeight / 4 + 3);
     }
 }

@@ -21,8 +21,8 @@ public abstract partial class LogicComponent : UserControl
     protected List<bool?> InputSignals         => InputPorts.Select(ip => ip.Signal).ToList();
     protected ImmutableList<IOPort> InputPorts => inputPorts.ToImmutableList();
 
-    private readonly List<IOPort> inputPorts = [];
     private IOPort outputPort;
+    private readonly List<IOPort> inputPorts = [];
     private readonly DropShadowEffect shadow = new() { ShadowDepth = 4, Color = Colors.Black, Opacity = 0.4, BlurRadius = 5 };
     private readonly DropShadowEffect highlight = new() { ShadowDepth = 0, Color = Color.FromRgb(200, 200, 255), Opacity = 1, BlurRadius = 10 };
     private DropShadowEffect animatingShadow;
