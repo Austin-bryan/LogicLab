@@ -5,13 +5,13 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 
 namespace LogicLab;
-public abstract partial class InputConstant
+public abstract partial class OutputConstant
 {
     protected override Grid ComponentGrid => Grid;
     protected override Rectangle BackgroundRect => BackgroundSprite;
     private bool? OutValue = null;
 
-    public InputConstant() => InitializeComponent();
+    public OutputConstant() => InitializeComponent();
     protected override void Grid_Loaded(object sender, RoutedEventArgs e)
     {
         OnLoaded();

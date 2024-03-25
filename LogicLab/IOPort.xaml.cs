@@ -38,7 +38,6 @@ public partial class IOPort : UserControl
             foreach (var port in ConnectedPorts)
                 if (port.portType == EPortType.Input)
                     port.Signal = signal;
-
             foreach (var wire in wires)
                 if (wire.Output == this)
                     wire.ShowSignal(signal);
@@ -67,7 +66,7 @@ public partial class IOPort : UserControl
         }
     }
 
-    private EPortType portType;
+    private readonly EPortType portType;
     private readonly LogicComponent owningComponent;
     private readonly SolidColorBrush idleColor, hoverColor;
     private bool isPressed;
@@ -173,13 +172,11 @@ public partial class IOPort : UserControl
 
     private void ShowSprite(bool visible)
     {
-        if (portType != EPortType.Input)
-            return;
-        if (wires.Count == 0)
-            Sprite.BeginAnimation(OpacityProperty,
-                new DoubleAnimation(fromValue: visible ? 0 : 1,
-                                    toValue: visible ? 1 : 0, 
-                                    duration: TimeSpan.FromSeconds(0.5)));
+        //if (portType == EPortType.Input && wires.Count == 0)
+        //    Sprite.BeginAnimation(OpacityProperty,
+        //        new DoubleAnimation(fromValue: visible ? 0 : 1,
+        //                            toValue: visible ? 1 : 0, 
+        //                            duration: TimeSpan.FromSeconds(0.5)));
     }
 
     private void Wire_MouseMove(object sender, MouseEventArgs e)

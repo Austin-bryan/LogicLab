@@ -49,7 +49,7 @@ public partial class LogicGate : LogicComponent
     }
     public override void ShowSignal(bool? signal)
     {
-        Color targetColor = signal == true ? Color.FromRgb(150, 150, 30) : Color.FromRgb(30, 30, 30);
+        Color targetColor = signal == true ? Color.FromRgb(150, 150, 30) : Color.FromArgb(100, 30, 30, 30);
         BackgroundSprite.Fill.BeginAnimation(SolidColorBrush.ColorProperty, new ColorAnimation(targetColor, TimeSpan.FromSeconds(0.25)));
     }
     public override void OnDrag(MouseEventArgs e)

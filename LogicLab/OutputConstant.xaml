@@ -1,4 +1,4 @@
-﻿<local:OutputComponent x:Class="LogicLab.InputConstant"
+﻿<local:OutputComponent x:Class="LogicLab.OutputConstant"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 

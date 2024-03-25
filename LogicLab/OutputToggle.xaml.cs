@@ -5,6 +5,7 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using System.Windows.Media.Animation;
 using System.Windows.Media;
+
 namespace LogicLab;
 
 public partial class OutputToggle
@@ -14,10 +15,7 @@ public partial class OutputToggle
 
     private bool ShouldToggle = false;
 
-    public OutputToggle()
-    {
-        InitializeComponent();
-    }
+    public OutputToggle() => InitializeComponent();
     protected override void Grid_Loaded(object sender, RoutedEventArgs e)
     {
         OnLoaded();
