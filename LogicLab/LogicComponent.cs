@@ -1,9 +1,12 @@
 ﻿using System.Collections.Immutable;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Markup;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Effects;
+using System.Windows.Shapes;
 
 namespace LogicLab;
 
@@ -15,6 +18,8 @@ public abstract partial class LogicComponent : LabComponent
     protected IOPort OutputPort                => outputPort;
     protected List<bool?> InputSignals         => InputPorts.Select(ip => ip.Signal).ToList();
     protected ImmutableList<IOPort> InputPorts => inputPorts.ToImmutableList();
+    protected abstract Grid ControlGrid { get; }
+    public Rectangle BackgroundSprite { get; private set; }
 
     private IOPort outputPort;
     private readonly List<IOPort> inputPorts = [];
@@ -22,6 +27,18 @@ public abstract partial class LogicComponent : LabComponent
     public LogicComponent() : base()
     {
         Dragger = new ComponentDragger(this);   // Enables dragging
+        const int strokeVal = 30;
+        BackgroundSprite = new()
+        {
+            Width  = 50,
+            Height = 50,
+            Fill   = new SolidColorBrush(Color.FromRgb(25, 25, 25))
+        };
+        BackgroundSprite.RadiusX = 5;
+        BackgroundSprite.RadiusY = 5;
+        //BackgroundSprite.Stroke = new SolidColorBrush(Color.FromRgb(strokeVal, strokeVal, strokeVal));
+        //BackgroundSprite.StrokeThickness = 4;
+
         Deselect();
     }
 
@@ -80,6 +97,9 @@ public abstract partial class LogicComponent : LabComponent
         if (Window.GetWindow(this) is MainWindow mw)
             if (mw.MainGrid != null)
                 mw.MainGrid.MouseMove += Component_MouseMove;
+
+
+        ControlGrid.Children.Insert(0, BackgroundSprite);
     }
 
     private void BeginShadowAnimation(DropShadowEffect fromShadow, DropShadowEffect targetShadow)

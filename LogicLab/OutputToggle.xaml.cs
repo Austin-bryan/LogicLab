@@ -10,7 +10,7 @@ namespace LogicLab;
 
 public partial class OutputToggle
 {
-    protected override Grid ComponentGrid => Grid;
+    protected override Grid ControlGrid => Grid;
     protected override Rectangle BackgroundRect => BackgroundSprite;
 
     private bool ShouldToggle = false;

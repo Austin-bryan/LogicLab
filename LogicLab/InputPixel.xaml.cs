@@ -8,7 +8,7 @@ namespace LogicLab;
 
 public partial class InputPixel
 {
-    protected override Grid ComponentGrid => Grid;
+    protected override Grid ControlGrid => Grid;
     protected override Rectangle BackgroundRect => BackgroundSprite;
 
     public InputPixel() => InitializeComponent();

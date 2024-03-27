@@ -25,6 +25,7 @@ public partial class LogicGate : LogicComponent
     private bool isResizing;
     private Point startResize;
     private bool mouseDown;
+    protected override Grid ControlGrid => Grid;
 
     public LogicGate()
     {
@@ -165,10 +166,13 @@ public partial class LogicGate : LogicComponent
     
     private void LogicComponent_Loaded(object sender, RoutedEventArgs e)
     {
-        startHeight = ActualHeight;
+        startHeight = 50;
 
         // This is super temp
         GateType = thisWillBeDeletedLater[count];
+        BackgroundSprite.MouseDown += Background_MouseDown;
+        BackgroundSprite.MouseMove += Background_MouseMove;
+        BackgroundSprite.MouseUp   += Background_MouseUp;
         
         // Create and organize ports
         SetInputAmount(2 + (int)Math.Floor(count / 4.0));

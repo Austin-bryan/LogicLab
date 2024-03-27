@@ -7,7 +7,7 @@ using System.Windows.Shapes;
 namespace LogicLab;
 public abstract partial class OutputConstant
 {
-    protected override Grid ComponentGrid => Grid;
+    protected override Grid ControlGrid => Grid;
     protected override Rectangle BackgroundRect => BackgroundSprite;
     private bool? OutValue = null;
 

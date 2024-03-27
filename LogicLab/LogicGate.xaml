@@ -11,9 +11,6 @@
             <ColumnDefinition/>
             <ColumnDefinition Width="0*"/>
         </Grid.ColumnDefinitions>
-        <Rectangle x:Name="BackgroundSprite" HorizontalAlignment="Center" Height="50" Stroke="Black" VerticalAlignment="Top" Width="50" RadiusX="10" RadiusY="10" StrokeThickness="2" MouseDown="Background_MouseDown" MouseMove="Background_MouseMove" MouseUp="Background_MouseUp" Fill="#FF1E1E1E">
-
-        </Rectangle>
         <Rectangle x:Name="Sprite" HorizontalAlignment="Left" Height="30" VerticalAlignment="Center" Width="30" StrokeThickness="0" MouseDown="Component_MouseDown" MouseMove="Component_MouseMove" MouseUp="Component_MouseUp" RenderOptions.EdgeMode="Aliased" RenderOptions.BitmapScalingMode="HighQuality" Margin="24,0,0,0">
             <Rectangle.Fill>
                 <ImageBrush ImageSource="/Buffer Gate.png"/>
