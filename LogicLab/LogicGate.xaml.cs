@@ -44,21 +44,8 @@ public partial class LogicGate : LogicComponent
         GateType = !GateType;
         NegateDot.Visibility = GateType.IsNegative() ? Visibility.Visible : Visibility.Hidden;
     }
-    public override void OnInputChange(IOPort changedPort)
-    {
-        OutputPort.Signal = OutputSignal;
-    }
-    public override void ShowSignal(bool? signal)
-    {
-        Color targetColor = signal == true ? Color.FromRgb(150, 150, 30) : Color.FromArgb(100, 30, 30, 30);
-        BackgroundSprite.Fill.BeginAnimation(SolidColorBrush.ColorProperty, new ColorAnimation(targetColor, TimeSpan.FromSeconds(0.25)));
-    }
-    public override void OnDrag(MouseEventArgs e)
-    {
-        // Forward drag function to input and output ports
-        InputPorts.ForEach(io => io.OnDrag());
-        OutputPort.OnDrag();
-    }
+    public override void OnInputChange(IOPort changedPort) => OutputPort.Signal = OutputSignal;
+
 
     // Forward events to Logic Component to get highlight and drop shadow features.
     protected override void Component_MouseDown (object sender, MouseButtonEventArgs e) => base.Component_MouseDown(sender, e);
@@ -90,7 +77,7 @@ public partial class LogicGate : LogicComponent
 
     }
     
-    private async void Background_MouseMove(object sender, MouseEventArgs e)
+    private void Background_MouseMove(object sender, MouseEventArgs e)
     {
         if (isResizing)
         {
@@ -108,14 +95,13 @@ public partial class LogicGate : LogicComponent
                 {
                     BackgroundSprite.Height -= InputPort.ActualHeight;
                     this.MainWindow().DebugLabel.Content += "Refresh!";
-                    //InputPanel.Children.ToList().OfType<IOPort>().ToList().ForEach(iPort => iPort.RefreshWire());
                 }
 
                 deltaY -= Math.Sign(deltaY) * InputPort.ActualHeight; 
                 startResize = e.GetPosition(this);
             }
         }
-        else if (e.GetPosition(this).Y > ActualHeight - 20)
+        else if (e.GetPosition(this).Y > ActualHeight - 10)
         {
             Cursor = Cursors.SizeNS;
             canResize = true;

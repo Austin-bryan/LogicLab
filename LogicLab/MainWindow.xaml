@@ -28,7 +28,7 @@
         <local:LogicGate HorizontalAlignment="Left" Margin="181,420,0,0" VerticalAlignment="Top"/>
         <local:LogicGate HorizontalAlignment="Left" Margin="305,420,0,0" VerticalAlignment="Top"/>
         <local:LogicGate HorizontalAlignment="Left" Margin="423,422,0,0" VerticalAlignment="Top"/>
-        <local:OutputToggle HorizontalAlignment="Left" Margin="176,654,0,0" VerticalAlignment="Top"/>
+        <local:OutputToggle HorizontalAlignment="Left" Margin="0,649,0,0" VerticalAlignment="Top"/>
         <local:InputPixel HorizontalAlignment="Left" Margin="376,630,0,0" VerticalAlignment="Top"/>
     </Grid>
 </Window>

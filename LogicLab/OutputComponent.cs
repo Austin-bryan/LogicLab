@@ -1,16 +1,16 @@
-﻿using System.Windows.Shapes;
-using System.Windows.Controls;
+﻿using System.Windows;
 
 namespace LogicLab;
 
 public abstract class OutputComponent : LogicComponent
 {
-    protected abstract Rectangle BackgroundRect { get; }
-
     protected OutputComponent() : base() {  }
-    protected void OnLoaded()
+    protected async void OnLoaded()
     {
+        // TODO:: Find better solution
+        await Task.Delay(1);
         AddOutputPort(ControlGrid);
-        OutputPort.SetLeft(BackgroundRect.ActualWidth / 2 + 14);
+        OutputPort.SetLeft(BackgroundSprite.ActualWidth * 2);
+        OutputPort.Signal = false;
     }
 }

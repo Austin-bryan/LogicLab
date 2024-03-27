@@ -52,13 +52,22 @@ public abstract partial class LogicComponent : LabComponent
              ComponentSelector.ShiftSelect(this);
         else ComponentSelector.SingleSelect(this);
     }
+    public override void ShowSignal(bool? signal)
+    {
+        Color targetColor = signal == true ? Color.FromRgb(150, 150, 30) : Color.FromRgb(25, 25, 25);
+        BackgroundSprite.Fill.BeginAnimation(SolidColorBrush.ColorProperty, new ColorAnimation(targetColor, TimeSpan.FromSeconds(0.25)));
+    }
     public virtual void Deselect()
     {
         BeginShadowAnimation(highlight, shadow);
         ComponentSelector.Deselect(this);
     }
     public virtual void OnInputChange(IOPort changedPort) { }
-    public virtual void OnDrag(MouseEventArgs e) { }
+    public void OnDrag(MouseEventArgs e)
+    {
+        InputPorts.ForEach(io => io.OnDrag());
+        OutputPort.OnDrag();
+    }
 
     protected IOPort AddInputPort(IAddChild addChild)
     {
@@ -91,14 +100,13 @@ public abstract partial class LogicComponent : LabComponent
     }
     protected virtual void Component_MouseUp   (object sender, MouseButtonEventArgs e) => Dragger?.DragEnd();
     protected virtual void Component_MouseMove (object sender, MouseEventArgs e)       => Dragger?.DragMove(e);
+
     protected virtual void Grid_Loaded         (object sender, RoutedEventArgs e)
     {
         // Subscribe to mouse move, that way the mouse move will fire even if the cursor goes out of bounds, when dragging
         if (Window.GetWindow(this) is MainWindow mw)
             if (mw.MainGrid != null)
                 mw.MainGrid.MouseMove += Component_MouseMove;
-
-
         ControlGrid.Children.Insert(0, BackgroundSprite);
     }
 

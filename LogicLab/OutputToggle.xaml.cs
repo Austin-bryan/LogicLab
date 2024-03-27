@@ -5,21 +5,46 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using System.Windows.Media.Animation;
 using System.Windows.Media;
+using System.Security.Policy;
+using System.Windows.Media.Imaging;
 
 namespace LogicLab;
 
 public partial class OutputToggle
 {
     protected override Grid ControlGrid => Grid;
-    protected override Rectangle BackgroundRect => BackgroundSprite;
-
     private bool ShouldToggle = false;
 
-    public OutputToggle() => InitializeComponent();
+    public OutputToggle() : base() => InitializeComponent();
     protected override void Grid_Loaded(object sender, RoutedEventArgs e)
     {
+        base.Grid_Loaded(sender, e);
         OnLoaded();
-        OutputPort.Signal = false;
+
+        BackgroundSprite.MouseDown += Toggle_MouseDown;
+        BackgroundSprite.MouseMove += Component_MouseMove;
+        BackgroundSprite.MouseUp   += Toggle_MouseUp;
+
+        BackgroundSprite.Cursor = Cursors.SizeAll;
+
+        BitmapImage bitmapImage = new(new Uri($"Images/OnOff.png", UriKind.Relative));
+
+        var Sprite = new Rectangle
+        {
+            Height = 25,
+            Width  = 30,
+            Fill   = new ImageBrush(bitmapImage)
+        };
+        RenderOptions.SetBitmapScalingMode(Sprite, BitmapScalingMode.HighQuality);
+
+        Sprite.MouseDown += Toggle_MouseDown;
+        Sprite.MouseMove += Component_MouseMove;
+        Sprite.MouseUp   += Toggle_MouseUp;
+        Sprite.Cursor = Cursors.Hand;
+
+        Grid.Children.Add(Sprite);
+
+        Grid.UpdateLayout();
     }
 
     private void Background_MouseDown(object sender, MouseButtonEventArgs e)
@@ -30,6 +55,8 @@ public partial class OutputToggle
 
     private void Toggle_MouseDown(object sender, MouseButtonEventArgs e)
     {
+        if (ShouldToggle)
+            return;
         ShouldToggle = true;
         DispatcherTimer timer = new()
         {
@@ -44,18 +71,10 @@ public partial class OutputToggle
 
         Component_MouseDown(sender, e);
     }
-
-    public override void ShowSignal(bool? signal)
-    {
-        Color targetColor = signal == true ? Color.FromRgb(150, 150, 30) : Color.FromRgb(30, 30, 30);
-        BackgroundSprite.Fill.BeginAnimation(SolidColorBrush.ColorProperty, new ColorAnimation(targetColor, TimeSpan.FromSeconds(0.25)));
-    }
-
     private void Toggle_MouseUp(object sender, MouseButtonEventArgs e)
     {
-        if (ShouldToggle) 
+        if (ShouldToggle)
             OutputPort.Signal = !OutputPort.Signal;
-        ShowSignal(OutputPort.Signal);
 
         Component_MouseUp(sender, e);
     }

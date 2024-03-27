@@ -8,7 +8,6 @@ namespace LogicLab;
 public abstract partial class OutputConstant
 {
     protected override Grid ControlGrid => Grid;
-    protected override Rectangle BackgroundRect => BackgroundSprite;
     private bool? OutValue = null;
 
     public OutputConstant() => InitializeComponent();
