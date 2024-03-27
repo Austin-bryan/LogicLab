@@ -60,9 +60,9 @@ public partial class LogicGate : LogicComponent
     }
 
     // Forward events to Logic Component to get highlight and drop shadow features.
-    protected override void Gate_MouseDown (object sender, MouseButtonEventArgs e) => base.Gate_MouseDown(sender, e);
-    protected override void Gate_MouseMove (object sender, MouseEventArgs e)       => base.Gate_MouseMove(sender, e);
-    protected override void Gate_MouseUp   (object sender, MouseButtonEventArgs e) => base.Gate_MouseUp(sender, e);
+    protected override void Component_MouseDown (object sender, MouseButtonEventArgs e) => base.Component_MouseDown(sender, e);
+    protected override void Component_MouseMove (object sender, MouseEventArgs e)       => base.Component_MouseMove(sender, e);
+    protected override void Component_MouseUp   (object sender, MouseButtonEventArgs e) => base.Component_MouseUp(sender, e);
 
     private void SetInputAmount(int amount)
     {
@@ -123,14 +123,14 @@ public partial class LogicGate : LogicComponent
         {
             Cursor = Cursors.SizeAll;
             canResize = false;
-            Gate_MouseMove(sender, e);
+            Component_MouseMove(sender, e);
         }
     }
     private void Background_MouseDown(object sender, MouseButtonEventArgs e)
     {
         mouseDown = true;
         if (!canResize)
-            Gate_MouseDown(sender, e);
+            Component_MouseDown(sender, e);
         else
         {
             isResizing = true;
@@ -144,7 +144,7 @@ public partial class LogicGate : LogicComponent
         mouseDown = false;
         if (isResizing)
              isResizing = false;
-        else Gate_MouseUp(sender, e);
+        else Component_MouseUp(sender, e);
     }
     private bool TryRemoveEmptyInputPort()
     {

@@ -85,9 +85,9 @@ public partial class IOPort : UserControl
         this.portType        = portType;
 
         BitmapImage bitmapImage = new(new Uri($"Images/{this.portType}.png", UriKind.Relative));
-        ImageBrush imageBrush = new(bitmapImage);
+        ImageBrush imageBrush   = new(bitmapImage);
 
-        Sprite.Fill = idleColor;
+        Sprite.Fill        = idleColor;
         Sprite.OpacityMask = imageBrush;
 
         if (portType == EPortType.Input)
@@ -172,11 +172,11 @@ public partial class IOPort : UserControl
 
     private void ShowSprite(bool visible)
     {
-        //if (portType == EPortType.Input && wires.Count == 0)
-        //    Sprite.BeginAnimation(OpacityProperty,
-        //        new DoubleAnimation(fromValue: visible ? 0 : 1,
-        //                            toValue: visible ? 1 : 0, 
-        //                            duration: TimeSpan.FromSeconds(0.5)));
+        if (portType == EPortType.Input && wires.Count == 0)
+            Sprite.BeginAnimation(OpacityProperty,
+                new DoubleAnimation(fromValue: visible ? 0 : 1,
+                                    toValue:   visible ? 1 : 0,
+                                    duration:  TimeSpan.FromSeconds(0.5)));
     }
 
     private void Wire_MouseMove(object sender, MouseEventArgs e)

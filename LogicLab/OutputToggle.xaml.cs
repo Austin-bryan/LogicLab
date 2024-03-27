@@ -24,7 +24,7 @@ public partial class OutputToggle
 
     private void Background_MouseDown(object sender, MouseButtonEventArgs e)
     {
-        Gate_MouseDown(sender, e);
+        Component_MouseDown(sender, e);
         //TODO: make wire update position when moves
     }
 
@@ -42,7 +42,7 @@ public partial class OutputToggle
             ShouldToggle = false;
         };
 
-        Gate_MouseDown(sender, e);
+        Component_MouseDown(sender, e);
     }
 
     public override void ShowSignal(bool? signal)
@@ -57,6 +57,6 @@ public partial class OutputToggle
             OutputPort.Signal = !OutputPort.Signal;
         ShowSignal(OutputPort.Signal);
 
-        Gate_MouseUp(sender, e);
+        Component_MouseUp(sender, e);
     }
 }

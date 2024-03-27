@@ -7,7 +7,7 @@ using System.Windows.Shapes;
 
 namespace LogicLab;
 
-public partial class Wire : LogicComponent
+public partial class Wire : LabComponent
 {
     private readonly Dictionary<EPortType, IOPort> connectedPorts = [];                         // Each wire is connected to two ports
     public ReadOnlyDictionary<EPortType, IOPort> ConnectedPorts => connectedPorts.AsReadOnly(); // This prevents public access from mutating the list
@@ -37,7 +37,6 @@ public partial class Wire : LogicComponent
 
     public Wire(MainWindow mainWindow, Point startPoint)
     {
-        Dragger = null;                  // Disables dragging for wires
         this.mainWindow = mainWindow;
         this.startPoint = startPoint;
 
@@ -48,7 +47,7 @@ public partial class Wire : LogicComponent
         {
             mainWindow.MainGrid.Children.Insert(0, path);
             path.MouseDown += Spline_MouseDown;
-            path.MouseUp += Gate_MouseUp;
+            //path.MouseUp += Gate_MouseUp;
             path.Effect = Effect;
         }
     }
@@ -63,14 +62,13 @@ public partial class Wire : LogicComponent
     {
         // Anchor will be either the port position thats connected to the wire, or the mouse position
         const int offset = 25;
-
         Point startPoint = new(Output?.WireConnection.X ?? anchor.X, 
                                Output?.WireConnection.Y - 3 * Output?.Sprite.ActualHeight / 4 ?? anchor.Y - offset);
-        Point endPoint = new(Input?.WireConnection.X ?? anchor.X, Input?.WireConnection.Y - offset ?? anchor.Y - offset);
+        Point endPoint   = new(Input?.WireConnection.X ?? anchor.X, Input?.WireConnection.Y - offset ?? anchor.Y - offset);
 
-        double distance = CalculateDistance(startPoint, endPoint);
+        double distance  = CalculateDistance(startPoint, endPoint);
+        IOPort port      = Output ?? Input;
 
-        IOPort port = Output ?? Input;
         (Point start, Point end) localized = (port.PointFromScreen(startPoint), port.PointFromScreen(endPoint));
 
         bool isDraggingFromInput = Output == null && Input != null;
@@ -110,7 +108,7 @@ public partial class Wire : LogicComponent
         mainSpline.Data       = pathGeometry;
         splineCollider.Data   = pathGeometry;
     }
-    
+
     public override void ShowSignal(bool? signal)
     {
         Color color = signal == true
@@ -122,12 +120,12 @@ public partial class Wire : LogicComponent
         ColorAnimation colorAnim = new(color, TimeSpan.FromSeconds(0.25));
         mainSpline.Stroke.BeginAnimation(SolidColorBrush.ColorProperty, colorAnim);
     }
-    public override void Deselect()
-    {
-        // Return to shadow effect
-        base.Deselect();
-        mainSpline.Effect = Effect;
-    }
+    //public override void Deselect()
+    //{
+    //    // Return to shadow effect
+    //    //base.Deselect();
+    //    mainSpline.Effect = Effect;
+    //}
 
     private static double Lerp(double min, double max, double alpha) => min + (max - min) * Math.Max(0, Math.Min(alpha, 1));
     private static double CalculateDistance(Point p1, Point p2) => Math.Sqrt(Math.Pow(p2.X - p1.X, 2) + Math.Pow(p2.Y - p1.Y, 2));
@@ -135,7 +133,7 @@ public partial class Wire : LogicComponent
     private void Spline_MouseDown(object sender, MouseButtonEventArgs e)
     {
         // Highlight effect
-        Gate_MouseDown(sender, e);
+        //Gate_MouseDown(sender, e);
         mainSpline.Effect = Effect;
         splineCollider.Effect = Effect;
     }
