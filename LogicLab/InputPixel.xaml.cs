@@ -9,11 +9,14 @@ namespace LogicLab;
 public partial class InputPixel
 {
     protected override Grid ControlGrid => Grid;
-    protected override Rectangle BackgroundRect => BackgroundSprite;
 
     public InputPixel() => InitializeComponent();
-    protected override void Grid_Loaded(object sender, RoutedEventArgs e) => OnLoaded();
-    
+    protected override void Grid_Loaded(object sender, RoutedEventArgs e)
+    {
+        base.Grid_Loaded(sender, e);
+        OnLoaded();
+    }
+
     public override void ShowSignal(bool? signal)
     {
         Color targetColor = signal == true ? Color.FromRgb(150, 150, 30) : Color.FromRgb(30, 30, 30);

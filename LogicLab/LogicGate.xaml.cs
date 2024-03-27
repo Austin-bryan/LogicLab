@@ -92,10 +92,7 @@ public partial class LogicGate : LogicComponent
                     BackgroundSprite.Height += InputPort.ActualHeight;  
                 }
                 else if (TryRemoveEmptyInputPort())
-                {
                     BackgroundSprite.Height -= InputPort.ActualHeight;
-                    this.MainWindow().DebugLabel.Content += "Refresh!";
-                }
 
                 deltaY -= Math.Sign(deltaY) * InputPort.ActualHeight; 
                 startResize = e.GetPosition(this);
@@ -135,6 +132,8 @@ public partial class LogicGate : LogicComponent
     }
     private bool TryRemoveEmptyInputPort()
     {
+        if (InputPanel.Children.Count <= 2)
+            return false;
         var ports = InputPanel.Children.ToList()
                                        .OfType<IOPort>()
                                        .ToImmutableList()

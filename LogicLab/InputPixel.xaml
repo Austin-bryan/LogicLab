@@ -5,8 +5,5 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:LogicLab"
              mc:Ignorable="d"  Loaded="Grid_Loaded" Height="51" Width="50">
-    <Grid x:Name="Grid" Margin="0,0,0,0">
-        <Rectangle x:Name="BackgroundSprite" HorizontalAlignment="Left" Height="50" Stroke="Black" VerticalAlignment="Top" Width="50" RadiusX="10" RadiusY="10" StrokeThickness="2" MouseDown="Component_MouseDown" MouseMove="Component_MouseMove" MouseUp="Component_MouseUp" Fill="#FF1E1E1E"/>
-
-    </Grid>
+    <Grid x:Name="Grid" Margin="0,0,0,0"/>
 </local:InputComponent>

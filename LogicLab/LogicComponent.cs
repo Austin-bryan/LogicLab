@@ -107,7 +107,8 @@ public abstract partial class LogicComponent : LabComponent
         if (Window.GetWindow(this) is MainWindow mw)
             if (mw.MainGrid != null)
                 mw.MainGrid.MouseMove += Component_MouseMove;
-        ControlGrid.Children.Insert(0, BackgroundSprite);
+        if (BackgroundSprite.Parent == null)
+            ControlGrid.Children.Insert(0, BackgroundSprite);
     }
 
     private void BeginShadowAnimation(DropShadowEffect fromShadow, DropShadowEffect targetShadow)
