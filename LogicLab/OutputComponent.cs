@@ -1,6 +1,4 @@
-﻿using System.Windows;
-
-namespace LogicLab;
+﻿namespace LogicLab;
 
 public abstract class OutputComponent : LogicComponent
 {

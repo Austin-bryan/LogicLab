@@ -25,8 +25,6 @@ public partial class OutputToggle
         BackgroundSprite.MouseMove += Component_MouseMove;
         BackgroundSprite.MouseUp   += Toggle_MouseUp;
 
-        BackgroundSprite.Cursor = Cursors.SizeAll;
-
         BitmapImage bitmapImage = new(new Uri($"Images/OnOff.png", UriKind.Relative));
 
         var Sprite = new Rectangle

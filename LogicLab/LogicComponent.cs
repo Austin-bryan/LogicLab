@@ -66,7 +66,7 @@ public abstract partial class LogicComponent : LabComponent
     public void OnDrag(MouseEventArgs e)
     {
         InputPorts.ForEach(io => io.OnDrag());
-        OutputPort.OnDrag();
+        OutputPort?.OnDrag();
     }
 
     protected IOPort AddInputPort(IAddChild addChild)
@@ -109,6 +109,7 @@ public abstract partial class LogicComponent : LabComponent
                 mw.MainGrid.MouseMove += Component_MouseMove;
         if (BackgroundSprite.Parent == null)
             ControlGrid.Children.Insert(0, BackgroundSprite);
+        BackgroundSprite.Cursor = Cursors.SizeAll;
     }
 
     private void BeginShadowAnimation(DropShadowEffect fromShadow, DropShadowEffect targetShadow)
