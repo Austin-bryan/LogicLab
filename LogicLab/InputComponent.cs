@@ -6,7 +6,7 @@ using System.Windows.Media;
 namespace LogicLab;
 public abstract class InputComponent : LogicComponent
 {
-    IOPort? defaultInputPort;
+    IOPort? defaultInputPort; 
     protected abstract Grid ComponentGrid { get; }
     protected abstract Rectangle BackgroundRect { get; }
 

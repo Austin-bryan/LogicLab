@@ -13,6 +13,7 @@
         </Grid.ColumnDefinitions>
         <Rectangle x:Name="BackgroundSprite" HorizontalAlignment="Center" Height="50" Stroke="Black" VerticalAlignment="Center" Width="50" RadiusX="10" RadiusY="10" StrokeThickness="2" MouseDown="Gate_MouseDown" MouseMove="Gate_MouseMove" MouseUp="Gate_MouseUp" Fill="#FF1E1E1E"/>
         <StackPanel x:Name="InputPanel" Margin="-11,0,57,0" VerticalAlignment="Center"/>
-        
+        <Label x:Name="HexDisplayLabel" Content="-" HorizontalAlignment="Center" Height="25" Margin="0,0,0,0" VerticalAlignment="center" Width="20" MouseDown="Gate_MouseDown" MouseMove="Gate_MouseMove" MouseUp="Gate_MouseUp"/>
+
     </Grid>
 </local:InputComponent>
