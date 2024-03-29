@@ -13,7 +13,6 @@ public partial class InputPixel
 
     public InputPixel() => InitializeComponent();
     protected override void Grid_Loaded(object sender, RoutedEventArgs e) => OnLoaded();
-    
     public override void ShowSignal(bool? signal)
     {
         Color targetColor = signal == true ? Color.FromRgb(150, 150, 30) : Color.FromRgb(30, 30, 30);

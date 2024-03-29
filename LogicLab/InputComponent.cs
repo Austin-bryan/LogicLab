@@ -10,9 +10,10 @@ public abstract class InputComponent : LogicComponent
     protected abstract Rectangle BackgroundRect { get; }
 
     protected InputComponent() : base() { }
+    protected virtual void AddAllInputs() => AddInputPort(ComponentGrid);//virtual void so that a child can change the number on inputs
     protected async void OnLoaded()
     {
-        AddInputPort(ComponentGrid);
+        AddAllInputs();
         BackgroundRect.Fill = new SolidColorBrush(Color.FromArgb(100, 0, 0, 0));
         InputPort.SetLeft(-BackgroundRect.ActualWidth / 2);
         await Task.Delay(100);

@@ -7,6 +7,7 @@
              mc:Ignorable="d"  Loaded="Grid_Loaded" Height="50" Width="50">
     <Grid x:Name="Grid" Margin="0,0,0,0">
         <Rectangle x:Name="BackgroundSprite" HorizontalAlignment="Left" Height="50" Stroke="Black" VerticalAlignment="Top" Width="50" RadiusX="10" RadiusY="10" StrokeThickness="2" MouseDown="Gate_MouseDown" MouseMove="Gate_MouseMove" MouseUp="Gate_MouseUp" Fill="#FF1E1E1E"/>
+        <StackPanel x:Name="InputPanel" Margin="-11,0,26,0" VerticalAlignment="Center"/>
 
     </Grid>
 </local:InputComponent>
