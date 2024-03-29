@@ -31,10 +31,8 @@ public partial class InputHexDisplay
     protected override void Grid_Loaded(object sender, RoutedEventArgs e)
     {
         OnLoaded();
-        startHeight = 50; //ActualHeight;
+        startHeight = ActualHeight;
     }
-
-    
     protected override void AddAllInputs()
     {
         AddInputPort(InputPanel);
