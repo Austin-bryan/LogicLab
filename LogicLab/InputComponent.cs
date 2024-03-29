@@ -11,11 +11,7 @@ public abstract class InputComponent : LogicComponent
     protected abstract Rectangle BackgroundRect { get; }
 
     protected InputComponent() : base() { }
-    protected virtual void AddAllInputs()
-    {
-        defaultInputPort = AddInputPort(ComponentGrid); //virtual void so that a child can change the number on inputs
-    }
-
+    protected virtual void AddAllInputs() => defaultInputPort = AddInputPort(ComponentGrid); //virtual void so that a child can change the number on inputs
     protected async void OnLoaded()
     {
         AddAllInputs();

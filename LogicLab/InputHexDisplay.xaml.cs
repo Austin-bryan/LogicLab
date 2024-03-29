@@ -31,21 +31,28 @@ public partial class InputHexDisplay
     protected override void Grid_Loaded(object sender, RoutedEventArgs e)
     {
         OnLoaded();
-        startHeight = ActualHeight;
+        startHeight = BackgroundSprite.ActualHeight;
     }
     protected override void AddAllInputs()
     {
-        AddInputPort(InputPanel);
-        AddInputPort(InputPanel);
-        AddInputPort(InputPanel);
-        AddInputPort(InputPanel);
+        port1 = AddInputPort(InputPanel);
+        port2 = AddInputPort(InputPanel);
+        port3 = AddInputPort(InputPanel);
+        port4 = AddInputPort(InputPanel);
         BackgroundSprite.Height = startHeight + inputCount * 20;
     }
 
     public override void ShowSignal(bool? signal)
     {
-        
+        //does this trigger anytime any signal changes?
         Color targetColor = signal == true ? Color.FromRgb(150, 150, 30) : Color.FromRgb(30, 30, 30);
         BackgroundSprite.Fill.BeginAnimation(SolidColorBrush.ColorProperty, new ColorAnimation(targetColor, TimeSpan.FromSeconds(0.25)));
+    }
+
+    public int BinaryAdd()
+    {
+        int numInDec = 0;
+        //make it do the thing
+        return numInDec;
     }
 }
