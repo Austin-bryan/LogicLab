@@ -12,14 +12,14 @@
         <local:LogicGate HorizontalAlignment="Left" Margin="181,15,0,0" VerticalAlignment="Top"/>
         <local:LogicGate HorizontalAlignment="Left" Margin="305,15,0,0" VerticalAlignment="Top"/>
         <local:LogicGate HorizontalAlignment="Left" Margin="423,17,0,0" VerticalAlignment="Top"/>
-        <local:LogicGate HorizontalAlignment="Left" Margin="64,70,0,0" VerticalAlignment="Top"/>
-        <local:LogicGate HorizontalAlignment="Left" Margin="181,70,0,0" VerticalAlignment="Top"/>
-        <local:LogicGate HorizontalAlignment="Left" Margin="305,70,0,0" VerticalAlignment="Top"/>
-        <local:LogicGate HorizontalAlignment="Left" Margin="423,72,0,0" VerticalAlignment="Top"/>
-        <local:LogicGate HorizontalAlignment="Left" Margin="64,144,0,0" VerticalAlignment="Top"/>
-        <local:LogicGate HorizontalAlignment="Left" Margin="181,144,0,0" VerticalAlignment="Top"/>
-        <local:LogicGate HorizontalAlignment="Left" Margin="305,144,0,0" VerticalAlignment="Top"/>
-        <local:LogicGate HorizontalAlignment="Left" Margin="423,146,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="64,78,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="181,78,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="305,78,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="423,80,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="64,164,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="181,164,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="305,164,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="423,166,0,0" VerticalAlignment="Top"/>
         <local:LogicGate HorizontalAlignment="Left" Margin="64,275,0,0" VerticalAlignment="Top"/>
         <local:LogicGate HorizontalAlignment="Left" Margin="181,275,0,0" VerticalAlignment="Top"/>
         <local:LogicGate HorizontalAlignment="Left" Margin="305,275,0,0" VerticalAlignment="Top"/>

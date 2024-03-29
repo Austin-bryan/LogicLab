@@ -1,4 +1,6 @@
-﻿namespace LogicLab;
+﻿using System.Windows.Input;
+
+namespace LogicLab;
 
 public abstract class OutputComponent : LogicComponent
 {
@@ -10,5 +12,6 @@ public abstract class OutputComponent : LogicComponent
         AddOutputPort(ControlGrid);
         OutputPort.SetLeft(BackgroundSprite.ActualWidth * 2);
         OutputPort.Signal = false;
+        BackgroundSprite.Cursor = Cursors.SizeAll;
     }
 }

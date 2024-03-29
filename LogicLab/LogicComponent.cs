@@ -30,12 +30,12 @@ public abstract partial class LogicComponent : LabComponent
         const int strokeVal = 30;
         BackgroundSprite = new()
         {
-            Width  = 50,
-            Height = 50,
-            Fill   = new SolidColorBrush(Color.FromRgb(25, 25, 25))
+            Width   = 50,
+            Height  = 50,
+            Fill    = new SolidColorBrush(Color.FromRgb(25, 25, 25)),
+            RadiusX = 5,
+            RadiusY = 5
         };
-        BackgroundSprite.RadiusX = 5;
-        BackgroundSprite.RadiusY = 5;
         //BackgroundSprite.Stroke = new SolidColorBrush(Color.FromRgb(strokeVal, strokeVal, strokeVal));
         //BackgroundSprite.StrokeThickness = 4;
 
@@ -54,7 +54,7 @@ public abstract partial class LogicComponent : LabComponent
     }
     public override void ShowSignal(bool? signal)
     {
-        Color targetColor = signal == true ? Color.FromRgb(150, 150, 30) : Color.FromRgb(25, 25, 25);
+        Color targetColor = signal == true ? Color.FromRgb(150, 150, 30) : Color.FromArgb(255, 25, 25, 25);
         BackgroundSprite.Fill.BeginAnimation(SolidColorBrush.ColorProperty, new ColorAnimation(targetColor, TimeSpan.FromSeconds(0.25)));
     }
     public virtual void Deselect()
@@ -100,7 +100,6 @@ public abstract partial class LogicComponent : LabComponent
     }
     protected virtual void Component_MouseUp   (object sender, MouseButtonEventArgs e) => Dragger?.DragEnd();
     protected virtual void Component_MouseMove (object sender, MouseEventArgs e)       => Dragger?.DragMove(e);
-
     protected virtual void Grid_Loaded         (object sender, RoutedEventArgs e)
     {
         // Subscribe to mouse move, that way the mouse move will fire even if the cursor goes out of bounds, when dragging
@@ -109,7 +108,6 @@ public abstract partial class LogicComponent : LabComponent
                 mw.MainGrid.MouseMove += Component_MouseMove;
         if (BackgroundSprite.Parent == null)
             ControlGrid.Children.Insert(0, BackgroundSprite);
-        BackgroundSprite.Cursor = Cursors.SizeAll;
     }
 
     private void BeginShadowAnimation(DropShadowEffect fromShadow, DropShadowEffect targetShadow)

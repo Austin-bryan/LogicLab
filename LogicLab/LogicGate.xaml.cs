@@ -20,11 +20,11 @@ public partial class LogicGate : LogicComponent
     private static int count = 0;                           // I have no clue what this does, but it will also be deleted later.
     private int inputCount = 2;                             // # of inputs, default is 2, but NOT and BUFFER have a min and max of 1
     private double startHeight;                             // Logic gates grow based on input size, this caches the startsize
-    private IOPort outputPort;
     private bool canResize;
     private bool isResizing;
-    private Point startResize;
     private bool mouseDown;
+    private Point startResize;
+    private IOPort outputPort;
     protected override Grid ControlGrid => Grid;
 
     public LogicGate()

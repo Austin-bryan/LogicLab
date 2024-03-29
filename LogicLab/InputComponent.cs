@@ -1,4 +1,6 @@
-﻿namespace LogicLab;
+﻿using System.Windows.Input;
+
+namespace LogicLab;
 
 public abstract class InputComponent : LogicComponent
 {
@@ -13,5 +15,6 @@ public abstract class InputComponent : LogicComponent
         BackgroundSprite.MouseDown += Component_MouseDown;
         BackgroundSprite.MouseMove += Component_MouseMove;
         BackgroundSprite.MouseUp   += Component_MouseUp;
+        BackgroundSprite.Cursor = Cursors.SizeAll;
     }
 }

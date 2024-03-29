@@ -13,7 +13,7 @@ public enum EPortType { Input, Output }
 public partial class IOPort : UserControl
 {
     public Point WireConnection => PointToScreen(new(
-                Sprite.Margin.Left + (portType == EPortType.Input ? ActualWidth / 2 : 0),
+                Sprite.Margin.Left + (portType == EPortType.Input ? + (Parent is StackPanel _ ? ActualWidth / 2 : ActualWidth / 4) : 0),
                 Sprite.Margin.Right + ActualHeight / 2));
 
     public bool? Signal
@@ -100,11 +100,13 @@ public partial class IOPort : UserControl
         OverlapDetector.Height *= 2.5;
         OverlapDetector.Width *= 1.75;
     }
-    public void OnDrag()
+    public async void OnDrag()
     {
         // TODO:: This causes the redraw for both output and input ports, when only one is needed
         // What needs to happen is the port should find out if the port being dragged is input or output
         // From there, only that port type is allowed to redraw
+        
+        await Task.Delay(1);    
         wires.ForEach(w => w.Draw(WireConnection, w.Output?.Signal));
     }
 
