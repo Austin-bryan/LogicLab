@@ -1,0 +1,17 @@
+﻿<UserControl x:Class="LogicLab.EditorUI.CreationItem"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:LogicLab.EditorUI"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Rectangle x:Name="Highlight" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" Width="340" Fill="#00282828" MouseEnter="Highlight_MouseEnter" MouseLeave="Highlight_MouseLeave" Margin="-93,-1,0,0" MouseDown="Highlight_MouseDown"/>
+
+        <Label x:Name="ItemLabel" VerticalContentAlignment="Center" Content="Creation Item" HorizontalAlignment="Left" VerticalAlignment="Top" Height="26" Foreground="White" FontFamily="Segoe UI Light" Width="174" Margin="26,-5,0,0"/>
+        <Rectangle x:Name="Graphic" HorizontalAlignment="Left" Height="18" Margin="7,0,0,0" VerticalAlignment="Top" Width="18" RenderOptions.BitmapScalingMode="HighQuality" Fill="#FF006496"/>
+        <Ellipse x:Name="Not" HorizontalAlignment="Left" Height="4" Margin="23,7,0,0" VerticalAlignment="Top" Width="4" Visibility="Hidden" Fill="#FF006496"/>
+
+    </Grid>
+</UserControl>

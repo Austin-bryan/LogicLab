@@ -1,0 +1,38 @@
+﻿<local:LogicComponent x:Class="LogicLab.LogicGate"  
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:LogicLab"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" Loaded="LogicComponent_Loaded" HorizontalAlignment="Left" VerticalAlignment="Top">
+    <Grid x:Name="Grid" HorizontalAlignment="Center" VerticalAlignment="Center" Width="81" Loaded="Grid_Loaded">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="0*"/>
+        </Grid.ColumnDefinitions>
+        <Rectangle x:Name="Sprite" HorizontalAlignment="Left" Height="30" VerticalAlignment="Center" Width="30" StrokeThickness="0" MouseDown="Component_MouseDown" MouseMove="Component_MouseMove" MouseUp="Component_MouseUp" RenderOptions.EdgeMode="Aliased" RenderOptions.BitmapScalingMode="HighQuality" Margin="24,0,0,0">
+
+            <!-- Connor -->
+            <Rectangle.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Align">
+                        <MenuItem Header="Left" Click="AlignLeft"/>
+                        <MenuItem Header="Top" Click="AlignTop"/>
+                        <MenuItem Header="Right" Click="AlignRight"/>
+                        <MenuItem Header="Bottom" Click="AlignBottom"/>
+                        <MenuItem Header="Center" Click="AlignCenter"/>
+                    </MenuItem>
+                    <MenuItem Header="Rotate">
+                        <MenuItem Header="Clockwise" />
+                        <MenuItem Header="180" />
+                        <MenuItem Header="Counter Clockwise" />
+                    </MenuItem>
+                </ContextMenu>
+            </Rectangle.ContextMenu>
+        </Rectangle>
+        <StackPanel x:Name="InputPanel" Margin="-11,0,57,0" VerticalAlignment="Center"/>
+        <StackPanel x:Name="OutputPanel" Margin="54,0,2,0" VerticalAlignment="Center"/>
+        <Ellipse x:Name="NegateDot" HorizontalAlignment="Left" Height="5" Margin="51,0,0,0" VerticalAlignment="Center" Width="5" Fill="White" Visibility="Hidden" MouseDown="Component_MouseDown" MouseMove="Component_MouseMove" MouseUp="Component_MouseUp"/>
+    </Grid>
+</local:LogicComponent>
