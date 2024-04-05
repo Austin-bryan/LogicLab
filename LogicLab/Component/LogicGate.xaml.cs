@@ -53,7 +53,7 @@ public partial class LogicGate : LogicComponent
         GateType = !GateType;
         NegateDot.Visibility = GateType.IsNegative() ? Visibility.Visible : Visibility.Hidden;
     }
-    public override void OnInputChange(IOPort changedPort) => OutputPort.Signal = OutputSignal;
+    public override void OnInputChange(IOPort changedPort) => OutputPort.SetSignal(OutputSignal, []);
 
     // Forward events to Logic Component to get highlight and drop shadow features.
     protected override void Component_MouseDown (object sender, MouseButtonEventArgs e) => base.Component_MouseDown(sender, e);

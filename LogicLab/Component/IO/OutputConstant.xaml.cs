@@ -28,7 +28,7 @@ public partial class OutputConstant
         OnLoaded();
         await Task.Delay(100);
 
-        OutputPort.Signal = signal == null ? count++ % 2 == 0 : signal.Value;
-        Sprite.Fill = Utilities.GetImage(OutputPort.Signal == true ? "On" : "Off");
+        OutputPort.SetSignal(signal == null ? count++ % 2 == 0 : signal.Value, []);
+        Sprite.Fill = Utilities.GetImage(OutputPort.GetSignal() == true ? "On" : "Off");
     }
 }

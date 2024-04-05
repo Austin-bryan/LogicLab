@@ -8,27 +8,27 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="650" Width="993">
     <Grid x:Name="MainGrid" Background="#FF232323" MouseDown="Grid_MouseDown" MouseMove="MainGrid_MouseMove" MouseUp="MainGrid_MouseUp" Margin="0,0,-278,-268" PreviewKeyDown="MainGrid_PreviewKeyDown" KeyDown="MainGrid_KeyDown" MouseRightButtonDown="MainGrid_MouseRightButtonDown">
-        <Label x:Name="DebugLabel" HorizontalAlignment="Left" Margin="758,10,0,0" VerticalAlignment="Top" Foreground="White" Width="533" Height="23"/>
-        <local:LogicGate HorizontalAlignment="Left" Margin="64,15,0,0" VerticalAlignment="Top"/>
-        <local:LogicGate HorizontalAlignment="Left" Margin="181,15,0,0" VerticalAlignment="Top"/>
-        <local:LogicGate HorizontalAlignment="Left" Margin="305,15,0,0" VerticalAlignment="Top"/>
-        <local:LogicGate HorizontalAlignment="Left" Margin="423,17,0,0" VerticalAlignment="Top"/>
-        <local:LogicGate HorizontalAlignment="Left" Margin="64,78,0,0" VerticalAlignment="Top"/>
-        <local:LogicGate HorizontalAlignment="Left" Margin="181,78,0,0" VerticalAlignment="Top"/>
-        <local:LogicGate HorizontalAlignment="Left" Margin="305,78,0,0" VerticalAlignment="Top"/>
-        <local:LogicGate HorizontalAlignment="Left" Margin="423,80,0,0" VerticalAlignment="Top"/>
-        <local:LogicGate HorizontalAlignment="Left" Margin="64,164,0,0" VerticalAlignment="Top"/>
-        <local:LogicGate HorizontalAlignment="Left" Margin="181,164,0,0" VerticalAlignment="Top"/>
-        <local:LogicGate HorizontalAlignment="Left" Margin="305,164,0,0" VerticalAlignment="Top"/>
-        <local:LogicGate HorizontalAlignment="Left" Margin="423,166,0,0" VerticalAlignment="Top"/>
-        <local:LogicGate HorizontalAlignment="Left" Margin="64,275,0,0" VerticalAlignment="Top"/>
-        <local:LogicGate HorizontalAlignment="Left" Margin="181,275,0,0" VerticalAlignment="Top"/>
-        <local:LogicGate HorizontalAlignment="Left" Margin="305,275,0,0" VerticalAlignment="Top"/>
-        <local:LogicGate HorizontalAlignment="Left" Margin="423,277,0,0" VerticalAlignment="Top"/>
-        <local:LogicGate HorizontalAlignment="Left" Margin="64,420,0,0" VerticalAlignment="Top"/>
-        <local:LogicGate HorizontalAlignment="Left" Margin="181,420,0,0" VerticalAlignment="Top"/>
-        <local:LogicGate HorizontalAlignment="Left" Margin="305,420,0,0" VerticalAlignment="Top"/>
-        <local:LogicGate HorizontalAlignment="Left" Margin="423,422,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="DebugLabel" HorizontalAlignment="Left" Margin="416,10,0,0" VerticalAlignment="Top" Foreground="White" Width="1217" Height="23" FontSize="10"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="18,15,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="115,15,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="215,15,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="317,17,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="18,78,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="115,78,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="215,78,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="317,80,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="18,164,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="115,164,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="215,164,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="317,166,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="18,275,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="115,275,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="215,275,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="317,277,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="18,420,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="115,420,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="215,420,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="317,422,0,0" VerticalAlignment="Top"/>
         <local:OutputToggle HorizontalAlignment="Left" Margin="305,558,0,0" VerticalAlignment="Top"/>
         <local:InputPixel HorizontalAlignment="Left" Margin="581,508,0,0" VerticalAlignment="Top"/>
         <local:InputHexDisplay HorizontalAlignment="Left" Margin="564,646,0,0" VerticalAlignment="Top"/>

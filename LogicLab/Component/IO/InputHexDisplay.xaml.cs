@@ -43,7 +43,7 @@ public partial class InputHexDisplay
             HexDisplayLabel.Visibility = Visibility.Visible;
             NullDot.Visibility = Visibility.Hidden;
 
-            HexDisplayLabel.Content = ports.Select((port, index) => port.Signal == true ? 1 << index : 0)
+            HexDisplayLabel.Content = ports.Select((port, index) => port.GetSignal() == true ? 1 << index : 0)
                                            .Sum().ToString("X");
         }
 

@@ -63,7 +63,7 @@ public partial class OutputToggle
     private void Toggle_MouseUp(object sender, MouseButtonEventArgs e)
     {
         if (ShouldToggle)
-            OutputPort.Signal = !OutputPort.Signal;
+            OutputPort.SetSignal(!OutputPort.GetSignal(), []);
 
         Component_MouseUp(sender, e);
     }

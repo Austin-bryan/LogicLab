@@ -18,7 +18,7 @@ public abstract partial class LogicComponent : LabComponent
     protected bool IsSelected                  => ComponentSelector.IsSelected(this);
     protected IOPort InputPort                 => InputPorts[0];
     protected IOPort OutputPort                => outputPort;
-    protected List<bool?> InputSignals         => InputPorts.Select(ip => ip.Signal).ToList();
+    protected List<bool?> InputSignals         => InputPorts.Select(ip => ip.GetSignal()).ToList();
     protected ImmutableList<IOPort> InputPorts => inputPorts.ToImmutableList();
     protected abstract Grid ControlGrid { get; }
     public Rectangle BackgroundSprite { get; private set; }

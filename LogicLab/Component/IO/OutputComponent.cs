@@ -15,7 +15,7 @@ public abstract class OutputComponent : LogicComponent
 
         AddOutputPort(ControlGrid);
         OutputPort.SetLeft(BackgroundSprite.ActualWidth * 2);
-        OutputPort.Signal = false;
+        OutputPort.SetSignal(false, []);
         BackgroundSprite.Cursor = Cursors.SizeAll;
     }
 }

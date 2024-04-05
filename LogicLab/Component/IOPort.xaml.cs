@@ -1,11 +1,10 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media.Imaging;
 using System.Windows.Media;
 using System.Windows.Input;
-using System.Windows.Media.Animation;
+using System.Windows.Controls;
 using System.Collections.Immutable;
-using System.DirectoryServices;
+using System.Windows.Media.Imaging;
+using System.Windows.Media.Animation;
 using LogicLab.Component;
 
 namespace LogicLab;
@@ -19,29 +18,40 @@ public partial class IOPort : UserControl
                 Sprite.Margin.Left + (portType == EPortType.Input ? + (Parent is StackPanel _ ? ActualWidth / 2 : ActualWidth / 4) : 0),
                 Sprite.Margin.Right + ActualHeight / 2));
 
-    public bool? Signal
+    public bool? GetSignal() => _signal;
+
+    public void SetSignal(bool? value, List<LogicComponent> propagationHistory)
     {
-        get => _signal;
-        set
+        if (propagationHistory.Contains(owningComponent))
         {
-            _signal = value;
-            owningComponent.ShowSignal(value);
-            ProcessSignalAsync(value);
-            //SignalShow.Fill = new SolidColorBrush(value == true ? Colors.Orange  : Colors.Black);
+            //"Exiting".Show();
+            owningComponent.MainWindow().DebugLabel.Content += "e";
+            return;
         }
+
+        propagationHistory.Add(owningComponent);
+        _signal = value;
+        owningComponent.ShowSignal(value);
+        ProcessSignalAsync(value, propagationHistory);
     }
     public bool Connectionless => wires.Count == 0;
 
-    private async void ProcessSignalAsync(bool? signal)
+    private async void ProcessSignalAsync(bool? signal, List<LogicComponent> propagationHistory)
     {
         if (portType != EPortType.Output)
             owningComponent.OnInputChange(this);        
         else
         {
-            await Task.Delay(1);
+            await Task.Delay(1000);
             foreach (var port in ConnectedPorts)
+            {
                 if (port.portType == EPortType.Input)
-                    port.Signal = signal;
+                {
+                    owningComponent.MainWindow().DebugLabel.Content += propagationHistory.Count.ToString();
+                    port.SetSignal(signal, propagationHistory);
+                }
+            }
+
             foreach (var wire in wires)
                 if (wire.Output == this)
                     wire.ShowSignal(signal);
@@ -62,10 +72,14 @@ public partial class IOPort : UserControl
         get
         {
             List<IOPort> connectedPorts = [];
-            //MessageBox.Show(wires.Count.ToString());
             foreach (var wire in wires)
                 foreach (var port in wire.ConnectedPorts.Values)
-                    connectedPorts.Add(port);
+                    if (port != this && !connectedPorts.Contains(port))
+                        if (portType == EPortType.Input  && port.portType == EPortType.Output ||
+                            portType == EPortType.Output && port.portType == EPortType.Input)
+                                connectedPorts.Add(port);
+            //owningComponent.MainWindow().DebugLabel.Content += "C{" + connectedPorts.Count + "}";
+
             return [.. connectedPorts];
         }
     }
@@ -112,7 +126,7 @@ public partial class IOPort : UserControl
         // From there, only that port type is allowed to redraw
         
         await Task.Delay(1);    
-        wires.ForEach(w => w.Draw(WireConnection, w.Output?.Signal));
+        wires.ForEach(w => w.Draw(WireConnection, w.Output?.GetSignal()));
     }
 
     private void Sprite_MouseEnter(object sender, MouseEventArgs e) => Sprite.Fill = hoverColor;
@@ -132,7 +146,7 @@ public partial class IOPort : UserControl
 
         // Active wire is the one currently being dragged
         activeWire = wire;
-        activeWire.Draw(PointToScreen(e.GetPosition(this)), Signal);
+        activeWire.Draw(PointToScreen(e.GetPosition(this)), GetSignal());
 
         if (!wires.Contains(wire))
             wires.Add(wire);
@@ -162,12 +176,11 @@ public partial class IOPort : UserControl
         wires.Add(activeWire);
 
         if (activeWire.Output != null)
-            Signal = activeWire.Output.Signal;
-        if (activeWire.Input != null)
-            activeWire.Input.Signal = Signal;
+            SetSignal(activeWire.Output.GetSignal(), []);
+        activeWire.Input?.SetSignal(GetSignal(), []);
 
         owningComponent.OnInputChange(this);
-        activeWire.Draw(WireConnection, Signal);
+        activeWire.Draw(WireConnection, GetSignal());
 
         static void RemoveWires(IOPort port)
         {
@@ -191,7 +204,7 @@ public partial class IOPort : UserControl
         if (!isPressed) 
             return;
         // Redraw if there user is dragging the logic gate, and theres an active wire
-        activeWire?.Draw(PointToScreen(e.GetPosition(this)), Signal);
+        activeWire?.Draw(PointToScreen(e.GetPosition(this)), GetSignal());
     }
     private void Wire_MouseUp(object sender, MouseEventArgs e)
     {
