@@ -66,7 +66,7 @@ public abstract partial class LogicComponent : LabComponent
         BeginShadowAnimation(highlight, shadow);
         ComponentSelector.Deselect(this);
     }
-    public virtual void OnInputChange(IOPort changedPort, List<LogicComponent> propagationHistory) { }
+    public virtual void OnInputChange(IOPort changedPort, List<IOPort> propagationHistory) { }
     public void OnDrag(MouseEventArgs e)
     {
         InputPorts.ForEach(io => io.OnDrag());

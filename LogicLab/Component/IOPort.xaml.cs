@@ -21,7 +21,7 @@ public partial class IOPort : UserControl
 
     public bool? GetSignal() => _signal;
 
-    public void SetSignal(bool? value, List<LogicComponent> propagationHistory)
+    public void SetSignal(bool? value, List<IOPort> propagationHistory)
     {
         if (propagationHistory.Count == 0)
             owningComponent.MainWindow().DebugLabel.Content += "\n";
@@ -38,21 +38,21 @@ public partial class IOPort : UserControl
         }
         //owningComponent.MainWindow().DebugLabel.Content += "\n";
 
-        if (propagationHistory.Contains(owningComponent))
+        if (propagationHistory.Contains(this))
         {
             //"Exiting".Show();
             owningComponent.MainWindow().DebugLabel.Content += "e";
             return;
         }
 
-        propagationHistory.Add(owningComponent);
+        propagationHistory.Add(this);
         _signal = value;
         owningComponent.ShowSignal(value);
         ProcessSignalAsync(value, propagationHistory);
     }
     public bool Connectionless => wires.Count == 0;
 
-    private async void ProcessSignalAsync(bool? signal, List<LogicComponent> propagationHistory)
+    private async void ProcessSignalAsync(bool? signal, List<IOPort> propagationHistory)
     {
         if (portType != EPortType.Output)
             owningComponent.OnInputChange(this, propagationHistory);        
