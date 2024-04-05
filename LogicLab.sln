@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogicLab", "LogicLab\LogicLab.csproj", "{9337447E-4A44-48B5-9E29-CA6794B846C3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogicLab", "LogicLab\LogicLab.csproj", "{9337447E-4A44-48B5-9E29-CA6794B846C3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

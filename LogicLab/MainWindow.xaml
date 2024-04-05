@@ -1,25 +1,26 @@
-﻿<Window x:Class="LogicLab.MainWindow"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LogicLab"
+        xmlns:EditorUI="clr-namespace:LogicLab.EditorUI" x:Class="LogicLab.MainWindow"
         mc:Ignorable="d"
         Title="MainWindow" Height="650" Width="993">
-    <Grid x:Name="MainGrid" Background="#FF232323" MouseDown="Grid_MouseDown" MouseMove="MainGrid_MouseMove" MouseUp="MainGrid_MouseUp" Margin="0,0,-278,-268" PreviewKeyDown="MainGrid_PreviewKeyDown" KeyDown="MainGrid_KeyDown">
-        <Label x:Name="DebugLabel" Content="Label" HorizontalAlignment="Left" Margin="674,198,0,0" VerticalAlignment="Top" Foreground="White" Width="533" Height="535"/>
+    <Grid x:Name="MainGrid" Background="#FF232323" MouseDown="Grid_MouseDown" MouseMove="MainGrid_MouseMove" MouseUp="MainGrid_MouseUp" Margin="0,0,-278,-268" PreviewKeyDown="MainGrid_PreviewKeyDown" KeyDown="MainGrid_KeyDown" MouseRightButtonDown="MainGrid_MouseRightButtonDown">
+        <Label x:Name="DebugLabel" HorizontalAlignment="Left" Margin="758,10,0,0" VerticalAlignment="Top" Foreground="White" Width="533" Height="23"/>
         <local:LogicGate HorizontalAlignment="Left" Margin="64,15,0,0" VerticalAlignment="Top"/>
         <local:LogicGate HorizontalAlignment="Left" Margin="181,15,0,0" VerticalAlignment="Top"/>
         <local:LogicGate HorizontalAlignment="Left" Margin="305,15,0,0" VerticalAlignment="Top"/>
         <local:LogicGate HorizontalAlignment="Left" Margin="423,17,0,0" VerticalAlignment="Top"/>
-        <local:LogicGate HorizontalAlignment="Left" Margin="64,70,0,0" VerticalAlignment="Top"/>
-        <local:LogicGate HorizontalAlignment="Left" Margin="181,70,0,0" VerticalAlignment="Top"/>
-        <local:LogicGate HorizontalAlignment="Left" Margin="305,70,0,0" VerticalAlignment="Top"/>
-        <local:LogicGate HorizontalAlignment="Left" Margin="423,72,0,0" VerticalAlignment="Top"/>
-        <local:LogicGate HorizontalAlignment="Left" Margin="64,144,0,0" VerticalAlignment="Top"/>
-        <local:LogicGate HorizontalAlignment="Left" Margin="181,144,0,0" VerticalAlignment="Top"/>
-        <local:LogicGate HorizontalAlignment="Left" Margin="305,144,0,0" VerticalAlignment="Top"/>
-        <local:LogicGate HorizontalAlignment="Left" Margin="423,146,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="64,78,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="181,78,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="305,78,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="423,80,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="64,164,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="181,164,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="305,164,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="423,166,0,0" VerticalAlignment="Top"/>
         <local:LogicGate HorizontalAlignment="Left" Margin="64,275,0,0" VerticalAlignment="Top"/>
         <local:LogicGate HorizontalAlignment="Left" Margin="181,275,0,0" VerticalAlignment="Top"/>
         <local:LogicGate HorizontalAlignment="Left" Margin="305,275,0,0" VerticalAlignment="Top"/>
@@ -28,5 +29,13 @@
         <local:LogicGate HorizontalAlignment="Left" Margin="181,420,0,0" VerticalAlignment="Top"/>
         <local:LogicGate HorizontalAlignment="Left" Margin="305,420,0,0" VerticalAlignment="Top"/>
         <local:LogicGate HorizontalAlignment="Left" Margin="423,422,0,0" VerticalAlignment="Top"/>
+        <local:OutputToggle HorizontalAlignment="Left" Margin="305,558,0,0" VerticalAlignment="Top"/>
+        <local:InputPixel HorizontalAlignment="Left" Margin="581,508,0,0" VerticalAlignment="Top"/>
+        <local:InputHexDisplay HorizontalAlignment="Left" Margin="564,646,0,0" VerticalAlignment="Top"/>
+        <local:OutputToggle HorizontalAlignment="Left" Margin="305,611,0,0" VerticalAlignment="Top"/>
+        <local:OutputToggle HorizontalAlignment="Left" Margin="305,665,0,0" VerticalAlignment="Top"/>
+        <local:OutputToggle HorizontalAlignment="Left" Margin="305,720,0,0" VerticalAlignment="Top"/>
+        <local:OutputConstant HorizontalAlignment="Left" Margin="64,788,0,0" VerticalAlignment="Top"/>
+        <local:OutputConstant HorizontalAlignment="Left" Margin="64,854,0,0" VerticalAlignment="Top"/>
     </Grid>
 </Window>

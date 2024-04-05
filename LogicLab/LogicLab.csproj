@@ -11,7 +11,11 @@
   <ItemGroup>
     <None Remove="AND Gate.png" />
     <None Remove="Buffer Gate.png" />
-    <None Remove="Input.png" />
+    <None Remove="EditorUI\Buffer Gate.png" />
+    <None Remove="Images\AND Gate.png" />
+    <None Remove="Images\Buffer Gate.png" />
+    <None Remove="Images\XOR Gate.png" />
+    <None Remove="OnOff.png" />
     <None Remove="Output.png" />
     <None Remove="XOR Gate.png" />
   </ItemGroup>
@@ -31,11 +35,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="AND Gate.png" />
-    <Resource Include="Buffer Gate.png" />
-    <Resource Include="Input.png" />
-    <Resource Include="Output.png" />
-    <Resource Include="XOR Gate.png" />
+    <Resource Include="EditorUI\Buffer Gate.png" />
+    <Resource Include="Images\AND Gate.png" />
+    <Resource Include="Images\Buffer Gate.png" />
+    <Resource Include="Images\XOR Gate.png" />
+    <Resource Include="Images\OnOff.png" />
+    <Resource Include="Images\Output.png" />
   </ItemGroup>
 
 </Project>

@@ -1,14 +1,18 @@
 ﻿using System.Windows;
 using System.Windows.Input;
+using LogicLab.Component;
+using LogicLab.EditorUI;
 
 namespace LogicLab;
 
 public partial class MainWindow : Window
 {
+    private CreationMenu creationMenu;
+
     public MainWindow()
     {
         InitializeComponent();
-        ComponentSelector.Grid = MainGrid;
+        ComponentSelector.MainGrid = MainGrid;
         WindowState = WindowState.Maximized;
     }
     private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
@@ -40,9 +44,9 @@ public partial class MainWindow : Window
         switch (e.Key)
         {
         case Key.A: ComponentSelector.AlignLeft();   break;
-        case Key.W: ComponentSelector.AlignUp();     break;
+        case Key.W: ComponentSelector.AlignTop();    break;
         case Key.D: ComponentSelector.AlignRight();  break;
-        case Key.S: ComponentSelector.AlignDown();   break;
+        case Key.S: ComponentSelector.AlignBottom(); break;
         case Key.C: ComponentSelector.AlignCenter(); break;
         case Key.M: ComponentSelector.AlignMiddle(); break;
         default: break;
@@ -52,5 +56,29 @@ public partial class MainWindow : Window
     private void MainGrid_KeyDown(object sender, KeyEventArgs e)
     {
         // TODO:: Delete me
+    }
+
+    private void MainGrid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        if (e.OriginalSource != MainGrid)
+            return;
+        OpenCreationMenu(e.GetPosition(this));
+    }
+
+    public void OpenCreationMenu(Point point, EPortType? portType = null)
+    {
+        if (creationMenu != null)
+            MainGrid.Children.Remove(creationMenu);
+
+        creationMenu = new CreationMenu();
+        MainGrid.Children.Add(creationMenu);
+        creationMenu.SetPosition(point);
+
+        if (portType == null)
+            return;
+
+        if (portType == EPortType.Input)
+             creationMenu.HideInput();
+        else creationMenu.HideOutput();
     }
 }//50, 16
