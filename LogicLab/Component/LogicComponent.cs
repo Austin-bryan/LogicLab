@@ -26,8 +26,12 @@ public abstract partial class LogicComponent : LabComponent
     private IOPort outputPort;
     private readonly List<IOPort> inputPorts = [];
 
+    private static int count = 0;
+    public int id {  get; private set; }
+
     public LogicComponent() : base()
     {
+        id = count++;
         Dragger = new ComponentDragger(this);   // Enables dragging
         BackgroundSprite = new()
         {
@@ -62,7 +66,7 @@ public abstract partial class LogicComponent : LabComponent
         BeginShadowAnimation(highlight, shadow);
         ComponentSelector.Deselect(this);
     }
-    public virtual void OnInputChange(IOPort changedPort) { }
+    public virtual void OnInputChange(IOPort changedPort, List<LogicComponent> propagationHistory) { }
     public void OnDrag(MouseEventArgs e)
     {
         InputPorts.ForEach(io => io.OnDrag());

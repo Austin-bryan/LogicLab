@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="650" Width="993">
     <Grid x:Name="MainGrid" Background="#FF232323" MouseDown="Grid_MouseDown" MouseMove="MainGrid_MouseMove" MouseUp="MainGrid_MouseUp" Margin="0,0,-278,-268" PreviewKeyDown="MainGrid_PreviewKeyDown" KeyDown="MainGrid_KeyDown" MouseRightButtonDown="MainGrid_MouseRightButtonDown">
-        <Label x:Name="DebugLabel" HorizontalAlignment="Left" Margin="416,10,0,0" VerticalAlignment="Top" Foreground="White" Width="1217" Height="23" FontSize="10"/>
+        <Label x:Name="DebugLabel" HorizontalAlignment="Left" Margin="416,10,0,0" VerticalAlignment="Top" Foreground="White" Width="1217" Height="431" FontSize="10"/>
         <local:LogicGate HorizontalAlignment="Left" Margin="18,15,0,0" VerticalAlignment="Top"/>
         <local:LogicGate HorizontalAlignment="Left" Margin="115,15,0,0" VerticalAlignment="Top"/>
         <local:LogicGate HorizontalAlignment="Left" Margin="215,15,0,0" VerticalAlignment="Top"/>

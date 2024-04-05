@@ -6,6 +6,7 @@ using System.Collections.Immutable;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Animation;
 using LogicLab.Component;
+using System.Diagnostics;
 
 namespace LogicLab;
 
@@ -22,6 +23,21 @@ public partial class IOPort : UserControl
 
     public void SetSignal(bool? value, List<LogicComponent> propagationHistory)
     {
+        if (propagationHistory.Count == 0)
+            owningComponent.MainWindow().DebugLabel.Content += "\n";
+        owningComponent.MainWindow().DebugLabel.Content += " :" + propagationHistory.Count.ToString() + ", " + owningComponent.id + ": ";
+        //owningComponent.MainWindow().DebugLabel.Content += "(" + owningComponent.ID + ")";
+
+        StackTrace stackTrace = new(); // get call stack
+        StackFrame[] stackFrames = stackTrace.GetFrames();  // get method calls (frames)
+
+        // write call stack method names
+        foreach (StackFrame stackFrame in stackFrames)
+        {
+            //owningComponent.MainWindow().DebugLabel.Content += stackFrame.GetMethod().Name.ToString() + " ";
+        }
+        //owningComponent.MainWindow().DebugLabel.Content += "\n";
+
         if (propagationHistory.Contains(owningComponent))
         {
             //"Exiting".Show();
@@ -39,10 +55,12 @@ public partial class IOPort : UserControl
     private async void ProcessSignalAsync(bool? signal, List<LogicComponent> propagationHistory)
     {
         if (portType != EPortType.Output)
-            owningComponent.OnInputChange(this);        
+            owningComponent.OnInputChange(this, propagationHistory);        
+            //owningComponent.OutputPort.SetSignal(OutputSignal, []);
+
         else
         {
-            await Task.Delay(1000);
+            await Task.Delay(100);
             foreach (var port in ConnectedPorts)
             {
                 if (port.portType == EPortType.Input)
@@ -176,10 +194,12 @@ public partial class IOPort : UserControl
         wires.Add(activeWire);
 
         if (activeWire.Output != null)
+        {
             SetSignal(activeWire.Output.GetSignal(), []);
-        activeWire.Input?.SetSignal(GetSignal(), []);
+        }
+        //activeWire.Input?.SetSignal(GetSignal(), []);
 
-        owningComponent.OnInputChange(this);
+        //owningComponent.OnInputChange(this);
         activeWire.Draw(WireConnection, GetSignal());
 
         static void RemoveWires(IOPort port)

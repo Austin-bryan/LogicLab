@@ -1,4 +1,6 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Reflection.Metadata.Ecma335;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -53,7 +55,10 @@ public partial class LogicGate : LogicComponent
         GateType = !GateType;
         NegateDot.Visibility = GateType.IsNegative() ? Visibility.Visible : Visibility.Hidden;
     }
-    public override void OnInputChange(IOPort changedPort) => OutputPort.SetSignal(OutputSignal, []);
+    public override void OnInputChange(IOPort changedPort, List<LogicComponent> propagationHistory)
+    {
+        OutputPort.SetSignal(OutputSignal, propagationHistory);
+    }   
 
     // Forward events to Logic Component to get highlight and drop shadow features.
     protected override void Component_MouseDown (object sender, MouseButtonEventArgs e) => base.Component_MouseDown(sender, e);
