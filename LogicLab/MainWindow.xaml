@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="650" Width="993">
     <Grid x:Name="MainGrid" Background="#FF232323" MouseDown="Grid_MouseDown" MouseMove="MainGrid_MouseMove" MouseUp="MainGrid_MouseUp" Margin="0,0,-278,-268" PreviewKeyDown="MainGrid_PreviewKeyDown" KeyDown="MainGrid_KeyDown" MouseRightButtonDown="MainGrid_MouseRightButtonDown">
-        <Label x:Name="DebugLabel" HorizontalAlignment="Left" Margin="416,10,0,0" VerticalAlignment="Top" Foreground="White" Width="1217" Height="431" FontSize="10"/>
+        <Label x:Name="DebugLabel" HorizontalAlignment="Left" Margin="416,10,0,0" VerticalAlignment="Top" Foreground="White" Width="1505" Height="431" FontSize="10"/>
         <local:LogicGate HorizontalAlignment="Left" Margin="18,15,0,0" VerticalAlignment="Top"/>
         <local:LogicGate HorizontalAlignment="Left" Margin="115,15,0,0" VerticalAlignment="Top"/>
         <local:LogicGate HorizontalAlignment="Left" Margin="215,15,0,0" VerticalAlignment="Top"/>
@@ -29,12 +29,12 @@
         <local:LogicGate HorizontalAlignment="Left" Margin="115,420,0,0" VerticalAlignment="Top"/>
         <local:LogicGate HorizontalAlignment="Left" Margin="215,420,0,0" VerticalAlignment="Top"/>
         <local:LogicGate HorizontalAlignment="Left" Margin="317,422,0,0" VerticalAlignment="Top"/>
-        <local:OutputToggle HorizontalAlignment="Left" Margin="305,558,0,0" VerticalAlignment="Top"/>
+        <local:OutputToggle HorizontalAlignment="Left" Margin="22,559,0,0" VerticalAlignment="Top"/>
         <local:InputPixel HorizontalAlignment="Left" Margin="581,508,0,0" VerticalAlignment="Top"/>
         <local:InputHexDisplay HorizontalAlignment="Left" Margin="564,646,0,0" VerticalAlignment="Top"/>
-        <local:OutputToggle HorizontalAlignment="Left" Margin="305,611,0,0" VerticalAlignment="Top"/>
-        <local:OutputToggle HorizontalAlignment="Left" Margin="305,665,0,0" VerticalAlignment="Top"/>
-        <local:OutputToggle HorizontalAlignment="Left" Margin="305,720,0,0" VerticalAlignment="Top"/>
+        <local:OutputToggle HorizontalAlignment="Left" Margin="22,612,0,0" VerticalAlignment="Top"/>
+        <local:OutputToggle HorizontalAlignment="Left" Margin="22,666,0,0" VerticalAlignment="Top"/>
+        <local:OutputToggle HorizontalAlignment="Left" Margin="22,721,0,0" VerticalAlignment="Top"/>
         <local:OutputConstant HorizontalAlignment="Left" Margin="64,788,0,0" VerticalAlignment="Top"/>
         <local:OutputConstant HorizontalAlignment="Left" Margin="64,854,0,0" VerticalAlignment="Top"/>
     </Grid>

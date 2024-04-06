@@ -58,7 +58,12 @@ public partial class LogicGate : LogicComponent
     public override void OnInputChange(IOPort changedPort, List<IOPort> propagationHistory)
     {
         OutputPort.SetSignal(OutputSignal, propagationHistory);
-    }   
+    }
+    public override void ShowSignal(bool? signal)
+    {
+        base.ShowSignal(OutputSignal);
+    }
+
 
     // Forward events to Logic Component to get highlight and drop shadow features.
     protected override void Component_MouseDown (object sender, MouseButtonEventArgs e) => base.Component_MouseDown(sender, e);
