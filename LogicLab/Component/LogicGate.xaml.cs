@@ -55,15 +55,8 @@ public partial class LogicGate : LogicComponent
         GateType = !GateType;
         NegateDot.Visibility = GateType.IsNegative() ? Visibility.Visible : Visibility.Hidden;
     }
-    public override void OnInputChange(IOPort changedPort, List<IOPort> propagationHistory)
-    {
-        OutputPort.SetSignal(OutputSignal, propagationHistory);
-    }
-    public override void ShowSignal(bool? signal)
-    {
-        base.ShowSignal(OutputSignal);
-    }
-
+    public override void OnInputChange(IOPort changedPort, List<IOPort> propagationHistory) => OutputPort.SetSignal(OutputSignal, propagationHistory);
+    public override void ShowSignal(bool? signal) => base.ShowSignal(OutputSignal);
 
     // Forward events to Logic Component to get highlight and drop shadow features.
     protected override void Component_MouseDown (object sender, MouseButtonEventArgs e) => base.Component_MouseDown(sender, e);
@@ -78,6 +71,11 @@ public partial class LogicGate : LogicComponent
     private void AlignCenter(object sender, RoutedEventArgs e) => ComponentSelector.AlignCenter();
 
     // Austin
+    private void ShowImage()
+    {
+        Sprite.Fill = GateType.GetImage();
+        NegateDot.Visibility = GateType.IsNegative() ? Visibility.Visible : Visibility.Hidden;
+    }
     private void SetInputAmount(int amount)
     {
         if (GateType.IsSingleInput())   // Force NOT and BUFFER 1 input
@@ -92,11 +90,6 @@ public partial class LogicGate : LogicComponent
 
         for (int i = 0; i < inputCount; i++)
             AddInputPort(InputPanel);
-    }
-    private void ShowImage()
-    {
-        Sprite.Fill = GateType.GetImage();
-        NegateDot.Visibility = GateType.IsNegative() ? Visibility.Visible : Visibility.Hidden;
     }
     private void Gate_MouseMove(object sender, MouseButtonEventArgs e)
     {
@@ -147,7 +140,7 @@ public partial class LogicGate : LogicComponent
              Component_MouseDown(sender, e);
         else (isResizing, startResize) = (true, e.GetPosition(this));
     }
-    private void Background_MouseUp(object sender, MouseButtonEventArgs e)
+    private void Background_MouseUp  (object sender, MouseButtonEventArgs e)
     {
         if (!mouseDown)
             return;

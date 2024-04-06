@@ -56,8 +56,6 @@ public partial class IOPort : UserControl
     {
         if (portType != EPortType.Output)
             owningComponent.OnInputChange(this, propagationHistory);        
-            //owningComponent.OutputPort.SetSignal(OutputSignal, []);
-
         else
         {
             await Task.Delay(100);
