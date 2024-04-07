@@ -65,7 +65,7 @@ public readonly struct ELogicGate
 
         string s = "";  
 
-        signals.ForEach(x => s += x);
+        signals.ForEach(x => s += (x.ToString() ?? "null"));
 
         //s.Show();
 
@@ -74,7 +74,8 @@ public readonly struct ELogicGate
             LogicGateValue.Buffer => signals[0] == true,
             LogicGateValue.AND    => signals.All(b => b == true),
             LogicGateValue.OR     => signals.Any(b => b == true),
-            LogicGateValue.XOR    => signals.Contains(null) ? null : signals
+            LogicGateValue.XOR    => signals
+                                            .Contains(null) ? null : signals
                                             .Aggregate(false, (acc, curr) => acc ^ curr == true),
             //LogicGateValue.XOR    => signals.Where(signal => signal != null)
             LogicGateValue.NOT  => !Buffer.ApplyGate(signals),
