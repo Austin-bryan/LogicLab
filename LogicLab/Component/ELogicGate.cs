@@ -57,6 +57,7 @@ public readonly struct ELogicGate
     {
         if (this == Buffer && signals[0] == null)
             return false;
+
         if (signals.All(b => b == null))
             return null;
 
@@ -64,9 +65,7 @@ public readonly struct ELogicGate
                        .Aggregate(false, (acc, curr) => acc ^ curr == true);
 
         string s = "";  
-
         signals.ForEach(x => s += (x.ToString() ?? "null"));
-
         //s.Show();
 
         return (LogicGateValue)value switch

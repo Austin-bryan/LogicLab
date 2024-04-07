@@ -207,7 +207,7 @@ public  partial class IOPort : UserControl
         if (!wires.Contains(wire))
             wires.Add(wire);
     }
-    private void Sprite_MouseUp(object sender, MouseButtonEventArgs e)
+    private async void Sprite_MouseUp(object sender, MouseButtonEventArgs e)
     {
         if (activeWire == null)
             return;
@@ -218,9 +218,9 @@ public  partial class IOPort : UserControl
 
         ShowSprite(false);
 
-        if (portType == EPortType.Input)
+        if (activeWire.Input == null)   // This is a input port
             RemoveWires(this);
-        else   
+        else   // This is an output port
         {
             RemoveWires(activeWire.Input);
             activeWire.Input.wires.Add(activeWire);
@@ -236,10 +236,12 @@ public  partial class IOPort : UserControl
             owningComponent.MainWindow().DebugLabel.Content += "\n";
             SetSignal(activeWire.Output.GetSignal(), []);
         }
-        //activeWire.Input?.SetSignal(GetSignal(), []);
+        activeWire.Input?.SetSignal(GetSignal(), []);
 
         //owningComponent.OnInputChange(this);
         activeWire.Draw(WireConnection, GetSignal());
+
+        //activeWire.Input?.owningComponent.ShowSignal(true);
 
         static void RemoveWires(IOPort port)
         {

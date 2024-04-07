@@ -1,7 +1,7 @@
-﻿using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media.Effects;
+﻿using System.Windows.Input;
+using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Effects;
 
 namespace LogicLab.Component;
 
