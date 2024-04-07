@@ -50,7 +50,7 @@ public partial class LogicGate : LogicComponent
         GateType = !GateType;
         NegateDot.Visibility = GateType.IsNegative() ? Visibility.Visible : Visibility.Hidden;
     }
-    public override void OnInputChange(IOPort changedPort, List<(IOPort port, bool? signal)> propagationHistory)
+    public override void OnInputChange(IOPort changedPort, List<SignalPath> propagationHistory)
     {
         //this.MainWindow().DebugLabel.Content += $"<{OutputSignal}>";
         OutputPort.SetSignal(OutputSignal, propagationHistory);

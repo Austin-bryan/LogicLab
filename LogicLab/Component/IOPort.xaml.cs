@@ -25,7 +25,7 @@ public  partial class IOPort : UserControl
 
     private int debug = 0;
 
-    public async void SetSignal(bool? value, List<(IOPort port, bool? signal)> propagationHistory)
+    public async void SetSignal(bool? value, List<SignalPath> propagationHistory)
     {
         //if (propagationHistory.Count == 0)
         //    owningComponent.MainWindow().DebugLabel.Content += "\n";
@@ -49,23 +49,43 @@ public  partial class IOPort : UserControl
         {
             return;
         }
-        if (portType == EPortType.Input && propagationHistory.Contains((this, value)))
+
+        SignalPath currentPath = new();
+        if (propagationHistory.Count != 0)
         {
-            owningComponent.MainWindow().DebugLabel.Content += "Returned: " + ID + ", ";
+            // Copy the last path to continue from there
+            var lastPath = propagationHistory.Last();
+            currentPath.AddRange(lastPath);
+        }
+        currentPath.AddStep(this, value);
+
+        //owningComponent.MainWindow().DebugLabel.Content += "\n";
+        foreach (var path in propagationHistory)
+        {
+            if (currentPath.Equals(path))
+            {
+                owningComponent.MainWindow().DebugLabel.Content += "Loop detected: " + ID + ", ";
+                return;
+            }
+        }
+
+        //if (portType == EPortType.Input && propagationHistory.Contains((this, value)))
+        {
+            //owningComponent.MainWindow().DebugLabel.Content += "Returned: " + ID + ", ";
             //"Exiting".Show();
             //owningComponent.MainWindow().DebugLabel.Content += "e";
             //await Task.Delay(100);
             //return;
         }
 
-        propagationHistory.Add((this, value));
+        propagationHistory.Add(currentPath);  
         _signal = value;
         owningComponent.ShowSignal(value);
         ProcessSignalAsync(value, propagationHistory);
     }
     public bool Connectionless => wires.Count == 0;
 
-    private async void ProcessSignalAsync(bool? signal, List<(IOPort port, bool? signal)> propagationHistory)
+    private async void ProcessSignalAsync(bool? signal, List<SignalPath> propagationHistory)
     {
         if (portType == EPortType.Input)
             owningComponent.OnInputChange(this, propagationHistory);        
