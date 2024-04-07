@@ -74,12 +74,13 @@ public readonly struct ELogicGate
             LogicGateValue.Buffer => signals[0] == true,
             LogicGateValue.AND    => signals.All(b => b == true),
             LogicGateValue.OR     => signals.Any(b => b == true),
-            LogicGateValue.XOR    => signals.Where(signal => signal != null)
+            LogicGateValue.XOR    => signals.Contains(null) ? null : signals
                                             .Aggregate(false, (acc, curr) => acc ^ curr == true),
+            //LogicGateValue.XOR    => signals.Where(signal => signal != null)
             LogicGateValue.NOT  => !Buffer.ApplyGate(signals),
-            LogicGateValue.NAND => !AND.ApplyGate(signals),
-            LogicGateValue.NOR  => !OR .ApplyGate(signals),
-            LogicGateValue.XNOR => !XOR.ApplyGate(signals),
+            LogicGateValue.NAND => !AND   .ApplyGate(signals),
+            LogicGateValue.NOR  => !OR    .ApplyGate(signals),
+            LogicGateValue.XNOR => !XOR   .ApplyGate(signals),
             _ => throw new InvalidOperationException("Invalid logic gate"),
         };
     }

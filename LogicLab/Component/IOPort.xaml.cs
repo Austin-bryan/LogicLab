@@ -25,6 +25,8 @@ public  partial class IOPort : UserControl
 
     private int debug = 0;
 
+    private static int loopbreak = 0;
+
     public async void SetSignal(bool? value, List<SignalPath> propagationHistory)
     {
         //if (propagationHistory.Count == 0)
@@ -69,6 +71,7 @@ public  partial class IOPort : UserControl
             }
         }
 
+
         //if (portType == EPortType.Input && propagationHistory.Contains((this, value)))
         {
             //owningComponent.MainWindow().DebugLabel.Content += "Returned: " + ID + ", ";
@@ -77,6 +80,8 @@ public  partial class IOPort : UserControl
             //await Task.Delay(100);
             //return;
         }
+        if (loopbreak++ > 1000)
+            return;
 
         propagationHistory.Add(currentPath);  
         _signal = value;
@@ -242,7 +247,14 @@ public  partial class IOPort : UserControl
             port.wires.Clear();
         }
     }
-    public void RefreshWire() => wires.ForEach(w => w.Draw(WireConnection));
+    public void RefreshWire()
+    {
+        wires.ForEach(w =>
+        {
+            bool? signal = w.Output == null ? (w.Input?.GetSignal()) : (w.Output?.GetSignal());
+            w.Draw(WireConnection, signal);
+        });
+    }
 
     private void ShowSprite(bool visible)
     {
@@ -270,9 +282,12 @@ public  partial class IOPort : UserControl
         if (wireIsHalfConneceted)
         {
             //this.MainWindow().OpenCreationMenu(PointToScreen(e.GetPosition(this)), portType);
-            activeWire?.Remove();
-            wires.Remove(activeWire);
-            activeWire = null;
+            if (activeWire != null)
+            {
+                activeWire.Remove();
+                wires.Remove(activeWire);
+                activeWire = null;
+            }
             ShowSprite(true);
         }
     }

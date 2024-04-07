@@ -58,7 +58,11 @@ public abstract partial class LogicComponent : LabComponent
     }
     public override void ShowSignal(bool? signal)
     {
-        Color targetColor = signal == true ? Color.FromRgb(150, 150, 30) : Color.FromArgb(255, 25, 25, 25);
+        Color targetColor = signal == true
+            ? Color.FromRgb(150, 150, 30)
+            : signal == null
+            ? Color.FromRgb(200, 50, 50)
+            : Color.FromRgb(25, 25, 25);
         BackgroundSprite.Fill.BeginAnimation(SolidColorBrush.ColorProperty, new ColorAnimation(targetColor, TimeSpan.FromSeconds(0.25)));
             
         OutputPort?.RefreshWire();
