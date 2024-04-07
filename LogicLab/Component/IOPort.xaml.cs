@@ -13,57 +13,70 @@ namespace LogicLab;
 public enum EPortType { Input, Output }
 
 // Austin (entire class)     
-public partial class IOPort : UserControl
+public  partial class IOPort : UserControl
 {
     public Point WireConnection => PointToScreen(new(
                 Sprite.Margin.Left + (portType == EPortType.Input ? + (Parent is StackPanel _ ? ActualWidth / 2 : ActualWidth / 4) : 0),
                 Sprite.Margin.Right + ActualHeight / 2));
+    private static int count;
+    private int ID;
 
     public bool? GetSignal() => _signal;
 
-    public void SetSignal(bool? value, List<IOPort> propagationHistory)
+    private int debug = 0;
+
+    public async void SetSignal(bool? value, List<(IOPort port, bool? signal)> propagationHistory)
     {
-        if (propagationHistory.Count == 0)
-            owningComponent.MainWindow().DebugLabel.Content += "\n";
-        owningComponent.MainWindow().DebugLabel.Content += " :" + propagationHistory.Count.ToString() + ", " + owningComponent.id + ": ";
+        //if (propagationHistory.Count == 0)
+        //    owningComponent.MainWindow().DebugLabel.Content += "\n";
+        //owningComponent.MainWindow().DebugLabel.Content += " :" + propagationHistory.Count.ToString() + ", " + owningComponent.id + ": ";
         //owningComponent.MainWindow().DebugLabel.Content += "(" + owningComponent.ID + ")";
 
         StackTrace stackTrace = new(); // get call stack
         StackFrame[] stackFrames = stackTrace.GetFrames();  // get method calls (frames)
 
         // write call stack method names
-        foreach (StackFrame stackFrame in stackFrames)
-        {
+        //foreach (StackFrame stackFrame in stackFrames)
+        //{
             //owningComponent.MainWindow().DebugLabel.Content += stackFrame.GetMethod().Name.ToString() + " ";
-        }
+        //}
         //owningComponent.MainWindow().DebugLabel.Content += "\n";
 
-        if (propagationHistory.Contains(this))
+        
+        owningComponent.MainWindow().DebugLabel.Content += "ID: " + ID + ", ";
+        
+        if (value == _signal) 
         {
-            //"Exiting".Show();
-            owningComponent.MainWindow().DebugLabel.Content += "e";
             return;
         }
+        if (portType == EPortType.Input && propagationHistory.Contains((this, value)))
+        {
+            owningComponent.MainWindow().DebugLabel.Content += "Returned: " + ID + ", ";
+            //"Exiting".Show();
+            //owningComponent.MainWindow().DebugLabel.Content += "e";
+            //await Task.Delay(100);
+            //return;
+        }
 
-        propagationHistory.Add(this);
+        propagationHistory.Add((this, value));
         _signal = value;
         owningComponent.ShowSignal(value);
         ProcessSignalAsync(value, propagationHistory);
     }
     public bool Connectionless => wires.Count == 0;
 
-    private async void ProcessSignalAsync(bool? signal, List<IOPort> propagationHistory)
+    private async void ProcessSignalAsync(bool? signal, List<(IOPort port, bool? signal)> propagationHistory)
     {
-        if (portType != EPortType.Output)
+        if (portType == EPortType.Input)
             owningComponent.OnInputChange(this, propagationHistory);        
-        else
+        else  // If Output
         {
-            await Task.Delay(100);
+            //await Task.Delay(100);
             foreach (var port in ConnectedPorts)
             {
                 if (port.portType == EPortType.Input)
                 {
-                    owningComponent.MainWindow().DebugLabel.Content += propagationHistory.Count.ToString();
+                    //owningComponent.MainWindow().DebugLabel.Content += propagationHistory.Count.ToString();
                     port.SetSignal(signal, propagationHistory);
                 }
             }
@@ -113,6 +126,8 @@ public partial class IOPort : UserControl
     public IOPort(EPortType portType, LogicComponent owningComponent)
     {
         InitializeComponent();
+        ID = count++;
+        IDLabel.Content = ID;
 
         this.owningComponent = owningComponent;
         idleColor            = new SolidColorBrush(Color.FromRgb(9, 180, 255));
@@ -193,6 +208,7 @@ public partial class IOPort : UserControl
 
         if (activeWire.Output != null)
         {
+            owningComponent.MainWindow().DebugLabel.Content += "\n";
             SetSignal(activeWire.Output.GetSignal(), []);
         }
         //activeWire.Input?.SetSignal(GetSignal(), []);

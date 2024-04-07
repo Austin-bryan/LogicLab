@@ -7,11 +7,16 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Loaded="Grid_Loaded">
-        <Rectangle x:Name="OverlapDetector" HorizontalAlignment="Left" Height="20" Stroke="Black" VerticalAlignment="Top" Width="40" StrokeThickness="0" Fill="Transparent" Cursor="Cross" MouseEnter="Sprite_MouseEnter" MouseLeave="Sprite_MouseLeave" MouseDown="Sprite_MouseDown" MouseUp="Sprite_MouseUp" OpacityMask="#7F000000"/>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="44*"/>
+        </Grid.RowDefinitions>
+        <Rectangle x:Name="OverlapDetector" HorizontalAlignment="Left" Height="20" Stroke="Black" VerticalAlignment="Top" Width="40" StrokeThickness="0" Fill="Transparent" Cursor="Cross" MouseEnter="Sprite_MouseEnter" MouseLeave="Sprite_MouseLeave" MouseDown="Sprite_MouseDown" MouseUp="Sprite_MouseUp" OpacityMask="#7F000000" Grid.RowSpan="2"/>
 
-        <Rectangle x:Name="Sprite" HorizontalAlignment="Left" Height="12" Stroke="Black" VerticalAlignment="Top" Width="12" StrokeThickness="0" Fill="#FF00CAFF" Margin="14,4,0,0" Cursor="Cross" MouseEnter="Sprite_MouseEnter" MouseLeave="Sprite_MouseLeave" MouseDown="Sprite_MouseDown" MouseUp="Sprite_MouseUp"/>
-        <Label x:Name="DebugLabel" Content="X" HorizontalAlignment="Left" Margin="1,-1,0,0" VerticalAlignment="Top" FontSize="9" Foreground="White" Visibility="Hidden"/>
-        <Ellipse x:Name="SignalShow" HorizontalAlignment="Left" Height="13" Margin="1,4,0,0" Stroke="Black" VerticalAlignment="Top" Width="13" Fill="Black" Visibility="Hidden"/>
+        <Rectangle x:Name="Sprite" HorizontalAlignment="Left" Height="12" Stroke="Black" VerticalAlignment="Top" Width="12" StrokeThickness="0" Fill="#FF00CAFF" Margin="14,4,0,0" Cursor="Cross" MouseEnter="Sprite_MouseEnter" MouseLeave="Sprite_MouseLeave" MouseDown="Sprite_MouseDown" MouseUp="Sprite_MouseUp" Grid.RowSpan="2"/>
+        <Label x:Name="DebugLabel" Content="X" HorizontalAlignment="Left" Margin="1,-1,0,0" VerticalAlignment="Top" FontSize="9" Foreground="White" Visibility="Hidden" Grid.RowSpan="2"/>
+        <Ellipse x:Name="SignalShow" HorizontalAlignment="Left" Height="13" Margin="1,4,0,0" Stroke="Black" VerticalAlignment="Top" Width="13" Fill="Black" Visibility="Hidden" Grid.RowSpan="2"/>
+        <Label x:Name="IDLabel" Content="Label" HorizontalAlignment="Left" Margin="-30,-4,0,0" VerticalAlignment="Top" Background="#00A05252" Foreground="White" Grid.RowSpan="2"/>
 
     </Grid>
 </UserControl>

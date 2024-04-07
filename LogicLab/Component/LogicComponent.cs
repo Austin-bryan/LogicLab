@@ -31,8 +31,8 @@ public abstract partial class LogicComponent : LabComponent
 
     public LogicComponent() : base()
     {
-        id = count++;
-        Dragger = new ComponentDragger(this);   // Enables dragging
+        id               = count++;
+        Dragger          = new ComponentDragger(this);   // Enables dragging
         BackgroundSprite = new()
         {
             Width   = 50,
@@ -68,7 +68,7 @@ public abstract partial class LogicComponent : LabComponent
         BeginShadowAnimation(highlight, shadow);
         ComponentSelector.Deselect(this);
     }
-    public virtual void OnInputChange(IOPort changedPort, List<IOPort> propagationHistory) { }
+    public virtual void OnInputChange(IOPort changedPort, List<(IOPort port, bool? signal)> propagationHistory) { }
     public void OnDrag(MouseEventArgs e)
     {
         InputPorts.ForEach(io => io.OnDrag());

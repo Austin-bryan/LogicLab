@@ -59,6 +59,16 @@ public readonly struct ELogicGate
             return false;
         if (signals.All(b => b == null))
             return null;
+
+        var x = signals.Where(signal => signal != null)
+                       .Aggregate(false, (acc, curr) => acc ^ curr == true);
+
+        string s = "";  
+
+        signals.ForEach(x => s += x);
+
+        //s.Show();
+
         return (LogicGateValue)value switch
         {
             LogicGateValue.Buffer => signals[0] == true,
@@ -68,7 +78,7 @@ public readonly struct ELogicGate
                                             .Aggregate(false, (acc, curr) => acc ^ curr == true),
             LogicGateValue.NOT  => !Buffer.ApplyGate(signals),
             LogicGateValue.NAND => !AND.ApplyGate(signals),
-            LogicGateValue.NOR  => !OR.ApplyGate(signals),
+            LogicGateValue.NOR  => !OR .ApplyGate(signals),
             LogicGateValue.XNOR => !XOR.ApplyGate(signals),
             _ => throw new InvalidOperationException("Invalid logic gate"),
         };

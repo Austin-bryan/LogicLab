@@ -1,12 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Reflection.Metadata.Ecma335;
-using System.Windows;
-using System.Windows.Controls;
+﻿using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
+using System.Windows.Controls;
+using System.Collections.Immutable;
 using LogicLab.Component;
 
 namespace LogicLab;
@@ -55,7 +50,12 @@ public partial class LogicGate : LogicComponent
         GateType = !GateType;
         NegateDot.Visibility = GateType.IsNegative() ? Visibility.Visible : Visibility.Hidden;
     }
-    public override void OnInputChange(IOPort changedPort, List<IOPort> propagationHistory) => OutputPort.SetSignal(OutputSignal, propagationHistory);
+    public override void OnInputChange(IOPort changedPort, List<(IOPort port, bool? signal)> propagationHistory)
+    {
+        //this.MainWindow().DebugLabel.Content += $"<{OutputSignal}>";
+        OutputPort.SetSignal(OutputSignal, propagationHistory);
+    }
+
     public override void ShowSignal(bool? signal) => base.ShowSignal(OutputSignal);
 
     // Forward events to Logic Component to get highlight and drop shadow features.
