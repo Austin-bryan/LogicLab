@@ -14,16 +14,17 @@ namespace LogicLab;
 // Austin
 public abstract partial class LogicComponent : LabComponent
 {
-    protected ComponentDragger Dragger;
-    protected bool IsSelected                  => ComponentSelector.IsSelected(this);
-    protected IOPort InputPort                 => InputPorts[0];
-    protected IOPort OutputPort                => outputPort;
-    protected List<bool?> InputSignals         => InputPorts.Select(ip => ip.GetSignal()).ToList();
-    protected ImmutableList<IOPort> InputPorts => inputPorts.ToImmutableList();
-    protected abstract Grid ControlGrid { get; }
     public Rectangle BackgroundSprite { get; private set; }
 
-    private IOPort outputPort;
+    protected abstract Grid ControlGrid { get; }
+    protected bool IsSelected                  => ComponentSelector.IsSelected(this);
+    protected IOPort InputPort                 => InputPorts[0];
+    protected IOPort? OutputPort               => outputPort;
+    protected List<bool?> InputSignals         => InputPorts.Select(ip => ip.GetSignal()).ToList();
+    protected ImmutableList<IOPort> InputPorts => inputPorts.ToImmutableList();
+    protected ComponentDragger Dragger;
+
+    private IOPort? outputPort;
     private readonly List<IOPort> inputPorts = [];
 
     private static int count = 0;
@@ -64,7 +65,6 @@ public abstract partial class LogicComponent : LabComponent
             ? Color.FromRgb(200, 50, 50)
             : Color.FromRgb(25, 25, 25);
         BackgroundSprite.Fill.BeginAnimation(SolidColorBrush.ColorProperty, new ColorAnimation(targetColor, TimeSpan.FromSeconds(0.25)));
-            
         OutputPort?.RefreshWire();
     }
     public virtual void Deselect()

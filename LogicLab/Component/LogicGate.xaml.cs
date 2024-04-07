@@ -22,8 +22,8 @@ public partial class LogicGate : LogicComponent
     private double startHeight;                             // Logic gates grow based on input size, this caches the startsize
     private int inputCount = 2;                             // # of inputs, default is 2, but NOT and BUFFER have a min and max of 1
     private bool canResize, isResizing, mouseDown, isCreatedViaDesigner;
+    private double backgroundHeight;
     private Point startResize;
-    private IOPort outputPort;
 
     public LogicGate()
     {
@@ -108,11 +108,23 @@ public partial class LogicGate : LogicComponent
                 if (delta.Y > 0)
                 {
                     AddInputPort(InputPanel);
-                    BackgroundSprite.Height += InputPort.ActualHeight;  
+                    if (InputPanel.Children.Count == 3)
+                        BackgroundSprite.Height = 64;
+                    else
+                    {
+                        BackgroundSprite.Height += InputPort.ActualHeight;
+                    }
                 }
                 else if (TryRemoveEmptyInputPort())
                 {
-                    BackgroundSprite.Height -= InputPort.ActualHeight;
+                    if (InputPanel.Children.Count == 2)
+                         BackgroundSprite.Height = 50;
+                    else
+                    {
+                        BackgroundSprite.Height -= InputPort.ActualHeight;
+                        this.MainWindow().DebugLabel.Content += BackgroundSprite.Height.ToString();
+                    }
+
                     InputPanel.Children.ToList().OfType<IOPort>().ToList().ForEach(io => io.OnDrag());
                 }
 
