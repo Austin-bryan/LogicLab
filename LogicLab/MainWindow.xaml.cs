@@ -7,7 +7,7 @@ namespace LogicLab;
 
 public partial class MainWindow : Window
 {
-    private CreationMenu creationMenu;
+    private CreationMenu? creationMenu;
 
     public MainWindow()
     {

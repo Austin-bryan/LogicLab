@@ -70,13 +70,13 @@ public partial class Wire : LabComponent
         Point endPoint = new(Input?.WireConnection.X ?? anchor.X, Input?.WireConnection.Y - offset ?? anchor.Y - offset);
 
         double distance = CalculateDistance(startPoint, endPoint);
-        IOPort port = Output ?? Input;
+        IOPort port = Output ?? Input ?? throw new NullReferenceException("Wire has no ports attached");
 
-        (Point start, Point end) localized = (port.PointFromScreen(startPoint), port.PointFromScreen(endPoint));
+        (Point start, Point end) = (port.PointFromScreen(startPoint), port.PointFromScreen(endPoint));
 
         bool isDraggingFromInput = Output == null && Input != null;
 
-        double backwardsAlpha = isDraggingFromInput ? -localized.start.X / -localized.end.X : -localized.end.X / -localized.start.X;
+        double backwardsAlpha = isDraggingFromInput ? -start.X / -end.X : -end.X / -start.X;
         backwardsAlpha = Math.Min(backwardsAlpha, 2.0);
         backwardsAlpha = Math.Max(backwardsAlpha, 0.0);
 
@@ -108,8 +108,7 @@ public partial class Wire : LabComponent
             ? offBrush
             : errorBrush;
         mainSpline.Visibility = Visibility.Visible;
-        mainSpline.Data = pathGeometry;
-        splineCollider.Data = pathGeometry;
+        mainSpline.Data = splineCollider.Data = pathGeometry;
     }
 
     public override void ShowSignal(bool? signal)

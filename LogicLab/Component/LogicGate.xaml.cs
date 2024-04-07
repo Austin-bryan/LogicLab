@@ -96,7 +96,7 @@ public partial class LogicGate : LogicComponent
 
     }
     
-    private void Background_MouseMove(object sender, MouseEventArgs e)
+    private async void Background_MouseMove(object sender, MouseEventArgs e)
     {
         if (isResizing)
         {
@@ -109,27 +109,24 @@ public partial class LogicGate : LogicComponent
                 {
                     AddInputPort(InputPanel);
                     if (InputPanel.Children.Count == 3)
-                        BackgroundSprite.Height = 64;
-                    else
-                    {
-                        BackgroundSprite.Height += InputPort.ActualHeight;
-                    }
+                         BackgroundSprite.Height = 64;
+                    else BackgroundSprite.Height += InputPort.ActualHeight;
                 }
                 else if (TryRemoveEmptyInputPort())
                 {
                     if (InputPanel.Children.Count == 2)
                          BackgroundSprite.Height = 50;
-                    else
-                    {
-                        BackgroundSprite.Height -= InputPort.ActualHeight;
-                        this.MainWindow().DebugLabel.Content += BackgroundSprite.Height.ToString();
-                    }
+                    else BackgroundSprite.Height -= InputPort.ActualHeight;
 
                     InputPanel.Children.ToList().OfType<IOPort>().ToList().ForEach(io => io.OnDrag());
                 }
 
+
                 deltaY -= Math.Sign(deltaY) * InputPort.ActualHeight; 
                 startResize = e.GetPosition(this);
+
+                await Task.Delay(1);
+                OutputPort?.RefreshWire();
             }
         }
         else if (e.GetPosition(this).Y > ActualHeight - 10)
@@ -185,7 +182,6 @@ public partial class LogicGate : LogicComponent
     private void LogicComponent_Loaded(object sender, RoutedEventArgs e)
     {
         startHeight = 50;
-
         BackgroundSprite.MouseDown  += Background_MouseDown;
         BackgroundSprite.MouseMove  += Background_MouseMove;
         BackgroundSprite.MouseUp    += Background_MouseUp;
