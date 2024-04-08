@@ -157,7 +157,7 @@ public static class ComponentSelector
         List<LogicComponent> intersectingControls = [];
         FindIntersectingControls(MainGrid, selectionRect, intersectingControls);
 
-        //intersectingControls.ForEach(lc => lc.Select(shiftSelect: true));
+        intersectingControls.ForEach(lc => lc.Select(shiftSelect: true));
     }
 
     private static void FindIntersectingControls(DependencyObject parent, Rect selectionRect, List<LogicComponent> intersectingControls)
