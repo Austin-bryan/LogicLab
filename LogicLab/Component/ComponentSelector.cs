@@ -181,4 +181,7 @@ public static class ComponentSelector
             FindIntersectingControls(element, selectionRect, intersectingControls);
         }
     }
+
+    // Connor
+    public static void DeleteComponent() => SelectedComponents.ForEach(c => ((Grid)c.Parent).Children.Remove(c));
 }

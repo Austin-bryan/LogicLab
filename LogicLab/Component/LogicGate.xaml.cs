@@ -56,7 +56,6 @@ public partial class LogicGate : LogicComponent
         //this.MainWindow().DebugLabel.Content += $"<{OutputSignal}>";
         OutputPort?.SetSignal(OutputSignal, propagationHistory);
     }
-
     public override void ShowSignal(bool? signal) => base.ShowSignal(OutputSignal);
 
     // Forward events to Logic Component to get highlight and drop shadow features.
@@ -65,11 +64,12 @@ public partial class LogicGate : LogicComponent
     protected override void Component_MouseUp   (object sender, MouseButtonEventArgs e) => base.Component_MouseUp(sender, e);
 
     // Connor
-    private void AlignLeft  (object sender, RoutedEventArgs e) => ComponentSelector.AlignLeft();
-    private void AlignTop   (object sender, RoutedEventArgs e) => ComponentSelector.AlignTop();
-    private void AlignRight (object sender, RoutedEventArgs e) => ComponentSelector.AlignRight();
-    private void AlignBottom(object sender, RoutedEventArgs e) => ComponentSelector.AlignBottom();
-    private void AlignCenter(object sender, RoutedEventArgs e) => ComponentSelector.AlignCenter();
+    private void AlignLeft       (object sender, RoutedEventArgs e) => ComponentSelector.AlignLeft();
+    private void AlignTop        (object sender, RoutedEventArgs e) => ComponentSelector.AlignTop();
+    private void AlignRight      (object sender, RoutedEventArgs e) => ComponentSelector.AlignRight();
+    private void AlignBottom     (object sender, RoutedEventArgs e) => ComponentSelector.AlignBottom();
+    private void AlignCenter     (object sender, RoutedEventArgs e) => ComponentSelector.AlignCenter();
+    private void DeleteComponent (object sender, RoutedEventArgs e) => ComponentSelector.DeleteComponent();
 
     // Austin
     private void ShowImage()

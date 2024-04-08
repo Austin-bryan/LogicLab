@@ -16,6 +16,7 @@
             <!-- Connor -->
             <Rectangle.ContextMenu>
                 <ContextMenu>
+                    <MenuItem Header="Delete" Click="DeleteComponent"/>
                     <MenuItem Header="Align">
                         <MenuItem Header="Left" Click="AlignLeft"/>
                         <MenuItem Header="Top" Click="AlignTop"/>
