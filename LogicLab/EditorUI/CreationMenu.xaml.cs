@@ -2,6 +2,9 @@
 using Microsoft.Win32;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
 
 namespace LogicLab.EditorUI;
 
@@ -13,9 +16,12 @@ public partial class CreationMenu : UserControl
     private static List<Variant<bool, List<bool>>>? creationMenuStatus;
 
     public CreationMenu() => InitializeComponent();
+    private bool isPinned = false;
     
     public void Remove()
     {
+        if (isPinned)
+            return;
         UpdateCreationMenuStatus();
         ((Grid)Parent).Children.Remove(this);
     }
@@ -82,4 +88,26 @@ public partial class CreationMenu : UserControl
 
     public void HideOutput() => FolderPanel.Children.Remove(OutputFolder);
     public void HideInput()  => FolderPanel.Children.Remove(InputFolder);
+
+
+    private void PinSprite_MouseDown(object sender, MouseButtonEventArgs e)
+    {
+        if (PinSprite.RenderTransform as RotateTransform == null)
+        {
+            PinSprite.RenderTransform = new RotateTransform(0);
+            PinSprite.RenderTransformOrigin = new Point(0.5, 0.5); // Rotate around the center
+        }
+
+        isPinned = !isPinned;
+
+        DoubleAnimation rotateAnimation = new()
+        {
+            From           = isPinned ? 90 : 0,
+            To             = isPinned ? 0 : 90,
+            Duration       = TimeSpan.FromSeconds(0.125), 
+            EasingFunction = new QuadraticEase()
+        };
+
+        PinSprite.RenderTransform.BeginAnimation(RotateTransform.AngleProperty, rotateAnimation);
+    }
 }

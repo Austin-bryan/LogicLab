@@ -13,9 +13,9 @@
             </Rectangle.Effect>
         </Rectangle>
         <Rectangle x:Name="FolderRect" HorizontalAlignment="Left" Height="264" VerticalAlignment="Top" Width="247" Fill="#FF191919" RadiusX="8" RadiusY="8" Margin="5,31,0,0"/>
-        <Label Content="All Available Logic Components" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Width="226" Foreground="Gainsboro" FontSize="16" FontFamily="Segoe UI Light"/>
-        <Label HorizontalContentAlignment="Center" Content="Select a Logic Component" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top" Width="242" Foreground="Gainsboro" FontFamily="Segoe UI Light" FontSize="11"/>
-        <Rectangle HorizontalAlignment="Left" Height="1" VerticalAlignment="Top" Width="228" Fill="DarkGray" RadiusX="1" RadiusY="1" Margin="17,53,0,0"/>
+        <Label Content="All Available Logic Components" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Top" Width="233" Foreground="Gainsboro" FontSize="16" FontFamily="Segoe UI Light"/>
+        <Label HorizontalContentAlignment="Center" Content="Select a Logic Component" HorizontalAlignment="Left" Margin="5,30,0,0" VerticalAlignment="Top" Width="247" Foreground="Gainsboro" FontFamily="Segoe UI Light" FontSize="11"/>
+        <Rectangle HorizontalAlignment="Left" Height="1" VerticalAlignment="Top" Width="228" Fill="DarkGray" RadiusX="1" RadiusY="1" Margin="15,53,0,0"/>
 
         <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="5,59,0,0" Height="230" Width="240" HorizontalAlignment="Left" VerticalAlignment="Top">
             <StackPanel Name="FolderPanel" Margin="5,0,0,0" Width="230" HorizontalAlignment="Left" ClipToBounds="true">
@@ -24,5 +24,18 @@
                 <local:CreationFolder x:Name="InputFolder" FolderName="Input Components" HorizontalAlignment="Left"/>
             </StackPanel>
         </ScrollViewer>
+        <Rectangle x:Name="PinSprite" HorizontalAlignment="Left" Height="15" Margin="232,10,0,0" VerticalAlignment="Top" Width="15" RenderTransformOrigin="0.5,0.5" MouseDown="PinSprite_MouseDown">
+            <Rectangle.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Rectangle.RenderTransform>
+            <Rectangle.Fill>
+                <ImageBrush ImageSource="/EditorUI/Pin.png"/>
+            </Rectangle.Fill>
+        </Rectangle>
     </Grid>
 </UserControl>
