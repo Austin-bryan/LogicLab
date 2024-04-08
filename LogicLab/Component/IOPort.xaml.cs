@@ -22,9 +22,7 @@ public  partial class IOPort : UserControl
     private int ID;
 
     public bool? GetSignal() => _signal;
-
     private int debug = 0;
-
     private static int loopbreak = 0;
 
     public async void SetSignal(bool? value, List<SignalPath> propagationHistory)

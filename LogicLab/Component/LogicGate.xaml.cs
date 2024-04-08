@@ -13,6 +13,7 @@ public partial class LogicGate : LogicComponent
 {
     public ELogicGate GateType { get; private set; }
     protected override Grid ControlGrid => Grid;
+    protected override ImmutableList<IOPort> InputPorts => InputPanel.Children.ToList().OfType<IOPort>().ToImmutableList();
 
     // Austin
     private bool? OutputSignal => GateType.ApplyGate(InputSignals);
@@ -53,7 +54,7 @@ public partial class LogicGate : LogicComponent
     public override void OnInputChange(IOPort changedPort, List<SignalPath> propagationHistory)
     {
         //this.MainWindow().DebugLabel.Content += $"<{OutputSignal}>";
-        OutputPort.SetSignal(OutputSignal, propagationHistory);
+        OutputPort?.SetSignal(OutputSignal, propagationHistory);
     }
 
     public override void ShowSignal(bool? signal) => base.ShowSignal(OutputSignal);
@@ -118,12 +119,19 @@ public partial class LogicGate : LogicComponent
                          BackgroundSprite.Height = 50;
                     else BackgroundSprite.Height -= InputPort.ActualHeight;
 
+                    string s = "";
+                    InputSignals.ForEach(x => s += (x?.ToString() ?? "null") + ", ");
+
+                    this.MainWindow().DebugLabel.Content += s + "; ";
+
                     InputPanel.Children.ToList().OfType<IOPort>().ToList().ForEach(io => io.OnDrag());
                 }
 
-
                 deltaY -= Math.Sign(deltaY) * InputPort.ActualHeight; 
                 startResize = e.GetPosition(this);
+
+                ShowSignal(OutputSignal);
+                OutputPort?.SetSignal(OutputSignal, []);
 
                 await Task.Delay(1);
                 OutputPort?.RefreshWire();
