@@ -32,24 +32,17 @@ public partial class MainWindow : Window
                 ComponentSelector.MouseDown(e);
             //^^ Astin ^^
         }
-        //vv GA vv
-        mouseDown = true;
-        //^^ GA ^^
+        if (e.MiddleButton == MouseButtonState.Pressed) mouseDown = true; //GA
     }
 
     private void MainGrid_MouseMove(object sender, MouseEventArgs e)
     {
-        if (e.LeftButton == MouseButtonState.Pressed) // << GA
-        {
-            //vv Astin vv 
-            ComponentSelector.MouseMove(e);
-            //^^ Astin ^^
-        }
+        if (e.LeftButton == MouseButtonState.Pressed) /*<<GA*/ ComponentSelector.MouseMove(e); /*<<Astin*/
         //vv GA vv
         double mouseDeltaX = OldMouseX - e.GetPosition(this).X, mouseDeltaY = OldMouseY - e.GetPosition(this).Y;
         OldMouseX = e.GetPosition(this).X;
         OldMouseY = e.GetPosition(this).Y;
-        if (mouseDown)
+        if (mouseDown && e.MiddleButton == MouseButtonState.Pressed)
         {
             foreach (var item in MainGrid.Children.ToList().OfType<UserControl>())//moves all gates on grid
             {
@@ -62,10 +55,8 @@ public partial class MainWindow : Window
 
     private void MainGrid_MouseUp(object sender, MouseButtonEventArgs e)
     {
-        ComponentSelector.MouseUp(e);
-        //vv GA vv
-        mouseDown = false;
-        //^^ GA ^^
+        if (e.LeftButton == MouseButtonState.Released) /*<<GA*/ ComponentSelector.MouseUp(e); /*<<Astin*/
+        if (e.MiddleButton == MouseButtonState.Released) mouseDown = false; //GA
     }
 
     private void MainGrid_PreviewKeyDown(object sender, KeyEventArgs e)
