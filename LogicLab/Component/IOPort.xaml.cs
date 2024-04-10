@@ -94,7 +94,7 @@ public  partial class IOPort : UserControl
             owningComponent.OnInputChange(this, propagationHistory);        
         else  // If Output
         {
-            //await Task.Delay(100);
+            await Task.Delay(100);
             foreach (var port in ConnectedPorts)
             {
                 if (port.portType == EPortType.Input)
