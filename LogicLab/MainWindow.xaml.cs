@@ -117,8 +117,5 @@ public partial class MainWindow : Window
              creationMenu.HideInput();
         else creationMenu.HideOutput();
     }
-    public void CloseCreationMenu()
-    {
-        MainGrid.Children.Remove(creationMenu);
-    }
+    public void CloseCreationMenu() => MainGrid.Children.Remove(creationMenu); //GA
 }//50, 16
