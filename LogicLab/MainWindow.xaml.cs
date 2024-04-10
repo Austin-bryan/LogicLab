@@ -16,6 +16,7 @@ public partial class MainWindow : Window
         InitializeComponent();
         ComponentSelector.MainGrid = MainGrid;
         WindowState = WindowState.Maximized;
+        //DrawDotsGrid(); //Gary
     }
     private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
     {
@@ -31,8 +32,13 @@ public partial class MainWindow : Window
             if (e.OriginalSource == MainGrid)
                 ComponentSelector.MouseDown(e);
             //^^ Astin ^^
+            CloseCreationMenu(); //GA
         }
-        if (e.MiddleButton == MouseButtonState.Pressed) mouseDown = true; //GA
+        if (e.MiddleButton == MouseButtonState.Pressed)
+        {
+            mouseDown = true; //GA
+            CloseCreationMenu(); //GA
+        }
     }
 
     private void MainGrid_MouseMove(object sender, MouseEventArgs e)
@@ -110,5 +116,9 @@ public partial class MainWindow : Window
         if (portType == EPortType.Input)
              creationMenu.HideInput();
         else creationMenu.HideOutput();
+    }
+    public void CloseCreationMenu()
+    {
+        MainGrid.Children.Remove(creationMenu);
     }
 }//50, 16
