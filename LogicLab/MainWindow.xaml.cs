@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using LogicLab.Component;
 using LogicLab.EditorUI;
@@ -8,7 +9,8 @@ namespace LogicLab;
 public partial class MainWindow : Window
 {
     private CreationMenu? creationMenu;
-
+    private bool mouseDown = false;
+    private double OldMouseX = 0, OldMouseY = 0;
     public MainWindow()
     {
         InitializeComponent();
@@ -20,15 +22,52 @@ public partial class MainWindow : Window
         // Deslect if they tap on the background without the shift key
         // Checking for original source prevents this from being fired if the user clicks on a control within the grid,
         // only if they click on the grid directly
-        if (!Keyboard.Modifiers.HasFlag(ModifierKeys.Shift)
-            && e.OriginalSource == MainGrid)
-            ComponentSelector.DeselectAll();
-        if (e.OriginalSource == MainGrid)
-            ComponentSelector.MouseDown(e);
+        if (e.LeftButton == MouseButtonState.Pressed) // << GA
+        {
+            //vv Astin vv 
+            if (!Keyboard.Modifiers.HasFlag(ModifierKeys.Shift)
+                && e.OriginalSource == MainGrid)
+                ComponentSelector.DeselectAll();
+            if (e.OriginalSource == MainGrid)
+                ComponentSelector.MouseDown(e);
+            //^^ Astin ^^
+        }
+        //vv GA vv
+        mouseDown = true;
+        //^^ GA ^^
     }
 
-    private void MainGrid_MouseMove(object sender, MouseEventArgs e) => ComponentSelector.MouseMove(e);
-    private void MainGrid_MouseUp(object sender, MouseButtonEventArgs e) => ComponentSelector.MouseUp(e);
+    private void MainGrid_MouseMove(object sender, MouseEventArgs e)
+    {
+        if (e.LeftButton == MouseButtonState.Pressed) // << GA
+        {
+            //vv Astin vv 
+            ComponentSelector.MouseMove(e);
+            //^^ Astin ^^
+        }
+        //vv GA vv
+        double mouseDeltaX = OldMouseX - e.GetPosition(this).X, mouseDeltaY = OldMouseY - e.GetPosition(this).Y;
+        OldMouseX = e.GetPosition(this).X;
+        OldMouseY = e.GetPosition(this).Y;
+        if (mouseDown)
+        {
+            foreach (var item in MainGrid.Children.ToList().OfType<UserControl>())//moves all gates on grid
+            {
+                item.SubLeft(mouseDeltaX);
+                item.SubTop(mouseDeltaY);
+            }
+        }
+        //^^ GA ^^
+    }
+
+    private void MainGrid_MouseUp(object sender, MouseButtonEventArgs e)
+    {
+        ComponentSelector.MouseUp(e);
+        //vv GA vv
+        mouseDown = false;
+        //^^ GA ^^
+    }
+
     private void MainGrid_PreviewKeyDown(object sender, KeyEventArgs e)
     {
         // TODO::Delete me
