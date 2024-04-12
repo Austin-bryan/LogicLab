@@ -13,8 +13,7 @@ public partial class MainWindow : Window
 {
     private CreationMenu? creationMenu;
 
-    private bool mouseDown = false;//GA
-    private double OldMouseX = 0, OldMouseY = 0;//GA
+    private Point oldMousePos = new(0, 0);//GA
 
     public MainWindow()
     {
@@ -27,7 +26,7 @@ public partial class MainWindow : Window
         // Deslect if they tap on the background without the shift key
         // Checking for original source prevents this from being fired if the user clicks on a control within the grid,
         // only if they click on the grid directly
-        if (e.LeftButton == MouseButtonState.Pressed) // << GA
+        if (e.LeftButton == MouseButtonState.Pressed) //<<GA
         {
             // AB
             if (!Keyboard.Modifiers.HasFlag(ModifierKeys.Shift)
@@ -36,40 +35,29 @@ public partial class MainWindow : Window
             if (e.OriginalSource == MainGrid)
                 ComponentSelector.MouseDown(e);
             // /AB
-            CloseCreationMenu(e); //GA
+            CloseCreationMenu(e); //<<GA
         }
-        if (e.MiddleButton == MouseButtonState.Pressed)
-        {
-            mouseDown = true; //GA
-            CloseCreationMenu(e); //GA
-        }
+        if (e.MiddleButton == MouseButtonState.Pressed) CloseCreationMenu(e); //GA
     }
 
     private void MainGrid_MouseMove(object sender, MouseEventArgs e)
     {
-        //vv GA vv
-        double mouseDeltaX = OldMouseX - e.GetPosition(this).X, mouseDeltaY = OldMouseY - e.GetPosition(this).Y;
-        OldMouseX = e.GetPosition(this).X;
-        OldMouseY = e.GetPosition(this).Y;
-        if (mouseDown && e.MiddleButton == MouseButtonState.Pressed)
-        {
-            foreach (var item in MainGrid.Children.ToList().OfType<UserControl>())//moves all gates on grid
-            {
-                item.SubLeft(mouseDeltaX);
-                item.SubTop(mouseDeltaY);
-            }
-        }
-        //^^ GA ^^
-        if (e.LeftButton == MouseButtonState.Pressed) /*<<GA*/ ComponentSelector.MouseMove(e); /*<<Astin*/
-    }
+        //vv GA vv : this covers the panning when you click middle mouse button
+        Point mouseDelta = new(e.GetPosition(this).X - oldMousePos.X, e.GetPosition(this).Y - oldMousePos.Y); //calculates mouseDelta
+        oldMousePos = new Point(e.GetPosition(this).X, e.GetPosition(this).Y);
 
+        if (e.MiddleButton == MouseButtonState.Pressed) //checks if middle mouse is pressed
+            foreach (var item in MainGrid.Children.ToList().OfType<UserControl>()) //looks through all gates on grid
+                item.Translate(mouseDelta.X, mouseDelta.Y); //translates them by the mouse delta
+        //^^ GA ^^
+        if (e.LeftButton == MouseButtonState.Pressed) //GA
+            ComponentSelector.MouseMove(e); //AB
+    }
 
     private void MainGrid_MouseUp(object sender, MouseButtonEventArgs e)
     {
-        if (e.LeftButton == MouseButtonState.Released) /*<<GA*/ 
-            ComponentSelector.MouseUp(e); /*<<Astin*/
-        if (e.MiddleButton == MouseButtonState.Released) 
-            mouseDown = false; //GA
+        if (e.LeftButton == MouseButtonState.Released) //GA : this makes it so the selection box does not interfear with any other mouse function
+            ComponentSelector.MouseUp(e); //AB
     }
 
     private void MainGrid_PreviewKeyDown(object sender, KeyEventArgs e)
