@@ -40,7 +40,8 @@ public static class ExtensionMethods
     public static void SubBottom (this FrameworkElement control, double x) => control.AddBottom(-x);
 
     public static void SetPosition(this FrameworkElement control, Point p) => control.Margin = new Thickness(p.X, p.Y, 0, 0);
-    public static void Translate(this  FrameworkElement control, double x, double y) => control.SetPosition(new Point(control.GetLeft() + x, control.GetTop() + y)); //GA: takes 2 inputs and moves control by that amount
+    public static void Translate(this  FrameworkElement control, Point p) => control.SetPosition(new Point(control.GetLeft() + p.X, control.GetTop() + p.Y)); //GA: takes 2 inputs and moves control by that amount
+    public static void Translate(this  FrameworkElement control, double x, double y) => Translate(control, new Point(x, y)); //GA
 
     public static void Show(this object obj) => MessageBox.Show(obj.ToString());
 

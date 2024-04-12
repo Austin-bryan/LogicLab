@@ -11,8 +11,10 @@
   <ItemGroup>
     <None Remove="AND Gate.png" />
     <None Remove="Buffer Gate.png" />
+    <None Remove="Component\GridTexture1.png" />
     <None Remove="EditorUI\Buffer Gate.png" />
     <None Remove="EditorUI\Pin.png" />
+    <None Remove="GridTexture1.png" />
     <None Remove="Images\AND Gate.png" />
     <None Remove="Images\Buffer Gate.png" />
     <None Remove="Images\XOR Gate.png" />
@@ -36,8 +38,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Component\GridTexture1.png" />
     <Resource Include="EditorUI\Buffer Gate.png" />
     <Resource Include="EditorUI\Pin.png" />
+    <Resource Include="GridTexture1.png" />
     <Resource Include="Images\AND Gate.png" />
     <Resource Include="Images\Buffer Gate.png" />
     <Resource Include="Images\XOR Gate.png" />

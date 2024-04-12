@@ -4,8 +4,10 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using LogicLab.Component;
 using LogicLab.EditorUI;
+using System.Windows.Media.Imaging;
 
 namespace LogicLab;
 
@@ -20,6 +22,7 @@ public partial class MainWindow : Window
         InitializeComponent();
         ComponentSelector.MainGrid = MainGrid;
         WindowState = WindowState.Maximized;
+        DrawDotGrid();
     }
     private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
     {
@@ -47,11 +50,32 @@ public partial class MainWindow : Window
         oldMousePos = new Point(e.GetPosition(this).X, e.GetPosition(this).Y);
 
         if (e.MiddleButton == MouseButtonState.Pressed) //checks if middle mouse is pressed
-            foreach (var item in MainGrid.Children.ToList().OfType<UserControl>()) //looks through all gates on grid
-                item.Translate(mouseDelta.X, mouseDelta.Y); //translates them by the mouse delta
+        {
+            DotGridSegment.TranslateGrid(mouseDelta);//moves whole grid
+
+            foreach (var item in MainGrid.Children.ToList().OfType<UserControl>()) //looks through all gates on grid 
+                item.Translate(mouseDelta); //translates them by the mouse delta
+            foreach (var item in MainGrid.Children.ToList().OfType<DotGridSegment>())
+            {
+                item.Translate(new Point(-mouseDelta.X, -mouseDelta.Y));
+                item.UpdateGridPos();
+            }
+        }
         //^^ GA ^^
+
         if (e.LeftButton == MouseButtonState.Pressed) //GA
             ComponentSelector.MouseMove(e); //AB
+    }
+    private void DrawDotGrid()
+    {
+        foreach (DotGridSegment item in MainGrid.Children.ToList().OfType<DotGridSegment>())
+            MainGrid.Children.ToList().Remove(item); //removes all old DotGridSegments
+        for (int y = 0; y < 2; y++) 
+            for (int x = 0; x < 1; x++)
+            {
+                DotGridSegment dotGrid = new(new Point(x, y));
+                MainGrid.Children.Add(dotGrid);
+            }
     }
 
     private void MainGrid_MouseUp(object sender, MouseButtonEventArgs e)
