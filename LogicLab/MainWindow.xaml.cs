@@ -8,12 +8,24 @@ namespace LogicLab;
 public partial class MainWindow : Window
 {
     private CreationMenu? creationMenu;
+    public static bool InCommentMode { get; private set;  }
 
     public MainWindow()
     {
         InitializeComponent();
         ComponentSelector.MainGrid = MainGrid;
         WindowState = WindowState.Maximized;
+    }
+
+    private void OpenComment(object sender, RoutedEventArgs e)
+    {
+        Cursor = InCommentMode ? Cursors.Cross : Cursors.Arrow;
+        InCommentMode = !InCommentMode;
+
+        "Test".Show();
+        Comment comment = new();
+
+        MainGrid.Children.Insert(0, comment);
     }
     private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
     {

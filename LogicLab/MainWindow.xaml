@@ -37,5 +37,6 @@
         <local:OutputToggle HorizontalAlignment="Left" Margin="22,721,0,0" VerticalAlignment="Top"/>
         <local:OutputConstant HorizontalAlignment="Left" Margin="64,788,0,0" VerticalAlignment="Top"/>
         <local:OutputConstant HorizontalAlignment="Left" Margin="64,854,0,0" VerticalAlignment="Top"/>
+        <Button Content="Button" Click="OpenComment" HorizontalAlignment="Left" Height="37" VerticalAlignment="Top" Width="118" Background="#FF323232" Foreground="#FFE8E6E6"/>
     </Grid>
 </Window>

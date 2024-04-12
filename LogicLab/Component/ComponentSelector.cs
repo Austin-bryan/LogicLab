@@ -154,10 +154,19 @@ public static class ComponentSelector
         Point mouseUpPos = e.GetPosition(MainGrid);
         Rect selectionRect = new(mouseDownPos, mouseUpPos);
 
-        List<LogicComponent> intersectingControls = [];
-        FindIntersectingControls(MainGrid, selectionRect, intersectingControls);
+        if (MainWindow.InCommentMode)
+        {
+            "Else".Show();
+        }
+        else
+        // Steven's Code
+        {
+            List<LogicComponent> intersectingControls = [];
+            FindIntersectingControls(MainGrid, selectionRect, intersectingControls);
 
-        intersectingControls.ForEach(lc => lc.Select(shiftSelect: true)); 
+            intersectingControls.ForEach(lc => lc.Select(shiftSelect: true)); 
+
+        }
     }
 
     private static void FindIntersectingControls(DependencyObject parent, Rect selectionRect, List<LogicComponent> intersectingControls)
