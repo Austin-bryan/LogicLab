@@ -4,10 +4,19 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:LogicLab.Component"
-             mc:Ignorable="d" Height="1024" Width="1024">
-    <Grid>
+             mc:Ignorable="d" Height="1024" Width="1024" HorizontalAlignment="Left" VerticalAlignment="Top">
+    <Grid Width="1024" Height="1024" IsHitTestVisible="False">
         <Grid.Background>
-            <ImageBrush ImageSource="/Component/GridTexture1.png" Stretch="UniformToFill" TileMode="Tile" RenderOptions.EdgeMode="Aliased" RenderOptions.BitmapScalingMode="NearestNeighbor" />
+            <ImageBrush ImageSource="/Component/GridTexture1.png" Stretch="Fill" TileMode="Tile" RenderOptions.EdgeMode="Aliased" RenderOptions.BitmapScalingMode="NearestNeighbor" Opacity="0.5" >
+                <ImageBrush.RelativeTransform>
+                    <TransformGroup>
+                        <ScaleTransform CenterY="0.5" CenterX="0.5" ScaleX="1" ScaleY="1"/>
+                        <SkewTransform CenterX="0.5" CenterY="0.5"/>
+                        <RotateTransform CenterX="0.5" CenterY="0.5"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </ImageBrush.RelativeTransform>
+            </ImageBrush>
         </Grid.Background>
 
     </Grid>

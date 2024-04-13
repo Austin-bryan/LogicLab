@@ -16,6 +16,9 @@ public partial class MainWindow : Window
     private CreationMenu? creationMenu;
 
     private Point oldMousePos = new(0, 0);//GA
+    private bool kIsPressed = false;
+    private bool ctrlIsPressed = false;
+    private bool shiftIsPressed = false;
 
     public MainWindow()
     {
@@ -70,12 +73,20 @@ public partial class MainWindow : Window
     {
         foreach (DotGridSegment item in MainGrid.Children.ToList().OfType<DotGridSegment>())
             MainGrid.Children.ToList().Remove(item); //removes all old DotGridSegments
-        for (int y = 0; y < 2; y++) 
-            for (int x = 0; x < 1; x++)
+        
+        
+        for (int y = 0; y < 5; y += 1)
+        {
+            for (int x = 0; x < 5; x += 1)
             {
-                DotGridSegment dotGrid = new(new Point(x, y));
+                //MessageBox.Show($"Creating DotGridSegment at ({x}, {y})");
+                DotGridSegment dotGrid = new(new Point(x, y)); //(dotGrid.Width, dotGrid.Height) = (MainGrid.ActualWidth, MainGrid.ActualHeight);
                 MainGrid.Children.Add(dotGrid);
+                Panel.SetZIndex(dotGrid, -10);
+                dotGrid.UpdateGridPos();
+
             }
+        }
     }
 
     private void MainGrid_MouseUp(object sender, MouseButtonEventArgs e)
@@ -104,6 +115,7 @@ public partial class MainWindow : Window
         case Key.S: ComponentSelector.AlignBottom(); break;
         case Key.C: ComponentSelector.AlignCenter(); break;
         case Key.M: ComponentSelector.AlignMiddle(); break;
+        case Key.K: Application.Current.Shutdown(); break;
         default: break;
         }
     }
