@@ -47,18 +47,15 @@ public abstract partial class LogicComponent : LabComponent
         Deselect();
     }
 
-    public void UpdateAllWires()//GA
-    {
-        OutputPort?.RefreshWire();
-        RemoveAllWires();
-    }
-    public void RemoveAllWires()//GA
+    // GA
+    public void UpdateAllWires() => OutputPort?.RefreshWire();
+    public void RemoveAllWires() 
     {
         OutputPort?.RemoveAllWires();
         foreach (IOPort port in InputPorts)
             port.RemoveAllWires();
     }
-    public void MovementMode(bool enabled)//GA
+    public void MovementMode(bool enabled) 
     {
         if (enabled)
         {
@@ -82,12 +79,12 @@ public abstract partial class LogicComponent : LabComponent
                 OutputPort.Visibility = Visibility.Visible;
         }
     }
+    // end GA
 
     public void Select(bool shiftSelect)
     {
         if (IsSelected)
             return;
-        //"Select".Show();
         BeginShadowAnimation(shadow, highlight);
 
         if (shiftSelect)
