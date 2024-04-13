@@ -7,6 +7,10 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Loaded="Grid_Loaded">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="409*"/>
+            <ColumnDefinition Width="391*"/>
+        </Grid.ColumnDefinitions>
         <Rectangle HorizontalAlignment="Left" Height="300" VerticalAlignment="Top" Width="257" Fill="#FF006496" RadiusX="10" RadiusY="10">
             <Rectangle.Effect>
                 <DropShadowEffect BlurRadius="5" Opacity="0.5"/>
@@ -37,5 +41,8 @@
                 <ImageBrush ImageSource="/EditorUI/Pin.png"/>
             </Rectangle.Fill>
         </Rectangle>
+        <Rectangle x:Name="PinHintBackground" HorizontalAlignment="Left" Height="29" Margin="77,-34,0,0" VerticalAlignment="Top" Width="258" Fill="#FF249FA2" RadiusX="15.5" RadiusY="15.5"/>
+        <Label x:Name="PinHintLabel" Content="Pin to keep creation menu open" HorizontalAlignment="Left" VerticalContentAlignment="Center" Margin="85,-36,0,0" VerticalAlignment="Top" Width="230" Foreground="Black" FontSize="16" FontFamily="Segoe UI Light" Height="29"/>
+        <Label x:Name="PinHintClose" Content="X&#xD;&#xA;X" HorizontalAlignment="Left" VerticalContentAlignment="Center" Margin="309,-33,0,0" VerticalAlignment="Top" Width="22" Foreground="Red" FontSize="16" FontFamily="Arial" Height="27" MouseDown="Label_MouseDown"/>
     </Grid>
 </UserControl>

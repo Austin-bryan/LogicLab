@@ -1,23 +1,30 @@
-﻿using LogicLab.Component;
-using Microsoft.Win32;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using LogicLab.Component;
 
 namespace LogicLab.EditorUI;
 
 // Austin
 public partial class CreationMenu : UserControl
 {
+    private static bool showPinHint = true;
+    private static List<Variant<bool, List<bool>>>? creationMenuStatus;
     private CreationFolder directGates;
     private CreationFolder invertedGates;
-    private static List<Variant<bool, List<bool>>>? creationMenuStatus;
 
-    public CreationMenu() => InitializeComponent();
+    public CreationMenu()
+    {
+        InitializeComponent();
+
+        if (!showPinHint)
+            HidePinHint();
+    }
+
     private bool isPinned = false;
-    
+
     public void Remove()
     {
         if (isPinned)
@@ -110,4 +117,11 @@ public partial class CreationMenu : UserControl
 
         PinSprite.RenderTransform.BeginAnimation(RotateTransform.AngleProperty, rotateAnimation);
     }
+
+    private void Label_MouseDown(object sender, MouseButtonEventArgs e)
+    {
+        HidePinHint();
+        showPinHint = false;
+    }
+    private void HidePinHint() => PinHintBackground.Visibility = PinHintLabel.Visibility = PinHintClose.Visibility = Visibility.Hidden;
 }
