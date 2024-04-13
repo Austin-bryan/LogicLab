@@ -43,7 +43,12 @@ public partial class MainWindow : Window
             // /AB
             CloseCreationMenu(e); //<<GA
         }
-        if (e.MiddleButton == MouseButtonState.Pressed) CloseCreationMenu(e); //GA
+        //vv GA vv
+        if (e.MiddleButton == MouseButtonState.Pressed)
+        {
+            CloseCreationMenu(e);
+            foreach (var item in MainGrid.Children.ToList().OfType<LogicComponent>()) item.MovementMode(true);
+        }
     }
 
     private void MainGrid_MouseMove(object sender, MouseEventArgs e)
@@ -79,8 +84,7 @@ public partial class MainWindow : Window
         {
             for (int x = 0; x < 5; x += 1)
             {
-                //MessageBox.Show($"Creating DotGridSegment at ({x}, {y})");
-                DotGridSegment dotGrid = new(new Point(x, y)); //(dotGrid.Width, dotGrid.Height) = (MainGrid.ActualWidth, MainGrid.ActualHeight);
+                DotGridSegment dotGrid = new(new Point(x, y));
                 MainGrid.Children.Add(dotGrid);
                 Panel.SetZIndex(dotGrid, -10);
                 dotGrid.UpdateGridPos();
@@ -93,6 +97,8 @@ public partial class MainWindow : Window
     {
         if (e.LeftButton == MouseButtonState.Released) //GA : this makes it so the selection box does not interfear with any other mouse function
             ComponentSelector.MouseUp(e); //AB
+        if (e.MiddleButton == MouseButtonState.Released)//GA
+            foreach (var item in MainGrid.Children.ToList().OfType<LogicComponent>()) item.MovementMode(false);//GA
     }
 
     private void MainGrid_PreviewKeyDown(object sender, KeyEventArgs e)
