@@ -119,7 +119,7 @@ public partial class Wire : LabComponent
             ? Color.FromRgb(200, 200, 200)
             : Color.FromRgb(200, 50, 50);
 
-        ColorAnimation colorAnim = new(color, TimeSpan.FromSeconds(0.25));
+        ColorAnimation colorAnim = new(color, TimeSpan.FromSeconds(0.125));
         mainSpline.Stroke.BeginAnimation(SolidColorBrush.ColorProperty, colorAnim);
     }
     //public override void Deselect()

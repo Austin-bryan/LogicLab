@@ -78,9 +78,7 @@ public  partial class IOPort : UserControl
             //await Task.Delay(100);
             //return;
         }
-        if (loopbreak++ > 1000)
-            return;
-
+        
         propagationHistory.Add(currentPath);  
         _signal = value;
         owningComponent.ShowSignal(value);
@@ -100,7 +98,7 @@ public  partial class IOPort : UserControl
             owningComponent.OnInputChange(this, propagationHistory);        
         else  // If Output
         {
-            await Task.Delay(100);
+            await Task.Delay(50);
             foreach (var port in ConnectedPorts)
             {
                 if (port.portType == EPortType.Input)
