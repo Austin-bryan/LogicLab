@@ -146,6 +146,7 @@ public  partial class IOPort : UserControl
     private static Wire? activeWire;
     private bool? _signal = null;
 
+    public void RemoveAllWires() => wires.Clear(); //GA
     public void MovementMode(bool enabled)//GA
     {
         if (enabled)

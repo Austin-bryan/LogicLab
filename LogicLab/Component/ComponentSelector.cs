@@ -183,5 +183,9 @@ public static class ComponentSelector
     }
 
     // Connor
-    public static void DeleteComponent() => SelectedComponents.ForEach(c => ((Grid)c.Parent).Children.Remove(c));
+    public static void DeleteComponent()
+    {
+        foreach (var item in SelectedComponents.ToList().OfType<LogicComponent>()) item.RemoveAllWires();// << GA : this was an attempt to fix the wire not getting deleted when a component is so it crashes
+        SelectedComponents.ForEach(c => ((Grid)c.Parent).Children.Remove(c));
+    }
 }

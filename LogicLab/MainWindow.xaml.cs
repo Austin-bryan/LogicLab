@@ -25,7 +25,7 @@ public partial class MainWindow : Window
         InitializeComponent();
         ComponentSelector.MainGrid = MainGrid;
         WindowState = WindowState.Maximized;
-        DrawDotGrid();
+        InitializeDotGrid();
     }
     private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
     {
@@ -76,24 +76,21 @@ public partial class MainWindow : Window
         if (e.LeftButton == MouseButtonState.Pressed) //GA
             ComponentSelector.MouseMove(e); //AB
     }
-    private void DrawDotGrid()
+    // vv GA vv
+    private void InitializeDotGrid()
     {
         foreach (DotGridSegment item in MainGrid.Children.ToList().OfType<DotGridSegment>())
             MainGrid.Children.ToList().Remove(item); //removes all old DotGridSegments
         
-        
-        for (int y = 0; y < 5; y += 1)
-        {
-            for (int x = 0; x < 5; x += 1)
+        for (int y = 0; y < 5; y += 1) for (int x = 0; x < 5; x += 1)
             {
                 DotGridSegment dotGrid = new(new Point(x, y));
                 MainGrid.Children.Add(dotGrid);
                 Panel.SetZIndex(dotGrid, -10);
                 dotGrid.UpdateGridPos();
-
             }
-        }
     }
+    //^^ GA ^^
 
     private void MainGrid_MouseUp(object sender, MouseButtonEventArgs e)
     {

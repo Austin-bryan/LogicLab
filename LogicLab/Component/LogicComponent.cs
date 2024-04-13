@@ -47,9 +47,18 @@ public abstract partial class LogicComponent : LabComponent
         Deselect();
     }
 
-    public void UpdateAllWires()
+    public void UpdateAllWires()//GA
     {
         if (OutputPort != null) OutputPort.RefreshWire();
+        RemoveAllWires();
+    }
+    public void RemoveAllWires()//GA
+    {
+        if (OutputPort != null) OutputPort.RemoveAllWires();
+        foreach (IOPort port in InputPorts)
+        {
+            port.RemoveAllWires();
+        }
     }
     public void MovementMode(bool enabled)//GA
     {
