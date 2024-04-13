@@ -12,8 +12,8 @@
             <ColumnDefinition Width="0*"/>
         </Grid.ColumnDefinitions>
         <StackPanel x:Name="InputPanel" Margin="-11,0,57,0" VerticalAlignment="Center"/>
-        <Label HorizontalContentAlignment="Center" VerticalContentAlignment="Center" x:Name="HexDisplayLabel" Content="" Height="77" VerticalAlignment="Center" Width="47" MouseDown="Component_MouseDown" MouseMove="Component_MouseMove" MouseUp="Component_MouseUp" Cursor="SizeAll" HorizontalAlignment="Center" Foreground="White" FontSize="50"/>
-        <Ellipse x:Name="NullDot" Visibility="Hidden" Height="10" Width="10" Fill="White"/>
+        <Label HorizontalContentAlignment="Center" VerticalContentAlignment="Center" x:Name="HexDisplayLabel" Content="" Height="77" VerticalAlignment="Center" Width="47" HorizontalAlignment="Center" Foreground="White" FontSize="50" IsHitTestVisible="False"/>
+        <Ellipse x:Name="NullDot" Visibility="Hidden" Height="10" Width="10" Fill="White" IsHitTestVisible="False"/>
 
     </Grid>
 </local:InputComponent>

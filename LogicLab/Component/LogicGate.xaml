@@ -11,7 +11,7 @@
             <ColumnDefinition/>
             <ColumnDefinition Width="0*"/>
         </Grid.ColumnDefinitions>
-        <Rectangle x:Name="Sprite" HorizontalAlignment="Left" Height="30" VerticalAlignment="Center" Width="30" StrokeThickness="0" MouseDown="Component_MouseDown" MouseMove="Component_MouseMove" MouseUp="Component_MouseUp" Margin="24,0,0,0">
+        <Rectangle x:Name="Sprite" HorizontalAlignment="Left" Height="30" VerticalAlignment="Center" Width="30" StrokeThickness="0" IsHitTestVisible="False" Margin="24,0,0,0">
 
             <!-- Connor -->
             <Rectangle.ContextMenu>
@@ -34,6 +34,6 @@
         </Rectangle>
         <StackPanel x:Name="InputPanel" Margin="-11,0,57,0" VerticalAlignment="Center"/>
         <StackPanel x:Name="OutputPanel" Margin="54,0,2,0" VerticalAlignment="Center"/>
-        <Ellipse x:Name="NegateDot" HorizontalAlignment="Left" Height="5" Margin="51,0,0,0" VerticalAlignment="Center" Width="5" Fill="White" Visibility="Hidden" MouseDown="Component_MouseDown" MouseMove="Component_MouseMove" MouseUp="Component_MouseUp"/>
+        <Ellipse x:Name="NegateDot" HorizontalAlignment="Left" Height="5" Margin="51,0,0,0" VerticalAlignment="Center" Width="5" Fill="White" Visibility="Hidden" IsHitTestVisible="False"/>
     </Grid>
 </local:LogicComponent>

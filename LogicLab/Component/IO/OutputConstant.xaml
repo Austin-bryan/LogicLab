@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid x:Name="Grid" Loaded="Grid_Loaded" HorizontalAlignment="Left" VerticalAlignment="Top">
-        <Rectangle x:Name="Sprite" Height="28" Width="30" RenderOptions.BitmapScalingMode="HighQuality" Cursor="ScrollAll"/>
+        <Rectangle x:Name="Sprite" Height="28" Width="30" RenderOptions.BitmapScalingMode="HighQuality" IsHitTestVisible="False"/>
 
     </Grid>
 </local:OutputComponent>

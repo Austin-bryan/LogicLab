@@ -43,7 +43,7 @@ public  partial class IOPort : UserControl
         //owningComponent.MainWindow().DebugLabel.Content += "\n";
 
         
-        owningComponent.MainWindow().DebugLabel.Content += "ID: " + ID + ", ";
+        //owningComponent.MainWindow().DebugLabel.Content += "ID: " + ID + ", ";
         
         if (value == _signal) 
         {
@@ -64,7 +64,7 @@ public  partial class IOPort : UserControl
         {
             if (currentPath.Equals(path))
             {
-                owningComponent.MainWindow().DebugLabel.Content += "Loop detected: " + ID + ", ";
+                //owningComponent.MainWindow().DebugLabel.Content += "Loop detected: " + ID + ", ";
                 return;
             }
         }
@@ -249,7 +249,7 @@ public  partial class IOPort : UserControl
 
         if (activeWire.Output != null)
         {
-            owningComponent.MainWindow().DebugLabel.Content += "\n";
+            //owningComponent.MainWindow().DebugLabel.Content += "\n";
             SetSignal(activeWire.Output.GetSignal(), []);
         }
         activeWire.Input?.SetSignal(GetSignal(), []);

@@ -10,8 +10,7 @@ public partial class OutputConstant
     public OutputConstant(bool signal) : this() => this.signal = signal;
 
     protected override Grid ControlGrid => Grid;
-    private static int count = 0;
-    private bool? signal;
+    private readonly bool? signal;
 
     protected override async void Grid_Loaded(object sender, RoutedEventArgs e)
     {
@@ -28,7 +27,7 @@ public partial class OutputConstant
         OnLoaded();
         await Task.Delay(100);
 
-        OutputPort.SetSignal(signal ?? false, []);
-        Sprite.Fill = Utilities.GetImage(OutputPort.GetSignal() == true ? "On" : "Off");
+        OutputPort?.SetSignal(signal ?? false, []);
+        Sprite.Fill = Utilities.GetImage(OutputPort?.GetSignal() == true ? "On" : "Off");
     }
 }

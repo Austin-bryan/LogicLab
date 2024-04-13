@@ -129,6 +129,8 @@ public partial class MainWindow : Window
     private void MainGrid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
     {
         hasPanned = false;
+        if (HintLabel != null && HintLabel.Visibility == Visibility.Visible)
+            MainGrid.Children.Remove(HintLabel);
     }
     private void MainGrid_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
     {
