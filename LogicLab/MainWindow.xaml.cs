@@ -63,6 +63,8 @@ public partial class MainWindow : Window
 
             foreach (var item in MainGrid.Children.ToList().OfType<UserControl>()) //looks through all gates on grid 
                 item.Translate(mouseDelta); //translates them by the mouse delta
+            foreach (var item in MainGrid.Children.ToList().OfType<LogicComponent>()) item.UpdateAllWires();
+
             foreach (var item in MainGrid.Children.ToList().OfType<DotGridSegment>())
             {
                 item.Translate(new Point(-mouseDelta.X, -mouseDelta.Y));
