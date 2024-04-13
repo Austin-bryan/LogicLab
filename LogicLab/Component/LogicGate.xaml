@@ -13,7 +13,7 @@
         </Grid.ColumnDefinitions>
         <Rectangle x:Name="Sprite" HorizontalAlignment="Left" Height="30" VerticalAlignment="Center" Width="30" StrokeThickness="0" IsHitTestVisible="False" Margin="24,0,0,0">
 
-            <!-- Connor -->
+            <!-- <Connor> -->
             <Rectangle.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Delete" Click="DeleteComponent"/>
@@ -24,13 +24,9 @@
                         <MenuItem Header="Bottom" Click="AlignBottom"/>
                         <MenuItem Header="Center" Click="AlignCenter"/>
                     </MenuItem>
-                    <MenuItem Header="Rotate">
-                        <MenuItem Header="Clockwise" />
-                        <MenuItem Header="180" />
-                        <MenuItem Header="Counter Clockwise" />
-                    </MenuItem>
                 </ContextMenu>
             </Rectangle.ContextMenu>
+            <!-- </Connor> -->
         </Rectangle>
         <StackPanel x:Name="InputPanel" Margin="-11,0,57,0" VerticalAlignment="Center"/>
         <StackPanel x:Name="OutputPanel" Margin="54,0,2,0" VerticalAlignment="Center"/>

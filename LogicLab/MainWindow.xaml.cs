@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Collections.Immutable;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using LogicLab.Component;
@@ -10,8 +11,10 @@ public partial class MainWindow : Window
 {
     private CreationMenu? creationMenu;
 
-    private Point oldMousePos   = new(0, 0);//GA
+    private Point oldMousePos = new(0, 0); //GA
     private bool hasPanned;
+    private ImmutableList<LogicComponent>? components;
+    private ImmutableList<DotGridSegment>? segments;
 
     public MainWindow()
     {
@@ -38,7 +41,13 @@ public partial class MainWindow : Window
         }
         // GA
         if (e.MiddleButton == MouseButtonState.Pressed || e.RightButton == MouseButtonState.Pressed)
-            MainGrid.Children.ToList().OfType<LogicComponent>().ToList().ForEach(c => c.MovementMode(false));   
+        {
+            // AB - Cache these values so they aren't being calculated during mouse move events
+            components = MainGrid.Children.ToList().OfType<LogicComponent>().ToImmutableList();
+            segments   = MainGrid.Children.ToList().OfType<DotGridSegment>().ToImmutableList();
+            components.ForEach(c => c.MovementMode(false));
+            // end AB
+        }
     }
 
     private void MainGrid_MouseMove(object sender, MouseEventArgs e)
@@ -52,22 +61,26 @@ public partial class MainWindow : Window
             // AB This enables to pan with right click, because I can't use middle mouse on a laptop
             if (creationMenu != null)
                 CloseCreationMenu();
-            hasPanned = true; // AB
+            hasPanned = true;
+            // end AB
+
             DotGridSegment.TranslateGrid(mouseDelta);//moves whole grid
 
-            foreach (var item in MainGrid.Children.ToList().OfType<UserControl>()) //looks through all gates on grid 
-                item.Translate(mouseDelta); //translates them by the mouse delta
-            foreach (var item in MainGrid.Children.ToList().OfType<LogicComponent>()) item.UpdateAllWires();
-
-            foreach (var item in MainGrid.Children.ToList().OfType<DotGridSegment>())
+            // looks through all gates on grid 
+            components?.ForEach(c =>
             {
-                item.Translate(new Point(-mouseDelta.X, -mouseDelta.Y));
-                item.UpdateGridPos();
-            }
+                c.Translate(mouseDelta);
+                c.UpdateAllWires();
+            });
+            segments?.ForEach(d =>
+            {
+                d.Translate(new Point(-mouseDelta.X, -mouseDelta.Y));
+                d.UpdateGridPos();
+            });
         }
         // end GA 
 
-        if (e.LeftButton == MouseButtonState.Pressed) //GA
+        else if (e.LeftButton == MouseButtonState.Pressed) //GA
             ComponentSelector.MouseMove(e); //AB
     }
     // GA
