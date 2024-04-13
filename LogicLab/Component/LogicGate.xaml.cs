@@ -17,29 +17,12 @@ public partial class LogicGate : LogicComponent
 
     // Austin
     private bool? OutputSignal => GateType.ApplyGate(InputSignals);
-    private static List<ELogicGate> thisWillBeDeletedLater; // This is just a placeholder, will be replaced by the logic gate creator menu
-    private static int count = 0;                           // I have no clue what this does, but it will also be deleted later.
-    
     private double backgroundHeight;
     private double startHeight;                             // Logic gates grow based on input size, this caches the startsize
     private int    inputCount = 2;                          // # of inputs, default is 2, but NOT and BUFFER have a min and max of 1
     private bool   canResize, isResizing, mouseDown, isCreatedViaDesigner;
     private Point  startResize;
 
-    public LogicGate()
-    {
-        InitializeComponent();
-        // Dont worry about this too much, this is temp. Just using this to populate the world with different gate types.
-        thisWillBeDeletedLater = [
-            ELogicGate.Buffer, ELogicGate.AND, ELogicGate.OR, ELogicGate.XOR,
-            ELogicGate.Buffer, ELogicGate.AND, ELogicGate.OR, ELogicGate.XOR,
-            ELogicGate.Buffer, ELogicGate.AND, ELogicGate.OR, ELogicGate.XOR,
-            ELogicGate.Buffer, ELogicGate.AND, ELogicGate.OR, ELogicGate.XOR,
-            ELogicGate.Buffer, ELogicGate.AND, ELogicGate.OR, ELogicGate.XOR];
-
-        isCreatedViaDesigner = true;
-
-    }
     public LogicGate(ELogicGate logicGate)
     {
         InitializeComponent();
@@ -200,15 +183,7 @@ public partial class LogicGate : LogicComponent
         BackgroundSprite.MouseUp    += Background_MouseUp;
         BackgroundSprite.ContextMenu = Sprite.ContextMenu;
 
-        // Create and organize ports
-        // This is super temp
-        if (isCreatedViaDesigner)
-        {
-            GateType = thisWillBeDeletedLater[count];
-            SetInputAmount(2 + (int)Math.Floor(count / 4.0));
-            count++;
-        }
-        else SetInputAmount(2);
+        SetInputAmount(2);
 
         AddOutputPort(OutputPanel);
         ShowImage();

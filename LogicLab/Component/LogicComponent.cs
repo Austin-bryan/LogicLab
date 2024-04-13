@@ -28,12 +28,8 @@ public abstract partial class LogicComponent : LabComponent
     private IOPort? outputPort;
     private readonly List<IOPort> inputPorts = [];
 
-    private static int count = 0;
-    public int ID { get; private set; }
-
     public LogicComponent() : base()
     {
-        ID               = count++;
         Dragger          = new ComponentDragger(this);   // Enables dragging
         BackgroundSprite = new()
         {

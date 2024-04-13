@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -42,7 +43,9 @@ public partial class CreationItem: UserControl
 
         mainWindow.MainGrid.Children.Add(logicComponent);
 
-        logicComponent.SetPosition(Mouse.GetPosition(mainWindow));
+        Point mousePos = Mouse.GetPosition(mainWindow); 
+
+        logicComponent.SetPosition(new Point(mousePos.X + 150, mousePos.Y));
         logicComponent.Select(false);
     }
 }
