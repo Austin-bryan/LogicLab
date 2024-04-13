@@ -18,6 +18,7 @@ public abstract partial class LogicComponent : LabComponent
 
     protected abstract Grid ControlGrid { get; }
     protected virtual ImmutableList<IOPort> InputPorts => inputPorts.ToImmutableList();
+
     protected bool IsSelected          => ComponentSelector.IsSelected(this);
     protected IOPort InputPort         => InputPorts[0];
     protected IOPort? OutputPort       => outputPort;
@@ -44,6 +45,42 @@ public abstract partial class LogicComponent : LabComponent
         };
 
         Deselect();
+    }
+
+    public void UpdateAllWires()//GA
+    {
+        if (OutputPort != null) OutputPort.RefreshWire();
+        RemoveAllWires();
+    }
+    public void RemoveAllWires()//GA
+    {
+        if (OutputPort != null) OutputPort.RemoveAllWires();
+        foreach (IOPort port in InputPorts)
+        {
+            port.RemoveAllWires();
+        }
+    }
+    public void MovementMode(bool enabled)//GA
+    {
+        if (enabled)
+        {
+            foreach (IOPort port in InputPorts)
+            {
+                port.Visibility = Visibility.Hidden;
+                port.MovementMode(true);
+            }
+            if (OutputPort != null) OutputPort.Visibility = Visibility.Hidden;
+        }
+        else
+        {
+            foreach (IOPort port in InputPorts)
+            {
+                port.Visibility = Visibility.Visible;
+                port.RefreshWire();
+                port.MovementMode(false);
+            }
+            if (OutputPort != null) OutputPort.Visibility = Visibility.Visible;
+        }
     }
 
     public void Select(bool shiftSelect)

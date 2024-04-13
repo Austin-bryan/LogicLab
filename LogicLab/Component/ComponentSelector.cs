@@ -8,7 +8,7 @@ using LogicLab;
 
 namespace LogicLab.Component;
  
-// Austin (entire class)
+// AB (entire class)
 public static class ComponentSelector
 {
     private static readonly List<LogicComponent> selectedComponents = [];
@@ -185,7 +185,7 @@ public static class ComponentSelector
     // Connor
     public static void DeleteComponent() => SelectedComponents.ForEach(c =>
     {
-        c.OnDelete();
+        c.OnDelete();   // AB
         ((Grid)c.Parent).Children.Remove(c);
     });
 }

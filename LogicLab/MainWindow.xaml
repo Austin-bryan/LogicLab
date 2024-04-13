@@ -4,11 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LogicLab"
-        xmlns:EditorUI="clr-namespace:LogicLab.EditorUI" x:Class="LogicLab.MainWindow"
+        xmlns:EditorUI="clr-namespace:LogicLab.EditorUI" xmlns:Component="clr-namespace:LogicLab.Component" x:Class="LogicLab.MainWindow"
         mc:Ignorable="d"
         Title="MainWindow" Height="650" Width="993">
     <Grid x:Name="MainGrid" Background="#FF232323" MouseDown="Grid_MouseDown" MouseMove="MainGrid_MouseMove" MouseUp="MainGrid_MouseUp" Margin="0,0,-278,-268" PreviewKeyDown="MainGrid_PreviewKeyDown" KeyDown="MainGrid_KeyDown" MouseRightButtonDown="MainGrid_MouseRightButtonDown">
-        <Label x:Name="DebugLabel" HorizontalAlignment="Left" Margin="416,10,0,0" VerticalAlignment="Top" Foreground="White" Width="1505" Height="106" FontSize="10" Background="#FF3A3A3A"/>
+        <Label x:Name="DebugLabel" IsHitTestVisible="False" HorizontalAlignment="Left" Margin="416,10,0,0" VerticalAlignment="Top" Foreground="White" Width="1505" Height="106" FontSize="10" Background="#FF3A3A3A"/>
         <local:LogicGate HorizontalAlignment="Left" Margin="18,15,0,0" VerticalAlignment="Top"/>
         <local:LogicGate HorizontalAlignment="Left" Margin="115,15,0,0" VerticalAlignment="Top"/>
         <local:LogicGate HorizontalAlignment="Left" Margin="215,15,0,0" VerticalAlignment="Top"/>
@@ -28,7 +28,7 @@
         <local:LogicGate HorizontalAlignment="Left" Margin="18,420,0,0" VerticalAlignment="Top"/>
         <local:LogicGate HorizontalAlignment="Left" Margin="115,420,0,0" VerticalAlignment="Top"/>
         <local:LogicGate HorizontalAlignment="Left" Margin="215,420,0,0" VerticalAlignment="Top"/>
-        <local:LogicGate HorizontalAlignment="Left" Margin="317,422,0,0" VerticalAlignment="Top"/>
+        <local:LogicGate HorizontalAlignment="Left" Margin="317,422,0,0" VerticalAlignment="Top" Panel.ZIndex="6"/>
         <local:OutputToggle HorizontalAlignment="Left" Margin="22,559,0,0" VerticalAlignment="Top"/>
         <local:InputPixel HorizontalAlignment="Left" Margin="198,542,0,0" VerticalAlignment="Top"/>
         <local:InputHexDisplay HorizontalAlignment="Left" Margin="181,680,0,0" VerticalAlignment="Top"/>
