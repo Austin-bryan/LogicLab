@@ -183,5 +183,9 @@ public static class ComponentSelector
     }
 
     // Connor
-    public static void DeleteComponent() => SelectedComponents.ForEach(c => ((Grid)c.Parent).Children.Remove(c));
+    public static void DeleteComponent() => SelectedComponents.ForEach(c =>
+    {
+        c.OnDelete();
+        ((Grid)c.Parent).Children.Remove(c);
+    });
 }

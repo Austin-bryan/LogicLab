@@ -20,11 +20,11 @@ public partial class LogicGate : LogicComponent
     private static List<ELogicGate> thisWillBeDeletedLater; // This is just a placeholder, will be replaced by the logic gate creator menu
     private static int count = 0;                           // I have no clue what this does, but it will also be deleted later.
     
-    private double startHeight;                             // Logic gates grow based on input size, this caches the startsize
-    private int inputCount = 2;                             // # of inputs, default is 2, but NOT and BUFFER have a min and max of 1
-    private bool canResize, isResizing, mouseDown, isCreatedViaDesigner;
     private double backgroundHeight;
-    private Point startResize;
+    private double startHeight;                             // Logic gates grow based on input size, this caches the startsize
+    private int    inputCount = 2;                          // # of inputs, default is 2, but NOT and BUFFER have a min and max of 1
+    private bool   canResize, isResizing, mouseDown, isCreatedViaDesigner;
+    private Point  startResize;
 
     public LogicGate()
     {
@@ -72,6 +72,11 @@ public partial class LogicGate : LogicComponent
     private void DeleteComponent (object sender, RoutedEventArgs e) => ComponentSelector.DeleteComponent();
 
     // Austin
+    public override void OnDelete()
+    {
+        OutputPort?.RemoveAllWires();
+        InputPanel.Children.ToList().OfType<IOPort>().ToList().ForEach(io => io.RemoveAllWires());
+    }
     private void ShowImage()
     {
         Sprite.Fill = GateType.GetImage();

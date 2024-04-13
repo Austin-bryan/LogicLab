@@ -73,6 +73,7 @@ public abstract partial class LogicComponent : LabComponent
         ComponentSelector.Deselect(this);
     }
     public virtual void OnInputChange(IOPort changedPort, List<SignalPath> propagationHistory) { }
+    public virtual void OnDelete() { }
     public void OnDrag(MouseEventArgs e)
     {
         InputPorts.ForEach(io => io.OnDrag());

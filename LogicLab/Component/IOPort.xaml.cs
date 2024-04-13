@@ -25,7 +25,7 @@ public  partial class IOPort : UserControl
     private int debug = 0;
     private static int loopbreak = 0;
 
-    public async void SetSignal(bool? value, List<SignalPath> propagationHistory)
+    public void SetSignal(bool? value, List<SignalPath> propagationHistory)
     {
         //if (propagationHistory.Count == 0)
         //    owningComponent.MainWindow().DebugLabel.Content += "\n";
@@ -87,6 +87,12 @@ public  partial class IOPort : UserControl
         ProcessSignalAsync(value, propagationHistory);
     }
     public bool Connectionless => wires.Count == 0;
+
+    public void RemoveAllWires()
+    {
+        wires.ToImmutableList().ForEach(w => w.Remove());
+        ShowSprite(true);
+    }
 
     private async void ProcessSignalAsync(bool? signal, List<SignalPath> propagationHistory)
     {
@@ -205,7 +211,7 @@ public  partial class IOPort : UserControl
         if (!wires.Contains(wire))
             wires.Add(wire);
     }
-    private async void Sprite_MouseUp(object sender, MouseButtonEventArgs e)
+    private void Sprite_MouseUp(object sender, MouseButtonEventArgs e)
     {
         if (activeWire == null)
             return;
