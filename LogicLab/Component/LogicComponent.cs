@@ -43,6 +43,22 @@ public abstract partial class LogicComponent : LabComponent
         Deselect();
     }
 
+    // Connor
+    protected void AlignLeft       (object sender, RoutedEventArgs e) => ComponentSelector.AlignLeft();
+    protected void AlignTop        (object sender, RoutedEventArgs e) => ComponentSelector.AlignTop();
+    protected void AlignRight      (object sender, RoutedEventArgs e) => ComponentSelector.AlignRight();
+    protected void AlignBottom     (object sender, RoutedEventArgs e) => ComponentSelector.AlignBottom();
+    protected void AlignCenter     (object sender, RoutedEventArgs e) => ComponentSelector.AlignCenter();
+    protected void DeleteComponent (object sender, RoutedEventArgs e) => ComponentSelector.DeleteComponent();
+    // end Connor
+
+    // Austin
+    public void OnDelete()
+    {
+        OutputPort?.RemoveAllWires();
+        InputPorts.ForEach(io => io.RemoveAllWires());
+    }
+
     // GA
     public void UpdateAllWires() => OutputPort?.RefreshWire();
     public void RemoveAllWires() 
@@ -103,7 +119,7 @@ public abstract partial class LogicComponent : LabComponent
         ComponentSelector.Deselect(this);
     }
     public virtual void OnInputChange(IOPort changedPort, List<SignalPath> propagationHistory) { }
-    public virtual void OnDelete() { }
+    //public virtual void OnDelete() { }
     public void OnDrag(MouseEventArgs e)
     {
         InputPorts.ForEach(io => io.OnDrag());

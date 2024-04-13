@@ -46,20 +46,6 @@ public partial class LogicGate : LogicComponent
     protected override void Component_MouseMove (object sender, MouseEventArgs e)       => base.Component_MouseMove(sender, e);
     protected override void Component_MouseUp   (object sender, MouseButtonEventArgs e) => base.Component_MouseUp(sender, e);
 
-    // Connor
-    private void AlignLeft       (object sender, RoutedEventArgs e) => ComponentSelector.AlignLeft();
-    private void AlignTop        (object sender, RoutedEventArgs e) => ComponentSelector.AlignTop();
-    private void AlignRight      (object sender, RoutedEventArgs e) => ComponentSelector.AlignRight();
-    private void AlignBottom     (object sender, RoutedEventArgs e) => ComponentSelector.AlignBottom();
-    private void AlignCenter     (object sender, RoutedEventArgs e) => ComponentSelector.AlignCenter();
-    private void DeleteComponent (object sender, RoutedEventArgs e) => ComponentSelector.DeleteComponent();
-
-    // Austin
-    public override void OnDelete()
-    {
-        OutputPort?.RemoveAllWires();
-        InputPanel.Children.ToList().OfType<IOPort>().ToList().ForEach(io => io.RemoveAllWires());
-    }
     private void ShowImage()
     {
         Sprite.Fill = GateType.GetImage();

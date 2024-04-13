@@ -14,7 +14,8 @@ public partial class CreationItem: UserControl
     private readonly CreationMenu creationMenu;
     private readonly MainWindow mainWindow;
 
-    public CreationItem(CreationMenu creationMenu, MainWindow mainWindow, string label, Func<LogicComponent> buildLogicComponent, ImageBrush image = null, bool showNot = false)
+    public CreationItem(CreationMenu creationMenu, MainWindow mainWindow, string label, 
+        Func<LogicComponent> buildLogicComponent, ImageBrush? image = null, bool showNot = false)
     {
         InitializeComponent();
 
