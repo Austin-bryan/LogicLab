@@ -141,6 +141,7 @@ public static class ComponentSelector
     {   
         if (!isMouseDown)
             return;
+
         MainGrid.ReleaseMouseCapture();
         
         if (!hasDragged)
@@ -171,7 +172,6 @@ public static class ComponentSelector
 
             // Check if the control intersects with the selection rectangle
             Rect bounds   = new(element.RenderSize);
-            DebugLabel.Content += bounds.ToString() + ", ";
             Point topLeft = element.TranslatePoint(new Point(), MainGrid);
             bounds.Offset(topLeft.X, topLeft.Y);
 
