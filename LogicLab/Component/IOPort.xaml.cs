@@ -6,8 +6,6 @@ using System.Collections.Immutable;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Animation;
 using LogicLab.Component;
-using System.Diagnostics;
-using System.DirectoryServices.ActiveDirectory;
 
 namespace LogicLab;
 
@@ -16,9 +14,20 @@ public enum EPortType { Input, Output }
 // Austin (entire class)     
 public  partial class IOPort : UserControl
 {
-    public Point WireConnection => PointToScreen(new(
-                Sprite.Margin.Left + (portType == EPortType.Input ? + (Parent is StackPanel _ ? ActualWidth / 2 : ActualWidth / 4) : 0),
-                Sprite.Margin.Right + ActualHeight / 2));
+    public Point WireConnection
+    {
+        get
+        {
+            try
+            {
+                return PointToScreen(new(
+                    Sprite.Margin.Left + (portType == EPortType.Input ? +(Parent is StackPanel _ ? ActualWidth / 2 : ActualWidth / 4) : 0),
+                    Sprite.Margin.Right + ActualHeight / 2));
+            }
+            catch { return new Point(0, 0); }
+        }
+    }
+
     public ImmutableList<IOPort> ConnectedPorts
     {
         get

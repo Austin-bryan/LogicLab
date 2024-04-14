@@ -47,8 +47,8 @@ public partial class LogicGate : LogicComponent
 
     // Forward events to Logic Component to get highlight and drop shadow features.
     protected override void Component_MouseLeftButtonDown (object sender, MouseButtonEventArgs e) => base.Component_MouseLeftButtonDown(sender, e);
-    protected override void Component_MouseMove (object sender, MouseEventArgs e)       => base.Component_MouseMove(sender, e);
     protected override void Component_MouseLeftButtonUp   (object sender, MouseButtonEventArgs e) => base.Component_MouseLeftButtonUp(sender, e);
+    protected override void Component_MouseMove (object sender, MouseEventArgs e)                 => base.Component_MouseMove(sender, e);
 
     private void ShowImage()
     {

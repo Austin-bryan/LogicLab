@@ -30,25 +30,17 @@ public partial class Wire : LabComponent
         Stroke = new SolidColorBrush(Color.FromRgb(200, 200, 200)),
         StrokeThickness = 4
     };
-    private readonly Path splineCollider = new()
-    {
-        Stroke = new SolidColorBrush(Color.FromArgb(0, 0, 0, 0)),
-        StrokeThickness = 15
-    };
 
     public Wire(MainWindow mainWindow, Point startPoint)
     {
         this.mainWindow = mainWindow;
         this.startPoint = startPoint;
-
-        SetupWire(splineCollider);
         SetupWire(mainSpline);
 
         void SetupWire(Path path)
         {
             mainWindow.MainGrid.Children.Insert(0, path);
             path.MouseDown += Spline_MouseDown;
-            //path.MouseUp += Gate_MouseUp;
             path.Effect = Effect;
         }
     }
@@ -56,7 +48,6 @@ public partial class Wire : LabComponent
     public void Remove(bool updateSprite = true)
     {
         mainWindow.MainGrid.Children.Remove(mainSpline);
-        mainWindow.MainGrid.Children.Remove(splineCollider);
         Input?.RemoveWire(this, updateSprite);
         Output?.RemoveWire(this);
     }
@@ -108,7 +99,7 @@ public partial class Wire : LabComponent
             ? offBrush
             : errorBrush;
         mainSpline.Visibility = Visibility.Visible;
-        mainSpline.Data = splineCollider.Data = pathGeometry;
+        mainSpline.Data = pathGeometry;
     }
 
     public override void ShowSignal(bool? signal)
@@ -119,18 +110,13 @@ public partial class Wire : LabComponent
             ? Color.FromRgb(200, 200, 200)
             : Color.FromRgb(200, 50, 50);
 
-        ColorAnimation colorAnim = new(color, TimeSpan.FromSeconds(0.25));
-        mainSpline.Stroke.BeginAnimation(SolidColorBrush.ColorProperty, colorAnim);
+        //ColorAnimation colorAnim = new(color, TimeSpan.FromSeconds(0.25));
+        //mainSpline.Stroke.BeginAnimation(SolidColorBrush.ColorProperty, colorAnim);
+        mainSpline.Stroke = new SolidColorBrush(color);
     }
-    //public override void Deselect()
-    //{
-    //    // Return to shadow effect
-    //    //base.Deselect();
-    //    mainSpline.Effect = Effect;
-    //}
 
     private static double Lerp(double min, double max, double alpha) => min + (max - min) * Math.Max(0, Math.Min(alpha, 1));
     private static double CalculateDistance(Point p1, Point p2) => Math.Sqrt(Math.Pow(p2.X - p1.X, 2) + Math.Pow(p2.Y - p1.Y, 2));
 
-    private void Spline_MouseDown(object sender, MouseButtonEventArgs e) => mainSpline.Effect = splineCollider.Effect = Effect;
+    private void Spline_MouseDown(object sender, MouseButtonEventArgs e) => mainSpline.Effect = Effect;
 }
