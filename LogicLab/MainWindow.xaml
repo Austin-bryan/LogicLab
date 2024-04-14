@@ -7,7 +7,7 @@
         xmlns:EditorUI="clr-namespace:LogicLab.EditorUI" xmlns:Component="clr-namespace:LogicLab.Component" x:Class="LogicLab.MainWindow"
         mc:Ignorable="d"
         Title="MainWindow" Height="650" Width="993">
-    <Grid x:Name="MainGrid" Background="#FF232323" MouseDown="Grid_MouseDown" MouseMove="MainGrid_MouseMove" MouseUp="MainGrid_MouseUp" Margin="0,0,0,-6" PreviewKeyDown="MainGrid_PreviewKeyDown" KeyDown="MainGrid_KeyDown" MouseRightButtonUp ="MainGrid_MouseRightButtonUp" MouseRightButtonDown="MainGrid_MouseRightButtonDown">
+    <Grid x:Name="MainGrid" Background="#FF232323" MouseDown="Grid_MouseDown" MouseMove="MainGrid_MouseMove" MouseUp="MainGrid_MouseUp" Margin="0,0,0,-0" MouseRightButtonUp ="MainGrid_MouseRightButtonUp" MouseRightButtonDown="MainGrid_MouseRightButtonDown">
         <Label x:Name="DebugLabel" IsHitTestVisible="False" HorizontalAlignment="Left" Margin="416,10,0,0" VerticalAlignment="Top" Foreground="White" Width="1505" Height="106" FontSize="10"/>
         <Label x:Name="HintLabel" Content="Right Click To Open Menu" HorizontalAlignment="Center" HorizontalContentAlignment="Center" IsHitTestVisible="False" VerticalAlignment="Center" Height="106" Width="1271" Foreground="#CCFFFFFF" FontSize="72" FontWeight="Bold">
             <Label.Effect>

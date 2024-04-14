@@ -57,7 +57,6 @@ public readonly struct ELogicGate
     {
         if (this == Buffer && signals[0] == null)
             return false;
-
         if (signals.All(b => b == null))
             return null;
 

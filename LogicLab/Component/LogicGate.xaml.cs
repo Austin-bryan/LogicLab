@@ -63,10 +63,6 @@ public partial class LogicGate : LogicComponent
         for (int i = 0; i < inputCount; i++)
             AddInputPort(InputPanel);
     }
-    private void Gate_MouseMove(object sender, MouseButtonEventArgs e)
-    {
-
-    }
     
     private async void Background_MouseMove(object sender, MouseEventArgs e)
     {

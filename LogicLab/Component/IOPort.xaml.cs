@@ -122,7 +122,8 @@ public  partial class IOPort : UserControl
         foreach (var path in propagationHistory)
             if (currentPath.Equals(path))
                 return;
-        propagationHistory.Add(currentPath);  
+        propagationHistory.Add(currentPath);
+
         _signal = value;
         owningComponent.ShowSignal(value);
         ProcessSignalAsync(value, propagationHistory);

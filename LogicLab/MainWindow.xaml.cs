@@ -113,10 +113,6 @@ public partial class MainWindow : Window
             MainGrid.Children.ToList().OfType<LogicComponent>().ToList().ForEach(lc => lc.MovementMode(false)); // GA
         }
     }
-    private void MainGrid_PreviewKeyDown(object sender, KeyEventArgs e)
-    {
-        // TODO::Delete me
-    }
     
     protected override void OnKeyDown(KeyEventArgs e)
     {
@@ -136,10 +132,6 @@ public partial class MainWindow : Window
         case Key.K: Application.Current.Shutdown(); break;
         default: break;
         }
-    }
-    private void MainGrid_KeyDown(object sender, KeyEventArgs e)
-    {
-        // TODO:: Delete me
     }
 
     // AB
