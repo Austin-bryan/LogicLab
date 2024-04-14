@@ -6,10 +6,10 @@
              xmlns:local="clr-namespace:LogicLab.EditorUI"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Loaded="Grid_Loaded">
+    <Grid Loaded="Grid_Loaded" Margin="0,0,0,10" HorizontalAlignment="Left" Width="809">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="409*"/>
-            <ColumnDefinition Width="391*"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="0*"/>
         </Grid.ColumnDefinitions>
         <Rectangle HorizontalAlignment="Left" Height="300" VerticalAlignment="Top" Width="257" Fill="#FF006496" RadiusX="10" RadiusY="10">
             <Rectangle.Effect>
@@ -17,8 +17,8 @@
             </Rectangle.Effect>
         </Rectangle>
         <Rectangle x:Name="FolderRect" HorizontalAlignment="Left" Height="264" VerticalAlignment="Top" Width="247" Fill="#FF191919" RadiusX="8" RadiusY="8" Margin="5,31,0,0"/>
-        <Label Content="All Available Logic Components" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Top" Width="233" Foreground="Gainsboro" FontSize="16" FontFamily="Segoe UI Light"/>
-        <Label HorizontalContentAlignment="Center" Content="Select a Logic Component" HorizontalAlignment="Left" Margin="5,30,0,0" VerticalAlignment="Top" Width="247" Foreground="Gainsboro" FontFamily="Segoe UI Light" FontSize="11"/>
+        <Label Content="All Available Logic Components" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Top" Width="233" Foreground="Gainsboro" FontSize="16" FontFamily="Segoe UI Light" Height="31"/>
+        <Label HorizontalContentAlignment="Center" Content="Select a Logic Component" HorizontalAlignment="Left" Margin="5,30,0,0" VerticalAlignment="Top" Width="247" Foreground="Gainsboro" FontFamily="Segoe UI Light" FontSize="11" Height="25"/>
         <Rectangle HorizontalAlignment="Left" Height="1" VerticalAlignment="Top" Width="228" Fill="DarkGray" RadiusX="1" RadiusY="1" Margin="15,53,0,0"/>
 
         <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="5,59,0,0" Height="230" Width="240" HorizontalAlignment="Left" VerticalAlignment="Top">

@@ -19,8 +19,8 @@ public partial class LogicComponent
         private Point dragStart;
         private readonly LogicComponent logicComponent = logicComponent;
         private bool hasDragStarted = false;
-        public event EventHandler OnDragStarted;
-        public event EventHandler OnDragEnded;
+        public event EventHandler? OnDragStarted;
+        public event EventHandler? OnDragEnded;
 
         public void DragStart(MouseEventArgs e)
         {
