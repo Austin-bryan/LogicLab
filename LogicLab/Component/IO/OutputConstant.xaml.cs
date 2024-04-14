@@ -8,8 +8,8 @@ namespace LogicLab;
 public partial class OutputConstant 
 {
     protected override Rectangle ForegroundSprite => Sprite;
-    public OutputConstant() : base() => InitializeComponent();
-    public OutputConstant(bool signal) : this() => this.signal = signal;
+    public OutputConstant() : base()              => InitializeComponent();
+    public OutputConstant(bool signal) : this()   => this.signal = signal;
 
     protected override Grid ControlGrid => Grid;
     private readonly bool? signal;
@@ -20,7 +20,7 @@ public partial class OutputConstant
 
         BackgroundSprite.MouseLeftButtonDown += Component_MouseLeftButtonDown;
         BackgroundSprite.MouseLeftButtonUp   += Component_MouseLeftButtonUp;
-        BackgroundSprite.MouseMove += Component_MouseMove;
+        BackgroundSprite.MouseMove           += Component_MouseMove;
 
         OnLoaded();
         await Task.Delay(100);

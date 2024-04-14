@@ -50,7 +50,19 @@ public abstract partial class LogicComponent : LabComponent
     protected void AlignRight      (object sender, RoutedEventArgs e) => ComponentSelector.AlignRight();
     protected void AlignBottom     (object sender, RoutedEventArgs e) => ComponentSelector.AlignBottom();
     protected void AlignCenter     (object sender, RoutedEventArgs e) => ComponentSelector.AlignCenter();
-    protected void DeleteComponent (object sender, RoutedEventArgs e) => ComponentSelector.DeleteComponent();
+    protected void DeleteComponent (object sender, RoutedEventArgs e)
+    {
+        if (IsSelected) // AB
+            ComponentSelector.DeleteComponent();    // Connor
+        // AB
+        else
+        {
+            this.MainGrid().Children.Remove(this);
+            OnDelete();
+        }
+        // end AB
+    }
+
     // end Connor
 
     // Austin
@@ -184,9 +196,9 @@ public abstract partial class LogicComponent : LabComponent
         MenuItem centerItem = new() { Header = "Center" };
 
         deleteItem.Click += DeleteComponent; 
-        leftItem.Click   += AlignLeft;
-        topItem.Click    += AlignTop; 
-        rightItem.Click  += AlignRight;
+        leftItem  .Click += AlignLeft;
+        topItem   .Click += AlignTop; 
+        rightItem .Click += AlignRight;
         bottomItem.Click += AlignBottom;
         centerItem.Click += AlignCenter;
 

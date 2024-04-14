@@ -187,6 +187,6 @@ public static class ComponentSelector
     public static void DeleteComponent() => SelectedComponents.ForEach(c =>
     {
         c.OnDelete();   // AB
-        ((Grid)c.Parent).Children.Remove(c);
+        MainGrid.Children.Remove(c);
     });
 }
