@@ -35,11 +35,7 @@ public partial class LogicGate : LogicComponent
         GateType = !GateType;
         NegateDot.Visibility = GateType.IsNegative() ? Visibility.Visible : Visibility.Hidden;
     }
-    public override void OnInputChange(IOPort changedPort, List<SignalPath> propagationHistory)
-    {
-        //this.MainWindow().DebugLabel.Content += $"<{OutputSignal}>";
-        OutputPort?.SetSignal(OutputSignal, propagationHistory);
-    }
+    public override void OnInputChange(IOPort changedPort, List<SignalPath> propagationHistory) => OutputPort?.SetSignal(OutputSignal, propagationHistory);
     public override void ShowSignal(bool? signal) => base.ShowSignal(OutputSignal);
 
     // Forward events to Logic Component to get highlight and drop shadow features.
@@ -94,12 +90,7 @@ public partial class LogicGate : LogicComponent
                          BackgroundSprite.Height = 50;
                     else BackgroundSprite.Height -= InputPort.ActualHeight;
 
-                    string s = "";
-                    InputSignals.ForEach(x => s += (x?.ToString() ?? "null") + ", ");
-
-                    this.MainWindow().DebugLabel.Content += s + "; ";
-
-                    InputPanel.Children.ToList().OfType<IOPort>().ToList().ForEach(io => io.OnDrag());
+                    InputPorts.ForEach(io => io.OnDrag());
                 }
 
                 deltaY -= Math.Sign(deltaY) * InputPort.ActualHeight; 

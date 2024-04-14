@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.Windows;
+using System.Windows.Input;
 
 namespace LogicLab.Component.IO;
 
@@ -14,8 +15,13 @@ public abstract class OutputComponent : LogicComponent
         await Task.Delay(1);
 
         AddOutputPort(ControlGrid);
-        OutputPort?.SetLeft(BackgroundSprite.ActualWidth * 2);
         OutputPort?.SetSignal(false, []);
+
+        (Width, Height) = (75, 50);
+        OutputPort?.SetLeft(BackgroundSprite.ActualWidth);
+        
+        if (OutputPort != null)
+            OutputPort.HorizontalAlignment = HorizontalAlignment.Center;
         BackgroundSprite.Cursor = Cursors.SizeAll;
     }
 }

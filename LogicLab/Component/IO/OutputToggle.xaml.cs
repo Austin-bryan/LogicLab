@@ -10,9 +10,9 @@ namespace LogicLab;
 public partial class OutputToggle
 {
     protected override Grid ControlGrid => Grid;
+    protected override Rectangle ForegroundSprite => sprite;
     private bool ShouldToggle = false;
     private readonly Rectangle sprite;
-    protected override Rectangle ForegroundSprite => sprite;
 
     public OutputToggle() : base()
     {
@@ -35,10 +35,6 @@ public partial class OutputToggle
     }
 
     // AB
-    private void Dragger_OnDragEnded(object? sender, EventArgs e) => sprite.Cursor = Cursors.Hand;
-    private void Dragger_OnDragStarted(object? sender, EventArgs e) => (sprite.Cursor, ShouldToggle) = (Cursors.SizeAll, false);
-
-    // Austin
     protected override void Grid_Loaded(object sender, RoutedEventArgs e)
     {
         base.Grid_Loaded(sender, e);
@@ -51,7 +47,9 @@ public partial class OutputToggle
         Grid.Children.Add(sprite);
         Grid.UpdateLayout();
     }
-
+    
+    private void Dragger_OnDragEnded(object? sender, EventArgs e) => sprite.Cursor = Cursors.Hand;
+    private void Dragger_OnDragStarted(object? sender, EventArgs e) => (sprite.Cursor, ShouldToggle) = (Cursors.SizeAll, false);
     private void Background_MouseDown(object sender, MouseButtonEventArgs e) => Component_MouseDown(sender, e);
 
     // Gary
@@ -60,7 +58,6 @@ public partial class OutputToggle
         ShouldToggle = true;
         Component_MouseDown(sender, e);
     }
-    // Gary
     private void Toggle_MouseUp(object sender, MouseButtonEventArgs e)
     {
         if (ShouldToggle)

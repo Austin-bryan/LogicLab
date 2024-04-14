@@ -58,14 +58,8 @@ public  partial class IOPort : UserControl
         {
             await Task.Delay(50);
             foreach (var port in ConnectedPorts)
-            {
                 if (port.portType == EPortType.Input)
-                {
-                    //owningComponent.MainWindow().DebugLabel.Content += propagationHistory.Count.ToString();
                     port.SetSignal(signal, propagationHistory);
-                }
-            }
-
             foreach (var wire in wires)
                 if (wire.Output == this)
                     wire.ShowSignal(signal);
@@ -207,15 +201,10 @@ public  partial class IOPort : UserControl
 
         if (activeWire.Output != null)
         {
-            //owningComponent.MainWindow().DebugLabel.Content += "\n";
             SetSignal(activeWire.Output.GetSignal(), []);
         }
         activeWire.Input?.SetSignal(GetSignal(), []);
-
-        //owningComponent.OnInputChange(this);
         activeWire.Draw(WireConnection, GetSignal());
-
-        //activeWire.Input?.owningComponent.ShowSignal(true);
 
         static void RemoveWires(IOPort port)
         {

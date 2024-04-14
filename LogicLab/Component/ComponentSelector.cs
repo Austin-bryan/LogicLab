@@ -24,6 +24,7 @@ public static class ComponentSelector
             _mainGrid ??= value;
         }
     }
+    private static Label DebugLabel => ((MainWindow)Window.GetWindow(MainGrid)).DebugLabel;
     static ComponentSelector()
     {
         selectionBox = new Rectangle
@@ -138,7 +139,6 @@ public static class ComponentSelector
     }
     public static void MouseUp(MouseButtonEventArgs e)
     {   
-        ((MainWindow)Window.GetWindow(MainGrid)).DebugLabel.Content += hasDragged.ToString();
         if (!isMouseDown)
             return;
         MainGrid.ReleaseMouseCapture();
@@ -171,6 +171,7 @@ public static class ComponentSelector
 
             // Check if the control intersects with the selection rectangle
             Rect bounds   = new(element.RenderSize);
+            DebugLabel.Content += bounds.ToString() + ", ";
             Point topLeft = element.TranslatePoint(new Point(), MainGrid);
             bounds.Offset(topLeft.X, topLeft.Y);
 

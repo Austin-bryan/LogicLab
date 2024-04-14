@@ -1,5 +1,4 @@
-﻿using System.Security.Policy;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Shapes;
 
