@@ -35,7 +35,14 @@ public partial class LogicGate : LogicComponent
         GateType = !GateType;
         NegateDot.Visibility = GateType.IsNegative() ? Visibility.Visible : Visibility.Hidden;
     }
-    public override void OnInputChange(IOPort changedPort, List<SignalPath> propagationHistory) => OutputPort?.SetSignal(OutputSignal, propagationHistory);
+
+
+    public async override void OnInputChange(IOPort changedPort, List<SignalPath> propagationHistory)
+    {
+        await Task.Delay(1);    // This avoids a particular glitch with the XOR gate
+        OutputPort?.SetSignal(OutputSignal, propagationHistory);
+    }
+
     public override void ShowSignal(bool? signal) => base.ShowSignal(OutputSignal);
 
     // Forward events to Logic Component to get highlight and drop shadow features.
