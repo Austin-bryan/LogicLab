@@ -75,7 +75,7 @@ public abstract partial class LogicComponent : LabComponent
             foreach (IOPort port in InputPorts)
             {
                 port.Visibility = Visibility.Hidden;
-                port.MovementMode(true);
+                port.SetMovementMode(true);
             }
             if (OutputPort != null)
                 OutputPort.Visibility = Visibility.Hidden;
@@ -86,7 +86,7 @@ public abstract partial class LogicComponent : LabComponent
             {
                 port.Visibility = Visibility.Visible;
                 port.RefreshWire();
-                port.MovementMode(false);
+                port.SetMovementMode(false);
             }
             if (OutputPort != null) 
                 OutputPort.Visibility = Visibility.Visible;

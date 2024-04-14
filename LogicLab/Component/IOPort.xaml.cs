@@ -104,20 +104,6 @@ public  partial class IOPort : UserControl
     private static Wire? activeWire;
     private bool? _signal = null;
 
-    public void MovementMode(bool enabled)//GA
-    {
-        if (enabled)
-        {
-            foreach (Wire wire in wires) wire.Visibility = Visibility.Hidden;
-            Visibility = Visibility.Hidden;
-        }
-        else
-        {
-            foreach (Wire wire in wires) wire.Visibility = Visibility.Visible;
-            Visibility = Visibility.Visible;
-        }
-    }
-
     public IOPort(EPortType portType, LogicComponent owningComponent)
     {
         InitializeComponent();
@@ -142,6 +128,28 @@ public  partial class IOPort : UserControl
 
         OverlapDetector.Height *= 2.5;
         OverlapDetector.Width *= 1.75;
+    }
+
+    public void SetMovementMode(bool enabled)//GA
+    {
+        if (enabled)
+        {
+            foreach (Wire wire in wires) wire.Visibility = Visibility.Hidden;
+            Visibility = Visibility.Hidden;
+        }
+        else
+        {
+            foreach (Wire wire in wires) wire.Visibility = Visibility.Visible;
+            Visibility = Visibility.Visible;
+        }
+    }
+    public void RefreshWire()
+    {
+        wires.ForEach(w =>
+        {
+            bool? signal = w.Output == null ? (w.Input?.GetSignal()) : (w.Output?.GetSignal());
+            w.Draw(WireConnection, signal);
+        });
     }
     public async void OnDrag()
     {
@@ -211,14 +219,6 @@ public  partial class IOPort : UserControl
             port.wires.Where(w => w != activeWire).ToList().ForEach(w => w.Remove());
             port.wires.Clear();
         }
-    }
-    public void RefreshWire()
-    {
-        wires.ForEach(w =>
-        {
-            bool? signal = w.Output == null ? (w.Input?.GetSignal()) : (w.Output?.GetSignal());
-            w.Draw(WireConnection, signal);
-        });
     }
 
     private void ShowSprite(bool visible)
