@@ -39,9 +39,9 @@ public partial class LogicGate : LogicComponent
     public override void ShowSignal(bool? signal) => base.ShowSignal(OutputSignal);
 
     // Forward events to Logic Component to get highlight and drop shadow features.
-    protected override void Component_MouseDown (object sender, MouseButtonEventArgs e) => base.Component_MouseDown(sender, e);
+    protected override void Component_MouseLeftButtonDown (object sender, MouseButtonEventArgs e) => base.Component_MouseLeftButtonDown(sender, e);
     protected override void Component_MouseMove (object sender, MouseEventArgs e)       => base.Component_MouseMove(sender, e);
-    protected override void Component_MouseUp   (object sender, MouseButtonEventArgs e) => base.Component_MouseUp(sender, e);
+    protected override void Component_MouseLeftButtonUp   (object sender, MouseButtonEventArgs e) => base.Component_MouseLeftButtonUp(sender, e);
 
     private void ShowImage()
     {
@@ -116,7 +116,7 @@ public partial class LogicGate : LogicComponent
         mouseDown = true;
       
         if (!canResize)
-             Component_MouseDown(sender, e);
+             Component_MouseLeftButtonDown(sender, e);
         else (isResizing, startResize) = (true, e.GetPosition(this));
     }
     private void Background_MouseUp  (object sender, MouseButtonEventArgs e)
@@ -127,7 +127,7 @@ public partial class LogicGate : LogicComponent
         mouseDown = false;
         if (isResizing)
              isResizing = false;
-        else Component_MouseUp(sender, e);
+        else Component_MouseLeftButtonUp(sender, e);
     }
     private bool TryRemoveEmptyInputPort()
     {

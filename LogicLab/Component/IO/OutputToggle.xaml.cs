@@ -28,9 +28,9 @@ public partial class OutputToggle
         };
         RenderOptions.SetBitmapScalingMode(sprite, BitmapScalingMode.HighQuality);
 
-        sprite.MouseDown += Toggle_MouseDown;
+        sprite.MouseLeftButtonDown += Toggle_MouseDown;
+        sprite.MouseLeftButtonUp   += Toggle_MouseUp;
         sprite.MouseMove += Component_MouseMove;
-        sprite.MouseUp   += Toggle_MouseUp;
         sprite.Cursor     = Cursors.Hand;
     }
 
@@ -40,9 +40,9 @@ public partial class OutputToggle
         base.Grid_Loaded(sender, e);
         OnLoaded();
 
-        BackgroundSprite.MouseDown += Toggle_MouseDown;
+        BackgroundSprite.MouseLeftButtonDown += Toggle_MouseDown;
+        BackgroundSprite.MouseLeftButtonUp   += Toggle_MouseUp;
         BackgroundSprite.MouseMove += Component_MouseMove;
-        BackgroundSprite.MouseUp   += Toggle_MouseUp;
         BackgroundSprite.Cursor     = Cursors.Hand;
 
         Grid.Children.Add(sprite);
@@ -51,22 +51,19 @@ public partial class OutputToggle
     
     private void Dragger_OnDragEnded(object? sender, EventArgs e) => sprite.Cursor = Cursors.Hand;
     private void Dragger_OnDragStarted(object? sender, EventArgs e) => (sprite.Cursor, ShouldToggle) = (Cursors.SizeAll, false);
-    private void Background_MouseDown(object sender, MouseButtonEventArgs e) => Component_MouseDown(sender, e);
+    private void Background_MouseDown(object sender, MouseButtonEventArgs e) => Component_MouseLeftButtonDown(sender, e);
 
     // Gary
     private void Toggle_MouseDown(object sender, MouseButtonEventArgs e)
     {
-        if (e.RightButton == MouseButtonState.Pressed)
-        {
-            ShouldToggle = true;
-            Component_MouseDown(sender, e);
-        }
+        ShouldToggle = true;
+        Component_MouseLeftButtonDown(sender, e);
     }
     private void Toggle_MouseUp(object sender, MouseButtonEventArgs e)
     {
         if (ShouldToggle)
             OutputPort?.SetSignal(!OutputPort.GetSignal(), []);
 
-        Component_MouseUp(sender, e);
+        Component_MouseLeftButtonUp(sender, e);
     }
 }

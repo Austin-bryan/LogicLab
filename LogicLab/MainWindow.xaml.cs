@@ -12,7 +12,7 @@ public partial class MainWindow : Window
     private CreationMenu? creationMenu;
 
     private Point oldMousePos = new(0, 0); //GA
-    private bool hasPanned;
+    private bool hasPanned, isPanning;
     private ImmutableList<LogicComponent>? components;
     private ImmutableList<DotGridSegment>? segments;
 
@@ -25,14 +25,14 @@ public partial class MainWindow : Window
     }
     private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
     {
+        bool sourceIsMainGrid = e.OriginalSource == MainGrid;
         // Deslect if they tap on the background without the shift key
         // Checking for original source prevents this from being fired if the user clicks on a control within the grid,
         // only if they click on the grid directly
         if (e.LeftButton == MouseButtonState.Pressed) // GA
         {
             // AB
-            if (!Keyboard.Modifiers.HasFlag(ModifierKeys.Shift)
-                && e.OriginalSource == MainGrid)
+            if (!Keyboard.Modifiers.HasFlag(ModifierKeys.Shift) && sourceIsMainGrid)
                 ComponentSelector.DeselectAll();
             if (e.OriginalSource == MainGrid)
                 ComponentSelector.MouseDown(e);
@@ -40,12 +40,13 @@ public partial class MainWindow : Window
             CloseCreationMenu(e.Source); // GA
         }
         // GA
-        if (e.MiddleButton == MouseButtonState.Pressed || e.RightButton == MouseButtonState.Pressed)
+        if (sourceIsMainGrid && (e.MiddleButton == MouseButtonState.Pressed || e.RightButton == MouseButtonState.Pressed))
         {
             // AB - Cache these values so they aren't being calculated during mouse move events
             components = MainGrid.Children.ToList().OfType<LogicComponent>().ToImmutableList();
             segments   = MainGrid.Children.ToList().OfType<DotGridSegment>().ToImmutableList();
             components.ForEach(c => c.MovementMode(false));
+            isPanning = true;
             // end AB
         }
     }
@@ -73,8 +74,9 @@ public partial class MainWindow : Window
         Point mouseDelta = new(e.GetPosition(this).X - oldMousePos.X, e.GetPosition(this).Y - oldMousePos.Y); //calculates mouseDelta
         oldMousePos = new Point(e.GetPosition(this).X, e.GetPosition(this).Y);
 
-        if (e.MiddleButton == MouseButtonState.Pressed || e.RightButton == MouseButtonState.Pressed) 
+        if (isPanning && (e.MiddleButton == MouseButtonState.Pressed || e.RightButton == MouseButtonState.Pressed)) // AB
         {
+            Cursor = Cursors.ScrollAll; // AB
             // AB This enables to pan with right click, because I can't use middle mouse on a laptop
             if (creationMenu != null)
                 CloseCreationMenu();
@@ -97,15 +99,19 @@ public partial class MainWindow : Window
         }
         // end GA 
 
-        else if (e.LeftButton == MouseButtonState.Pressed) //GA
-            ComponentSelector.MouseMove(e); //AB
+        else if (e.LeftButton == MouseButtonState.Pressed) // GA
+            ComponentSelector.MouseMove(e); // AB
     }
     private void MainGrid_MouseUp(object sender, MouseButtonEventArgs e)
     {
-        if (e.LeftButton == MouseButtonState.Released) //GA : this makes it so the selection box does not interfear with any other mouse function
-            ComponentSelector.MouseUp(e); //AB
-        if (e.MiddleButton == MouseButtonState.Released)//GA
-            foreach (var item in MainGrid.Children.ToList().OfType<LogicComponent>()) item.MovementMode(false);//GA
+        if (e.LeftButton == MouseButtonState.Released) // GA : this makes it so the selection box does not interfear with any other mouse function
+            ComponentSelector.MouseUp(e); // AB
+        if (hasPanned && (e.MiddleButton == MouseButtonState.Released || e.RightButton == MouseButtonState.Released)) // AB && GA
+        {
+            hasPanned = isPanning = false; // AB
+            Cursor = Cursors.Arrow; // AB
+            MainGrid.Children.ToList().OfType<LogicComponent>().ToList().ForEach(lc => lc.MovementMode(false)); // GA
+        }
     }
     private void MainGrid_PreviewKeyDown(object sender, KeyEventArgs e)
     {

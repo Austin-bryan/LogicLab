@@ -22,9 +22,9 @@ public abstract class InputComponent : LogicComponent
         await Task.Delay(10);
         AddAllInputs();
 
-        BackgroundSprite.MouseDown += Component_MouseDown;
+        BackgroundSprite.MouseLeftButtonDown += Component_MouseLeftButtonDown;
+        BackgroundSprite.MouseLeftButtonUp   += Component_MouseLeftButtonUp;
         BackgroundSprite.MouseMove += Component_MouseMove;
-        BackgroundSprite.MouseUp   += Component_MouseUp;
         BackgroundSprite.Cursor     = Cursors.SizeAll;
 
     }

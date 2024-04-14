@@ -18,13 +18,9 @@ public partial class OutputConstant
     {
         base.Grid_Loaded(sender, e);
 
-        BackgroundSprite.MouseDown += Component_MouseDown;
+        BackgroundSprite.MouseLeftButtonDown += Component_MouseLeftButtonDown;
+        BackgroundSprite.MouseLeftButtonUp   += Component_MouseLeftButtonUp;
         BackgroundSprite.MouseMove += Component_MouseMove;
-        BackgroundSprite.MouseUp   += Component_MouseUp;
-
-        Sprite.MouseDown += Component_MouseDown;
-        Sprite.MouseMove += Component_MouseMove;
-        Sprite.MouseUp   += Component_MouseUp;
 
         OnLoaded();
         await Task.Delay(100);

@@ -143,8 +143,10 @@ public abstract partial class LogicComponent : LabComponent
         return port;
     }
     
-    protected virtual void Component_MouseDown (object sender, MouseButtonEventArgs e)
+    protected virtual void Component_MouseLeftButtonDown (object sender, MouseButtonEventArgs e)
     {
+        if (e.RightButton == MouseButtonState.Pressed)
+            return;
         if (!IsSelected && ShiftKey)
             Select(shiftSelect: true);
         else if (!IsSelected)
@@ -152,11 +154,14 @@ public abstract partial class LogicComponent : LabComponent
             ComponentSelector.DeselectAll(this);
             Select(shiftSelect: false);
         }
-
         Dragger?.DragStart(e);
     }
-    protected virtual void Component_MouseUp   (object sender, MouseButtonEventArgs e) => Dragger?.DragEnd();
-    protected virtual void Component_MouseMove (object sender, MouseEventArgs e)       => Dragger?.DragMove(e);
+    protected virtual void Component_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+    {
+        if (e.LeftButton == MouseButtonState.Released)
+            Dragger?.DragEnd();
+    }
+    protected virtual void Component_MouseMove (object sender, MouseEventArgs e) => Dragger?.DragMove(e);
     protected virtual void Grid_Loaded         (object sender, RoutedEventArgs e)
     {
         // Subscribe to mouse move, that way the mouse move will fire even if the cursor goes out of bounds, when dragging
