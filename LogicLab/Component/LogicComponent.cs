@@ -82,6 +82,7 @@ public abstract partial class LogicComponent : LabComponent
         foreach (IOPort port in InputPorts)
             port.RemoveAllWires();
     }
+    // Visibilty of ports is turned off when panning the screen, for performance reasons
     public void SetPortVisibility(Visibility visibility)
     {
         foreach (IOPort port in InputPorts)
@@ -107,6 +108,7 @@ public abstract partial class LogicComponent : LabComponent
              ComponentSelector.ShiftSelect(this);
         else ComponentSelector.SingleSelect(this);
     }
+    // Updates color of self and wires
     public override void ShowSignal(bool? signal)
     {
         Color targetColor = signal == true
@@ -129,6 +131,7 @@ public abstract partial class LogicComponent : LabComponent
         OutputPort?.RefreshWires();
     }
 
+    // These are used in children classes so they can add their own IO ports
     protected IOPort AddInputPort(IAddChild addChild)
     {
         IOPort port = new(EPortType.Input, this);
@@ -146,6 +149,7 @@ public abstract partial class LogicComponent : LabComponent
         return port;
     }
     
+    // Deal with selection and dragging
     protected virtual void Component_MouseLeftButtonDown (object sender, MouseButtonEventArgs e)
     {
         if (e.RightButton == MouseButtonState.Pressed)
@@ -176,6 +180,8 @@ public abstract partial class LogicComponent : LabComponent
         if (ForegroundSprite != null)
             ForegroundSprite.IsHitTestVisible = false;
 
+        // Creates the context menu that is used across all Logic Components
+        // XAML can't be inherited, so it must be done in C#
         ContextMenu contextMenu = new();
 
         MenuItem deleteItem = new() { Header = "Delete" };
@@ -204,7 +210,8 @@ public abstract partial class LogicComponent : LabComponent
 
         BackgroundSprite.ContextMenu = contextMenu;
     }
-
+    
+    // Animates between the dark shadow and the blue highlight "shadow"
     private void BeginShadowAnimation(DropShadowEffect fromShadow, DropShadowEffect targetShadow)
     {
         // Animates from shadow to highlight or back

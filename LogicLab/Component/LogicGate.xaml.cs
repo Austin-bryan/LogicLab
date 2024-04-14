@@ -31,12 +31,8 @@ public partial class LogicGate : LogicComponent
         InitializeComponent();
         GateType = logicGate;
     }
-    public void Negate()
-    {
-        GateType = !GateType;
-        NegateDot.Visibility = GateType.IsNegative() ? Visibility.Visible : Visibility.Hidden;
-    }
 
+    // Called whenever the state of one if its input ports has changed, then updates its output signal
     public async override void OnInputChange(IOPort changedPort, List<SignalPath> propagationHistory)
     {
         await Task.Delay(1);    // This avoids a particular glitch with the XOR gate
@@ -78,6 +74,9 @@ public partial class LogicGate : LogicComponent
             Vector delta = e.GetPosition(this) - startResize;
 
             double deltaY = Math.Abs(delta.Y);
+            
+            // If the mouse moved 100 px, and the ActualHeight is 30, this will add or remove 3 input ports, as 30 goes into 100, 3 times.
+            // This allows smooth dynamic adding or removing of input ports
             while (deltaY > InputPort.ActualHeight) 
             {
                 if (delta.Y > 0)
@@ -87,7 +86,7 @@ public partial class LogicGate : LogicComponent
                          BackgroundSprite.Height = 64;
                     else BackgroundSprite.Height += InputPort.ActualHeight;
                 }
-                else if (TryRemoveEmptyInputPort())
+                else if (TryRemoveEmptyInputPort())     // Returns true only if an empty input port was able to be removed
                 {
                     if (InputPanel.Children.Count == 2)
                          BackgroundSprite.Height = 50;

@@ -6,6 +6,8 @@ using System.Windows.Media.Effects;
 namespace LogicLab.Component;
 
 // Austin
+// Purpose: This is anything that can exist on the page, a wire, logic component,
+// and other classes such as comment that were never finish
 public abstract class LabComponent : UserControl
 {
     protected static bool ShiftKey => Keyboard.Modifiers.HasFlag(ModifierKeys.Shift);

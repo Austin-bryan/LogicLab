@@ -11,7 +11,7 @@ public partial class MainWindow : Window
 {
     private CreationMenu? creationMenu;
 
-    private Point oldMousePos = new(0, 0); //GA
+    private Point oldMousePos = new(0, 0); // GA
     private bool hasPanned, isPanning;
     private ImmutableList<LogicComponent>? components;
     private ImmutableList<DotGridSegment>? segments;
@@ -54,7 +54,7 @@ public partial class MainWindow : Window
     private void InitializeDotGrid()
     {
         foreach (DotGridSegment item in MainGrid.Children.ToList().OfType<DotGridSegment>())
-            MainGrid.Children.ToList().Remove(item); //removes all old DotGridSegments
+            MainGrid.Children.ToList().Remove(item); // Removes all old DotGridSegments
         
         for (int y = 0; y < 5; y += 1) 
             for (int x = 0; x < 5; x += 1)
@@ -87,9 +87,9 @@ public partial class MainWindow : Window
             }
             // end AB
 
-            DotGridSegment.TranslateGrid(mouseDelta);//moves whole grid
+            DotGridSegment.TranslateGrid(mouseDelta);// Moves whole grid
 
-            // looks through all gates on grid 
+            // Pans all logic gates and the grid segments
             components?.ForEach(c =>
             {
                 c.Translate(mouseDelta);
@@ -152,6 +152,7 @@ public partial class MainWindow : Window
     }
     // end AB
 
+    // Creation menu is used to create logic components
     public void OpenCreationMenu(Point point, EPortType? portType = null)
     {
         if (creationMenu != null)
@@ -163,7 +164,6 @@ public partial class MainWindow : Window
 
         if (portType == null)
             return;
-
         if (portType == EPortType.Input)
              creationMenu.HideInput();
         else creationMenu.HideOutput();
