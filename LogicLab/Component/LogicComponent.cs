@@ -21,7 +21,7 @@ public abstract partial class LogicComponent : LabComponent
     protected virtual ImmutableList<IOPort> InputPorts => inputPorts.ToImmutableList();
 
     protected bool IsSelected          => ComponentSelector.IsSelected(this);
-    protected IOPort InputPort         => InputPorts[0];
+    protected IOPort? InputPort        => InputPorts.Count > 0 ? InputPorts[0] : null;
     protected IOPort? OutputPort       => outputPort;
     protected List<bool?> InputSignals => InputPorts.Select(ip => ip.GetSignal()).ToList();
     protected ComponentDragger Dragger;

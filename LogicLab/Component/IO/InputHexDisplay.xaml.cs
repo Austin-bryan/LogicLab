@@ -4,6 +4,7 @@ using System.Windows.Controls;
 namespace LogicLab;
 
 // Gary
+// Purpose: Outputs a hex number from 0 to F by treating its 4 inputs as bits.
 public partial class InputHexDisplay
 {
     // Austin
@@ -19,7 +20,7 @@ public partial class InputHexDisplay
         base.Grid_Loaded(sender, e);
         OnLoaded();
         startHeight = BackgroundSprite.ActualHeight;    // Gary
-        ShowSignal(null);   // Show null display
+        ShowSignal(null);   // AB - Show null display
     }
     // Gary
     protected override void AddAllInputs()
@@ -33,6 +34,7 @@ public partial class InputHexDisplay
     {
         base.ShowSignal(signal);
 
+        // Show a dot if can't show a valid number
         if (signal == null)
         {
             HexDisplayLabel.Visibility = Visibility.Hidden;
@@ -43,9 +45,9 @@ public partial class InputHexDisplay
             HexDisplayLabel.Visibility = Visibility.Visible;
             NullDot.Visibility = Visibility.Hidden;
 
+            // Bit shifts all input ports based on their index, then sums them all to get a hex value
             HexDisplayLabel.Content = ports.Select((port, index) => port.GetSignal() == true ? 1 << index : 0)
                                            .Sum().ToString("X");
         }
-
     }
 }

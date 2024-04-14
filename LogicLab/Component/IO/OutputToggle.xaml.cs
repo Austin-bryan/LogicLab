@@ -7,6 +7,7 @@ using System.Windows.Media;
 namespace LogicLab;
 
 // Gary
+// Purpose: Can output either a 1 or a 0, depending on the user's selection. 
 public partial class OutputToggle
 {
     protected override Grid ControlGrid => Grid;
@@ -20,6 +21,7 @@ public partial class OutputToggle
         Dragger.OnDragStarted += Dragger_OnDragStarted;
         Dragger.OnDragEnded   += Dragger_OnDragEnded;
 
+        // Add on/off sprite
         sprite = new Rectangle
         {
             Height = 25,
@@ -30,8 +32,8 @@ public partial class OutputToggle
 
         sprite.MouseLeftButtonDown += Toggle_MouseDown;
         sprite.MouseLeftButtonUp   += Toggle_MouseUp;
-        sprite.MouseMove += Component_MouseMove;
-        sprite.Cursor     = Cursors.Hand;
+        sprite.MouseMove           += Component_MouseMove;
+        sprite.Cursor               = Cursors.Hand;
     }
 
     // AB
@@ -42,15 +44,15 @@ public partial class OutputToggle
 
         BackgroundSprite.MouseLeftButtonDown += Toggle_MouseDown;
         BackgroundSprite.MouseLeftButtonUp   += Toggle_MouseUp;
-        BackgroundSprite.MouseMove += Component_MouseMove;
-        BackgroundSprite.Cursor     = Cursors.Hand;
+        BackgroundSprite.MouseMove           += Component_MouseMove;
+        BackgroundSprite.Cursor               = Cursors.Hand;
 
         Grid.Children.Add(sprite);
         Grid.UpdateLayout();
     }
     
-    private void Dragger_OnDragEnded(object? sender, EventArgs e) => sprite.Cursor = Cursors.Hand;
-    private void Dragger_OnDragStarted(object? sender, EventArgs e) => (sprite.Cursor, ShouldToggle) = (Cursors.SizeAll, false);
+    private void Dragger_OnDragEnded(object? sender, EventArgs e)            => sprite.Cursor = Cursors.Hand;
+    private void Dragger_OnDragStarted(object? sender, EventArgs e)          => (sprite.Cursor, ShouldToggle) = (Cursors.SizeAll, false);
     private void Background_MouseDown(object sender, MouseButtonEventArgs e) => Component_MouseLeftButtonDown(sender, e);
 
     // Gary
@@ -61,6 +63,7 @@ public partial class OutputToggle
     }
     private void Toggle_MouseUp(object sender, MouseButtonEventArgs e)
     {
+        // If a Drag is started, this is set to false. This prevents toggling when the user drags this component
         if (ShouldToggle)
             OutputPort?.SetSignal(!OutputPort.GetSignal(), []);
 

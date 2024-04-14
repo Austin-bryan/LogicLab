@@ -4,6 +4,7 @@ using System.Windows.Controls;
 namespace LogicLab;
 
 // Gary
+// Purpose: Just disables black orange or red depending if its off, on, or in an error state.
 public partial class InputPixel
 {
     protected override Grid ControlGrid => Grid;

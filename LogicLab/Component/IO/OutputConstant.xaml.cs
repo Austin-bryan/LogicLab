@@ -5,6 +5,7 @@ using System.Windows.Shapes;
 namespace LogicLab;
 
 // Austin
+// Purpose: Either a constant 1 or a constant 0, depending on the user selection
 public partial class OutputConstant 
 {
     protected override Rectangle ForegroundSprite => Sprite;

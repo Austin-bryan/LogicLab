@@ -73,7 +73,7 @@ public partial class LogicGate : LogicComponent
     
     private async void Background_MouseMove(object sender, MouseEventArgs e)
     {
-        if (isResizing)
+        if (isResizing && InputPort != null)
         {
             Vector delta = e.GetPosition(this) - startResize;
 
