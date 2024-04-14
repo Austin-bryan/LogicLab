@@ -10,6 +10,8 @@ namespace LogicLab;
 public enum ESignal { Off = 0, On = 1 };    // This will be deleted, replaced with a WireSignalClass
 
 // Austin
+// Purpose: This is the main logic component, the one that preforms boolean operations. It can be resized, have an indefinite amount of inputs,
+// but always has one output.
 public partial class LogicGate : LogicComponent
 {
     public ELogicGate GateType { get; private set; }
@@ -29,13 +31,11 @@ public partial class LogicGate : LogicComponent
         InitializeComponent();
         GateType = logicGate;
     }
-
     public void Negate()
     {
         GateType = !GateType;
         NegateDot.Visibility = GateType.IsNegative() ? Visibility.Visible : Visibility.Hidden;
     }
-
 
     public async override void OnInputChange(IOPort changedPort, List<SignalPath> propagationHistory)
     {
@@ -93,7 +93,7 @@ public partial class LogicGate : LogicComponent
                          BackgroundSprite.Height = 50;
                     else BackgroundSprite.Height -= InputPort.ActualHeight;
 
-                    InputPorts.ForEach(io => io.OnDrag());
+                    InputPorts.ForEach(io => io.RefreshWiresAsync());
                 }
 
                 deltaY -= Math.Sign(deltaY) * InputPort.ActualHeight; 
@@ -103,7 +103,7 @@ public partial class LogicGate : LogicComponent
                 OutputPort?.SetSignal(OutputSignal, []);
 
                 await Task.Delay(1);
-                OutputPort?.RefreshWire();
+                OutputPort?.RefreshWires();
             }
         }
         else if (e.GetPosition(this).Y > ActualHeight - 10)

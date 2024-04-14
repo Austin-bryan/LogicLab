@@ -12,12 +12,14 @@ using LogicLab.Component;
 namespace LogicLab;
 
 // Austin
+// Purpose: Parent class for Logic Gates, Inputs and Outputs
+// Anthing that owns IO Ports is a logic component
 public abstract partial class LogicComponent : LabComponent
 {
     public Rectangle BackgroundSprite { get; private set; }
+    protected abstract Grid ControlGrid { get; }
     protected virtual Rectangle? ForegroundSprite { get; } = null;
 
-    protected abstract Grid ControlGrid { get; }
     protected virtual ImmutableList<IOPort> InputPorts => inputPorts.ToImmutableList();
 
     protected bool IsSelected          => ComponentSelector.IsSelected(this);
@@ -73,7 +75,7 @@ public abstract partial class LogicComponent : LabComponent
     }
 
     // GA
-    public void UpdateAllWires() => OutputPort?.RefreshWire();
+    public void UpdateAllWires() => OutputPort?.RefreshWires();
     public void RemoveAllWires() 
     {
         OutputPort?.RemoveAllWires();
@@ -88,7 +90,7 @@ public abstract partial class LogicComponent : LabComponent
             port.SetWireVisibility(visibility);
 
             if (visibility == Visibility.Visible)
-                port.RefreshWire();
+                port.RefreshWires();
         }
         if (OutputPort != null)
             OutputPort.Visibility = visibility;
@@ -113,7 +115,7 @@ public abstract partial class LogicComponent : LabComponent
             ? Color.FromRgb(200, 50, 50)
             : Color.FromRgb(25, 25, 25);
         BackgroundSprite.Fill.BeginAnimation(SolidColorBrush.ColorProperty, new ColorAnimation(targetColor, TimeSpan.FromSeconds(0.25)));
-        OutputPort?.RefreshWire();
+        OutputPort?.RefreshWires();
     }
     public virtual void Deselect()
     {
@@ -123,8 +125,8 @@ public abstract partial class LogicComponent : LabComponent
     public virtual void OnInputChange(IOPort changedPort, List<SignalPath> propagationHistory) { }
     public void RefreshWires()
     {
-        InputPorts.ForEach(io => io.RefreshWire());
-        OutputPort?.RefreshWire();
+        InputPorts.ForEach(io => io.RefreshWires());
+        OutputPort?.RefreshWires();
     }
 
     protected IOPort AddInputPort(IAddChild addChild)

@@ -103,7 +103,8 @@ public  partial class IOPort : UserControl
             wire.Visibility = visibility;
         Visibility = visibility;
     }
-    public void RefreshWire()
+    // Force all wires to redraw themselves
+    public void RefreshWires()
     {
         wires.ForEach(w =>
         {
@@ -111,11 +112,14 @@ public  partial class IOPort : UserControl
             w.Draw(WireConnection, signal);
         });
     }
+    // Changes the signals of ports, and propagate that signal outward
     public void SetSignal(bool? value, List<SignalPath> propagationHistory)
     {
-        if (value == _signal) 
+        // Don't set signal if it results in no change. This prevents some trival infinite loops
+        if (value == _signal)   
             return;
 
+        // Keep track of the path that is being taken of the signals, to detect infinite loops
         SignalPath currentPath = new();
         if (propagationHistory.Count != 0)
         {
@@ -125,6 +129,7 @@ public  partial class IOPort : UserControl
         }
         currentPath.AddStep(this, value);
 
+        // Return if an infinite loop is detected
         foreach (var path in propagationHistory)
             if (currentPath.Equals(path))
                 return;
@@ -135,13 +140,9 @@ public  partial class IOPort : UserControl
         ProcessSignalAsync(value, propagationHistory);
     }
     public bool? GetSignal() => _signal;
-    public async void OnDrag()
+    public async void RefreshWiresAsync()
     {
-        // TODO:: This causes the redraw for both output and input ports, when only one is needed
-        // What needs to happen is the port should find out if the port being dragged is input or output
-        // From there, only that port type is allowed to redraw
-        
-        await Task.Delay(1);    
+        await Task.Delay(1);      // This ensures the state is correct
         wires.ForEach(w => w.Draw(WireConnection, w.Output?.GetSignal()));
     }
 
@@ -169,19 +170,21 @@ public  partial class IOPort : UserControl
     }
     private void Sprite_MouseUp(object sender, MouseButtonEventArgs e)
     {
+        // User was not dragging a wire
         if (activeWire == null)
             return;
+        // User tried to drag an Output onto an output
         if (portType == EPortType.Output && activeWire.Output != null)
             return;
+        // User tried to drag an input onto an input
         if (portType == EPortType.Input && activeWire.Input != null)
             return;
 
+        // Hide sprite if port is input
         ShowSprite(false);
 
         if (activeWire.Input == null)   // User is connecting a wire from an output port to this input port
-        {
             RemoveAllWires(false);
-        }
         else   // User is connecting a wire from an input port to this output port
         {
             RemoveWires(activeWire.Input);
@@ -194,9 +197,7 @@ public  partial class IOPort : UserControl
         wires.Add(activeWire);
 
         if (activeWire.Output != null)
-        {
             SetSignal(activeWire.Output.GetSignal(), []);
-        }
         activeWire.Input?.SetSignal(GetSignal(), []);
         activeWire.Draw(WireConnection, GetSignal());
 
@@ -244,7 +245,10 @@ public  partial class IOPort : UserControl
             owningComponent.OnInputChange(this, propagationHistory);        
         else  // If Output
         {
-            await Task.Delay(50);
+            await Task.Delay(100);   // As much as I tried, infinte loops will still occur. This approach is a standard one
+            // In cases where the signal turns itself on and off, like a handmade XOR gate, it causes an infinte loop of never ending updates
+            // This delay allows some time to pass, thus not blocking the thread. The result is a flicker effect, which was the goal. 
+
             foreach (var port in ConnectedPorts)
                 if (port.portType == EPortType.Input)
                     port.SetSignal(signal, propagationHistory);
