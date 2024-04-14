@@ -63,6 +63,12 @@ public partial class Wire : LabComponent
         double distance = CalculateDistance(startPoint, endPoint);
         IOPort port = Output ?? Input ?? throw new NullReferenceException("Wire has no ports attached");
 
+        if (port == null)
+            return;
+
+        if (PresentationSource.FromVisual(port) == null)
+            return;
+
         (Point start, Point end) = (port.PointFromScreen(startPoint), port.PointFromScreen(endPoint));
 
         bool isDraggingFromInput = Output == null && Input != null;

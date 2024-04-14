@@ -9,11 +9,13 @@ using LogicLab;
 namespace LogicLab.Component;
  
 // AB (entire class)
+// Purpose: Allows selection of logic component, and handles multiselection
 public static class ComponentSelector
 {
     private static readonly List<LogicComponent> selectedComponents = [];
     public static ImmutableList<LogicComponent> SelectedComponents => selectedComponents.ToImmutableList();
 
+    // Only set MainGrid once, while it's null
     public static Grid MainGrid
     {
         get => _mainGrid ?? throw new ArgumentNullException(nameof(_mainGrid));
@@ -25,9 +27,15 @@ public static class ComponentSelector
         }
     }
     private static Label DebugLabel => ((MainWindow)Window.GetWindow(MainGrid)).DebugLabel;
+    
+    private static readonly Rectangle selectionBox;
+    private static bool isMouseDown, hasDragged;
+    private static Point mouseDownPos;
+    private static Grid? _mainGrid;
+
     static ComponentSelector()
     {
-        selectionBox = new Rectangle
+        selectionBox = new Rectangle    // Used to select logic components
         {
             Fill                = new SolidColorBrush(Color.FromArgb(50, 0, 0, 255)),
             Stroke              = Brushes.LightBlue,
@@ -38,21 +46,16 @@ public static class ComponentSelector
         };
     }
 
-    private static readonly Rectangle selectionBox;
-    private static bool isMouseDown;
-    private static Point mouseDownPos;
-    private static Grid? _mainGrid;
-    private static bool hasDragged;
 
-    public static void SingleSelect(LogicComponent logicComponent)
+    public static void SingleSelect (LogicComponent logicComponent)
     {
         DeselectAll(logicComponent);
         selectedComponents.Add(logicComponent);
     }
-    public static void Deselect(LogicComponent logicComponent)    => selectedComponents.Remove(logicComponent);
-    public static bool IsSelected(LogicComponent logicComponent)  => selectedComponents.Contains(logicComponent);
-    public static void ShiftSelect(LogicComponent logicComponent) => selectedComponents.Add(logicComponent);
-    public static void DeselectAll(LogicComponent? ignore = null)
+    public static void Deselect     (LogicComponent logicComponent) => selectedComponents.Remove(logicComponent);
+    public static bool IsSelected   (LogicComponent logicComponent) => selectedComponents.Contains(logicComponent);
+    public static void ShiftSelect  (LogicComponent logicComponent) => selectedComponents.Add(logicComponent);
+    public static void DeselectAll  (LogicComponent? ignore = null)
     {
         for (int i = selectedComponents.Count - 1; i >= 0; i--)
             if (selectedComponents[i] != ignore)
@@ -60,31 +63,35 @@ public static class ComponentSelector
     }
 
     // Aligning behaviour
-    public static void AlignLeft()
+    public static async void AlignLeft()
     {
         double min = selectedComponents.Min(lc => lc.Margin.Left);
         selectedComponents.ForEach(lc => lc.SetLeft(min));
-        selectedComponents.ForEach(lc => lc.OnDrag());
+        await Task.Delay(10);
+        selectedComponents.ForEach(lc => lc.RefreshWires());
     }
-    public static void AlignTop()
+    public static async void AlignTop()
     {
         double min = selectedComponents.Min(lc => lc.Margin.Top);
         selectedComponents.ForEach(lc => lc.SetTop(min));
-        selectedComponents.ForEach(lc => lc.OnDrag());
+        await Task.Delay(10);
+        selectedComponents.ForEach(lc => lc.RefreshWires());
     }
-    public static void AlignRight()
+    public static async void AlignRight()
     {
         double max = selectedComponents.Max(lc => lc.Margin.Left);
         selectedComponents.ForEach(lc => lc.SetLeft(max));
-        selectedComponents.ForEach(lc => lc.OnDrag());
+        await Task.Delay(10);
+        selectedComponents.ForEach(lc => lc.RefreshWires());
     }
-    public static void AlignBottom()
+    public static async void AlignBottom()
     {
         double max = selectedComponents.Max(lc => lc.Margin.Top);
         selectedComponents.ForEach(lc => lc.SetTop(max));
-        selectedComponents.ForEach(lc => lc.OnDrag());
+        await Task.Delay(10);
+        selectedComponents.ForEach(lc => lc.RefreshWires());
     }
-    public static void AlignCenter()
+    public static async void AlignCenter()
     {
         double maxHeight = selectedComponents.Max(lc => lc.ActualHeight);
         double center = selectedComponents.Where(lc => lc.ActualHeight == maxHeight).ToList()[0].GetTop() + maxHeight / 2;
@@ -93,9 +100,9 @@ public static class ComponentSelector
             double lcCenter = lc.GetTop() + lc.ActualHeight / 2;
             lc.AddTop(center - lcCenter);
         });
-        selectedComponents.ForEach(lc => lc.OnDrag());
+        await Task.Delay(10);
+        selectedComponents.ForEach(lc => lc.RefreshWires());
     }
-    public static void AlignMiddle() => throw new NotImplementedException();
 
     public static void MouseDown(MouseButtonEventArgs e)
     {
@@ -118,6 +125,7 @@ public static class ComponentSelector
             return;
 
         hasDragged = true;
+
         // When the mouse is held down, reposition the drag selection box.
         Point mousePos = e.GetPosition(MainGrid);
 
@@ -126,7 +134,7 @@ public static class ComponentSelector
         else
         {
             selectionBox.Margin = new(mousePos.X, selectionBox.Margin.Top, 0, 0);
-            selectionBox.Width = mouseDownPos.X - mousePos.X;
+            selectionBox.Width  = mouseDownPos.X - mousePos.X;
         }
 
         if (mouseDownPos.Y < mousePos.Y)
@@ -145,12 +153,13 @@ public static class ComponentSelector
         MainGrid.ReleaseMouseCapture();
         isMouseDown = false;
 
-        if (!hasDragged)
+        if (!hasDragged)    // Prevents accidental selection
             return;
         
         hasDragged = false;
         selectionBox.Visibility = Visibility.Collapsed;
 
+        // Get bounds of selection search
         Point mouseUpPos = e.GetPosition(MainGrid);
         Rect selectionRect = new(mouseDownPos, mouseUpPos);
 

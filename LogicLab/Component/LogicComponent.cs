@@ -132,10 +132,10 @@ public abstract partial class LogicComponent : LabComponent
         ComponentSelector.Deselect(this);
     }
     public virtual void OnInputChange(IOPort changedPort, List<SignalPath> propagationHistory) { }
-    public void OnDrag()
+    public void RefreshWires()
     {
-        InputPorts.ForEach(io => io.OnDrag());
-        OutputPort?.OnDrag();
+        InputPorts.ForEach(io => io.RefreshWire());
+        OutputPort?.RefreshWire();
     }
 
     protected IOPort AddInputPort(IAddChild addChild)
