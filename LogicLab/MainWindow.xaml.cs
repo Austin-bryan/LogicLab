@@ -50,6 +50,23 @@ public partial class MainWindow : Window
         }
     }
 
+    // GA
+    private void InitializeDotGrid()
+    {
+        foreach (DotGridSegment item in MainGrid.Children.ToList().OfType<DotGridSegment>())
+            MainGrid.Children.ToList().Remove(item); //removes all old DotGridSegments
+        
+        for (int y = 0; y < 5; y += 1) 
+            for (int x = 0; x < 5; x += 1)
+            {
+                DotGridSegment dotGrid = new(new Point(x, y));
+                MainGrid.Children.Add(dotGrid);
+                Panel.SetZIndex(dotGrid, -10);
+                dotGrid.UpdateGridPos();
+            }
+    }
+    // end GA
+
     private void MainGrid_MouseMove(object sender, MouseEventArgs e)
     {
         // GA  : this covers the panning when you click middle mouse button
@@ -83,23 +100,6 @@ public partial class MainWindow : Window
         else if (e.LeftButton == MouseButtonState.Pressed) //GA
             ComponentSelector.MouseMove(e); //AB
     }
-    // GA
-    private void InitializeDotGrid()
-    {
-        foreach (DotGridSegment item in MainGrid.Children.ToList().OfType<DotGridSegment>())
-            MainGrid.Children.ToList().Remove(item); //removes all old DotGridSegments
-        
-        for (int y = 0; y < 5; y += 1) 
-            for (int x = 0; x < 5; x += 1)
-            {
-                DotGridSegment dotGrid = new(new Point(x, y));
-                MainGrid.Children.Add(dotGrid);
-                Panel.SetZIndex(dotGrid, -10);
-                dotGrid.UpdateGridPos();
-            }
-    }
-    // end GA
-
     private void MainGrid_MouseUp(object sender, MouseButtonEventArgs e)
     {
         if (e.LeftButton == MouseButtonState.Released) //GA : this makes it so the selection box does not interfear with any other mouse function
@@ -107,12 +107,11 @@ public partial class MainWindow : Window
         if (e.MiddleButton == MouseButtonState.Released)//GA
             foreach (var item in MainGrid.Children.ToList().OfType<LogicComponent>()) item.MovementMode(false);//GA
     }
-
     private void MainGrid_PreviewKeyDown(object sender, KeyEventArgs e)
     {
         // TODO::Delete me
     }
-
+    
     protected override void OnKeyDown(KeyEventArgs e)
     {
         base.OnKeyDown(e);
@@ -132,7 +131,6 @@ public partial class MainWindow : Window
         default: break;
         }
     }
-
     private void MainGrid_KeyDown(object sender, KeyEventArgs e)
     {
         // TODO:: Delete me

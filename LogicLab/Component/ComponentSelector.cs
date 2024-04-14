@@ -24,12 +24,6 @@ public static class ComponentSelector
             _mainGrid ??= value;
         }
     }
-
-    private static readonly Rectangle selectionBox;
-    private static bool isMouseDown;
-    private static Point mouseDownPos;
-    private static Grid? _mainGrid;
-
     static ComponentSelector()
     {
         selectionBox = new Rectangle
@@ -43,20 +37,26 @@ public static class ComponentSelector
         };
     }
 
+    private static readonly Rectangle selectionBox;
+    private static bool isMouseDown;
+    private static Point mouseDownPos;
+    private static Grid? _mainGrid;
+    private static bool hasDragged;
+
     public static void SingleSelect(LogicComponent logicComponent)
     {
         DeselectAll(logicComponent);
         selectedComponents.Add(logicComponent);
     }
-    public static void Deselect(LogicComponent logicComponent) => selectedComponents.Remove(logicComponent);
-    public static bool IsSelected(LogicComponent logicComponent) => selectedComponents.Contains(logicComponent);
+    public static void Deselect(LogicComponent logicComponent)    => selectedComponents.Remove(logicComponent);
+    public static bool IsSelected(LogicComponent logicComponent)  => selectedComponents.Contains(logicComponent);
+    public static void ShiftSelect(LogicComponent logicComponent) => selectedComponents.Add(logicComponent);
     public static void DeselectAll(LogicComponent? ignore = null)
     {
         for (int i = selectedComponents.Count - 1; i >= 0; i--)
             if (selectedComponents[i] != ignore)
                 selectedComponents[i].Deselect();
     }
-    public static void ShiftSelect(LogicComponent logicComponent) => selectedComponents.Add(logicComponent);
 
     // Aligning behaviour
     public static void AlignLeft()
@@ -116,6 +116,7 @@ public static class ComponentSelector
         if (!isMouseDown)
             return;
 
+        hasDragged = true;
         // When the mouse is held down, reposition the drag selection box.
         Point mousePos = e.GetPosition(MainGrid);
 
@@ -136,11 +137,16 @@ public static class ComponentSelector
         }
     }
     public static void MouseUp(MouseButtonEventArgs e)
-    {
+    {   
+        ((MainWindow)Window.GetWindow(MainGrid)).DebugLabel.Content += hasDragged.ToString();
         if (!isMouseDown)
             return;
-        isMouseDown = false;
         MainGrid.ReleaseMouseCapture();
+        
+        if (!hasDragged)
+            return;
+        
+        isMouseDown = hasDragged = false;
 
         // Hide the drag selection box.
         selectionBox.Visibility = Visibility.Collapsed;
@@ -151,7 +157,7 @@ public static class ComponentSelector
         List<LogicComponent> intersectingControls = [];
         FindIntersectingControls(MainGrid, selectionRect, intersectingControls);
 
-        intersectingControls.ForEach(lc => lc.Select(shiftSelect: true)); 
+        intersectingControls.ForEach(lc => lc.Select(shiftSelect: true));
     }
 
     private static void FindIntersectingControls(DependencyObject parent, Rect selectionRect, List<LogicComponent> intersectingControls)
@@ -164,7 +170,7 @@ public static class ComponentSelector
                 continue;
 
             // Check if the control intersects with the selection rectangle
-            Rect bounds = new(element.RenderSize);
+            Rect bounds   = new(element.RenderSize);
             Point topLeft = element.TranslatePoint(new Point(), MainGrid);
             bounds.Offset(topLeft.X, topLeft.Y);
 

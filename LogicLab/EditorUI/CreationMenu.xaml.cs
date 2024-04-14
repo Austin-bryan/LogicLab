@@ -94,7 +94,7 @@ public partial class CreationMenu : UserControl
         void TryOpenFolder(bool shouldOpen, CreationFolder folder)
         {
             if (shouldOpen)
-                folder.FolderArrow_MouseDown(this, (MouseButtonEventArgs)EventArgs.Empty);
+                folder.FolderArrow_MouseDown(this, null);
         }
     }
 
