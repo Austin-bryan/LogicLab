@@ -53,11 +53,11 @@ public partial class Wire : LabComponent
         }
     }
 
-    public void Remove()
+    public void Remove(bool updateSprite = true)
     {
         mainWindow.MainGrid.Children.Remove(mainSpline);
         mainWindow.MainGrid.Children.Remove(splineCollider);
-        Input?.RemoveWire(this);
+        Input?.RemoveWire(this, updateSprite);
         Output?.RemoveWire(this);
     }
     public void SetPort(EPortType portType, IOPort ioPort) => connectedPorts.TryAdd(portType, ioPort);

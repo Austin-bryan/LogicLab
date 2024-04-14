@@ -7,6 +7,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media.Animation;
 using LogicLab.Component;
 using System.Diagnostics;
+using System.DirectoryServices.ActiveDirectory;
 
 namespace LogicLab;
 
@@ -18,63 +19,6 @@ public  partial class IOPort : UserControl
     public Point WireConnection => PointToScreen(new(
                 Sprite.Margin.Left + (portType == EPortType.Input ? + (Parent is StackPanel _ ? ActualWidth / 2 : ActualWidth / 4) : 0),
                 Sprite.Margin.Right + ActualHeight / 2));
-    public bool? GetSignal() => _signal;
-
-    public void SetSignal(bool? value, List<SignalPath> propagationHistory)
-    {
-        if (value == _signal) 
-            return;
-
-        SignalPath currentPath = new();
-        if (propagationHistory.Count != 0)
-        {
-            // Copy the last path to continue from there
-            var lastPath = propagationHistory.Last();
-            currentPath.AddRange(lastPath);
-        }
-        currentPath.AddStep(this, value);
-
-        foreach (var path in propagationHistory)
-            if (currentPath.Equals(path))
-                return;
-        propagationHistory.Add(currentPath);  
-        _signal = value;
-        owningComponent.ShowSignal(value);
-        ProcessSignalAsync(value, propagationHistory);
-    }
-    public bool Connectionless => wires.Count == 0;
-
-    public void RemoveAllWires()
-    {
-        wires.ToImmutableList().ForEach(w => w.Remove());
-        ShowSprite(true);
-    }
-
-    private async void ProcessSignalAsync(bool? signal, List<SignalPath> propagationHistory)
-    {
-        if (portType == EPortType.Input)
-            owningComponent.OnInputChange(this, propagationHistory);        
-        else  // If Output
-        {
-            await Task.Delay(50);
-            foreach (var port in ConnectedPorts)
-                if (port.portType == EPortType.Input)
-                    port.SetSignal(signal, propagationHistory);
-            foreach (var wire in wires)
-                if (wire.Output == this)
-                    wire.ShowSignal(signal);
-        }
-    }
-    private void ShowSignal(bool? signal) => owningComponent.ShowSignal(signal);
-
-    private void UpdateBackground(bool? signal)
-    {
-        if (owningComponent is LogicGate logicGate)
-            logicGate.BackgroundSprite.Fill =
-                signal == true ? new SolidColorBrush(Color.FromRgb(150, 150, 30))
-                               : new SolidColorBrush(Color.FromRgb(30, 30, 30));
-    }
-
     public ImmutableList<IOPort> ConnectedPorts
     {
         get
@@ -89,20 +33,16 @@ public  partial class IOPort : UserControl
             return [.. connectedPorts];
         }
     }
-    public void RemoveWire(Wire wire)
-    {
-        wires.Remove(wire);
-        ShowSprite(true);
-    }
-
+    public bool Connectionless => wires.Count == 0;
+    
     private readonly EPortType portType;
     private readonly LogicComponent owningComponent;
     private readonly SolidColorBrush idleColor, hoverColor;
-    private bool isPressed;
-
     private readonly List<Wire> wires = [];
+
     private static Wire? activeWire;
     private bool? _signal = null;
+    private bool isPressed;
 
     public IOPort(EPortType portType, LogicComponent owningComponent)
     {
@@ -130,6 +70,20 @@ public  partial class IOPort : UserControl
         OverlapDetector.Width *= 1.75;
     }
 
+    public void RemoveWire(Wire wire, bool updateSprite = true)
+    {
+        wires.Remove(wire);
+        if (updateSprite)
+            ShowSprite(true);
+    }
+    public void RemoveAllWires(bool updateSprite = true)
+    {
+        wires.ToImmutableList().ForEach(w => w.Remove(updateSprite));
+        wires.Clear();
+
+        if (updateSprite) 
+            ShowSprite(true);
+    }
     public void SetMovementMode(bool enabled)//GA
     {
         if (enabled)
@@ -151,6 +105,29 @@ public  partial class IOPort : UserControl
             w.Draw(WireConnection, signal);
         });
     }
+    public void SetSignal(bool? value, List<SignalPath> propagationHistory)
+    {
+        if (value == _signal) 
+            return;
+
+        SignalPath currentPath = new();
+        if (propagationHistory.Count != 0)
+        {
+            // Copy the last path to continue from there
+            var lastPath = propagationHistory.Last();
+            currentPath.AddRange(lastPath);
+        }
+        currentPath.AddStep(this, value);
+
+        foreach (var path in propagationHistory)
+            if (currentPath.Equals(path))
+                return;
+        propagationHistory.Add(currentPath);  
+        _signal = value;
+        owningComponent.ShowSignal(value);
+        ProcessSignalAsync(value, propagationHistory);
+    }
+    public bool? GetSignal() => _signal;
     public async void OnDrag()
     {
         // TODO:: This causes the redraw for both output and input ports, when only one is needed
@@ -194,9 +171,11 @@ public  partial class IOPort : UserControl
 
         ShowSprite(false);
 
-        if (activeWire.Input == null)   // This is a input port
-            RemoveWires(this);
-        else   // This is an output port
+        if (activeWire.Input == null)   // User is connecting a wire from an output port to this input port
+        {
+            RemoveAllWires(false);
+        }
+        else   // User is connecting a wire from an input port to this output port
         {
             RemoveWires(activeWire.Input);
             activeWire.Input.wires.Add(activeWire);
@@ -220,16 +199,6 @@ public  partial class IOPort : UserControl
             port.wires.Clear();
         }
     }
-
-    private void ShowSprite(bool visible)
-    {
-        if (portType == EPortType.Input && wires.Count == 0)
-            Sprite.BeginAnimation(OpacityProperty,
-                new DoubleAnimation(fromValue: visible ? 0 : 1,
-                                    toValue:   visible ? 1 : 0,
-                                    duration:  TimeSpan.FromSeconds(0.5)));
-    }
-
     private void Wire_MouseMove(object sender, MouseEventArgs e)
     {
         if (!isPressed) 
@@ -260,5 +229,37 @@ public  partial class IOPort : UserControl
     {
         if (portType == EPortType.Output)
             Sprite.Margin = new Thickness(OverlapDetector.Width / 6, OverlapDetector.Height / 6, 0, 0);
+    }
+    
+    private async void ProcessSignalAsync(bool? signal, List<SignalPath> propagationHistory)
+    {
+        if (portType == EPortType.Input)
+            owningComponent.OnInputChange(this, propagationHistory);        
+        else  // If Output
+        {
+            await Task.Delay(50);
+            foreach (var port in ConnectedPorts)
+                if (port.portType == EPortType.Input)
+                    port.SetSignal(signal, propagationHistory);
+            foreach (var wire in wires)
+                if (wire.Output == this)
+                    wire.ShowSignal(signal);
+        }
+    }
+    private void ShowSprite(bool visible)
+    {
+        if (portType == EPortType.Input && wires.Count == 0)
+            Sprite.BeginAnimation(OpacityProperty,
+                new DoubleAnimation(fromValue: visible ? 0 : 1,
+                                    toValue:   visible ? 1 : 0,
+                                    duration:  TimeSpan.FromSeconds(0.5)));
+    }
+    private void ShowSignal(bool? signal) => owningComponent.ShowSignal(signal);
+    private void UpdateBackground(bool? signal)
+    {
+        if (owningComponent is LogicGate logicGate)
+            logicGate.BackgroundSprite.Fill =
+                signal == true ? new SolidColorBrush(Color.FromRgb(150, 150, 30))
+                               : new SolidColorBrush(Color.FromRgb(30, 30, 30));
     }
 }

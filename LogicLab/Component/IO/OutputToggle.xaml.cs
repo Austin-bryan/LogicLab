@@ -43,6 +43,7 @@ public partial class OutputToggle
         BackgroundSprite.MouseDown += Toggle_MouseDown;
         BackgroundSprite.MouseMove += Component_MouseMove;
         BackgroundSprite.MouseUp   += Toggle_MouseUp;
+        BackgroundSprite.Cursor     = Cursors.Hand;
 
         Grid.Children.Add(sprite);
         Grid.UpdateLayout();
@@ -55,8 +56,11 @@ public partial class OutputToggle
     // Gary
     private void Toggle_MouseDown(object sender, MouseButtonEventArgs e)
     {
-        ShouldToggle = true;
-        Component_MouseDown(sender, e);
+        if (e.RightButton == MouseButtonState.Pressed)
+        {
+            ShouldToggle = true;
+            Component_MouseDown(sender, e);
+        }
     }
     private void Toggle_MouseUp(object sender, MouseButtonEventArgs e)
     {
