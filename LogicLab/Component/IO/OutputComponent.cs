@@ -14,8 +14,8 @@ public abstract class OutputComponent : LogicComponent
         await Task.Delay(1);
 
         AddOutputPort(ControlGrid);
-        OutputPort.SetLeft(BackgroundSprite.ActualWidth * 2);
-        OutputPort.SetSignal(false, []);
+        OutputPort?.SetLeft(BackgroundSprite.ActualWidth * 2);
+        OutputPort?.SetSignal(false, []);
         BackgroundSprite.Cursor = Cursors.SizeAll;
     }
 }

@@ -50,7 +50,7 @@ public partial class LogicComponent
             dragStart      = mousePos;
             Margin         = new(Margin.Left + delta.X, Margin.Top + delta.Y, Margin.Right, Margin.Bottom);
 
-            logicComponent.OnDrag(e);
+            logicComponent.OnDrag();
         }
         public void DragEnd()
         {

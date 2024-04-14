@@ -22,8 +22,6 @@ public partial class LogicGate : LogicComponent
     private double startHeight;                             // Logic gates grow based on input size, this caches the startsize
     private int    inputCount = 2;                          // # of inputs, default is 2, but NOT and BUFFER have a min and max of 1
     private bool   canResize, isResizing, mouseDown;
-    private readonly double backgroundHeight;
-    private readonly bool isCreatedViaDesigner;
     private Point  startResize;
 
     public LogicGate(ELogicGate logicGate)

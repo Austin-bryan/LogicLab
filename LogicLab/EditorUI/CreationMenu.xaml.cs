@@ -12,8 +12,8 @@ public partial class CreationMenu : UserControl
 {
     private static bool showPinHint = true;
     private static List<Variant<bool, List<bool>>>? creationMenuStatus;
-    private CreationFolder directGates;
-    private CreationFolder invertedGates;
+    private CreationFolder? directGates;
+    private CreationFolder? invertedGates;
 
     public CreationMenu()
     {
@@ -35,11 +35,16 @@ public partial class CreationMenu : UserControl
 
     private void UpdateCreationMenuStatus()
     {
+        if (directGates == null || invertedGates == null)
+            CreateMenu();
+
         creationMenuStatus = [];
         List<bool> logicGateStatus = [];
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
         logicGateStatus.Add(directGates.IsOpen);
         logicGateStatus.Add(invertedGates.IsOpen);
+#pragma warning restore CS8602 
 
         creationMenuStatus.Add(new Variant<bool, List<bool>>(LogicFolder.IsOpen));
         creationMenuStatus.Add(new Variant<bool, List<bool>>(logicGateStatus));
@@ -47,27 +52,27 @@ public partial class CreationMenu : UserControl
         creationMenuStatus.Add(new Variant<bool, List<bool>>(InputFolder.IsOpen));
     }
 
-    private void Grid_Loaded(object sender, RoutedEventArgs e)
+    private void Grid_Loaded(object sender, RoutedEventArgs e) => CreateMenu();
+
+    private void CreateMenu()
     {
-        directGates = new(LogicFolder);
-        directGates.FolderName = "Direct Gates";
+        directGates = new(LogicFolder) { FolderName = "Direct Gates" };
         directGates.AddItem(this, this.MainWindow(), () => new LogicGate(ELogicGate.Buffer), "Buffer Gate", ELogicGate.Buffer.GetImage());
         directGates.AddItem(this, this.MainWindow(), () => new LogicGate(ELogicGate.OR), "OR Gate", ELogicGate.OR.GetImage());
         directGates.AddItem(this, this.MainWindow(), () => new LogicGate(ELogicGate.AND), "AND Gate", ELogicGate.AND.GetImage());
         directGates.AddItem(this, this.MainWindow(), () => new LogicGate(ELogicGate.XOR), "XOR Gate", ELogicGate.XOR.GetImage());
 
-        invertedGates = new(LogicFolder);
-        invertedGates.FolderName = "Inverted Gates";
-        invertedGates.AddItem(this, this.MainWindow(), () => new LogicGate(ELogicGate.NOT), "NOT Gate",   ELogicGate.Buffer.GetImage(), true);
-        invertedGates.AddItem(this, this.MainWindow(), () => new LogicGate(ELogicGate.NOR), "NOR Gate",   ELogicGate.OR.GetImage(), true);
+        invertedGates = new(LogicFolder) { FolderName = "Inverted Gates" };
+        invertedGates.AddItem(this, this.MainWindow(), () => new LogicGate(ELogicGate.NOT), "NOT Gate", ELogicGate.Buffer.GetImage(), true);
+        invertedGates.AddItem(this, this.MainWindow(), () => new LogicGate(ELogicGate.NOR), "NOR Gate", ELogicGate.OR.GetImage(), true);
         invertedGates.AddItem(this, this.MainWindow(), () => new LogicGate(ELogicGate.NAND), "NAND Gate", ELogicGate.AND.GetImage(), true);
         invertedGates.AddItem(this, this.MainWindow(), () => new LogicGate(ELogicGate.XNOR), "XNOR Gate", ELogicGate.XOR.GetImage(), true);
 
         LogicFolder.AddFolder(directGates);
         LogicFolder.AddFolder(invertedGates);
 
-        OutputFolder.AddItem(this, this.MainWindow(), () => new OutputToggle(),        "Toggle", Utilities.GetImage("OnOff"));
-        OutputFolder.AddItem(this, this.MainWindow(), () => new OutputConstant(true),  "Constant On", Utilities.GetImage("On"));
+        OutputFolder.AddItem(this, this.MainWindow(), () => new OutputToggle(), "Toggle", Utilities.GetImage("OnOff"));
+        OutputFolder.AddItem(this, this.MainWindow(), () => new OutputConstant(true), "Constant On", Utilities.GetImage("On"));
         OutputFolder.AddItem(this, this.MainWindow(), () => new OutputConstant(false), "Constant Off", Utilities.GetImage("Off"));
 
         InputFolder.AddItem(this, this.MainWindow(), () => new InputPixel(), "Pixel", Utilities.GetImage("Pixel"));
@@ -78,7 +83,7 @@ public partial class CreationMenu : UserControl
 
     public void RestoreStatus()
     {
-        if (creationMenuStatus == null)
+        if (creationMenuStatus == null || directGates == null || invertedGates == null)
             return;
         TryOpenFolder(creationMenuStatus[0].GetValue<bool>(), LogicFolder);
         TryOpenFolder(creationMenuStatus[1].GetValue<List<bool>>()[0], directGates);
@@ -89,7 +94,7 @@ public partial class CreationMenu : UserControl
         void TryOpenFolder(bool shouldOpen, CreationFolder folder)
         {
             if (shouldOpen)
-                folder.FolderArrow_MouseDown(this, null);
+                folder.FolderArrow_MouseDown(this, (MouseButtonEventArgs)EventArgs.Empty);
         }
     }
 

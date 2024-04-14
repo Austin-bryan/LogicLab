@@ -76,7 +76,8 @@ public partial class CreationFolder : UserControl
     }
     public CreationFolder(CreationFolder parentFolder) : this() => this.parentFolder = parentFolder;
 
-    public void AddItem(CreationMenu creationMenu, MainWindow mainWindow, Func<LogicComponent> buildLogicComponent, string label, ImageBrush image = null, bool showNot = false) 
+    public void AddItem(CreationMenu creationMenu, MainWindow mainWindow, Func<LogicComponent> buildLogicComponent, 
+        string label, ImageBrush? image = null, bool showNot = false) 
     {
         CreationItem item = new(creationMenu, mainWindow, label, buildLogicComponent, image, showNot);
         ItemPanel.Children.Add(item);

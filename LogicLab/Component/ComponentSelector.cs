@@ -16,7 +16,7 @@ public static class ComponentSelector
 
     public static Grid MainGrid
     {
-        get => _mainGrid;
+        get => _mainGrid ?? throw new ArgumentNullException(nameof(_mainGrid));
         set
         {
             if (_mainGrid == null)
@@ -28,7 +28,7 @@ public static class ComponentSelector
     private static readonly Rectangle selectionBox;
     private static bool isMouseDown;
     private static Point mouseDownPos;
-    private static Grid _mainGrid;
+    private static Grid? _mainGrid;
 
     static ComponentSelector()
     {
@@ -63,30 +63,26 @@ public static class ComponentSelector
     {
         double min = selectedComponents.Min(lc => lc.Margin.Left);
         selectedComponents.ForEach(lc => lc.SetLeft(min));
-        selectedComponents.ForEach(lc => lc.OnDrag(null));
+        selectedComponents.ForEach(lc => lc.OnDrag());
     }
     public static void AlignTop()
     {
         double min = selectedComponents.Min(lc => lc.Margin.Top);
         selectedComponents.ForEach(lc => lc.SetTop(min));
-        selectedComponents.ForEach(lc => lc.OnDrag(null));
+        selectedComponents.ForEach(lc => lc.OnDrag());
     }
-
     public static void AlignRight()
     {
         double max = selectedComponents.Max(lc => lc.Margin.Left);
         selectedComponents.ForEach(lc => lc.SetLeft(max));
-        selectedComponents.ForEach(lc => lc.OnDrag(null));
+        selectedComponents.ForEach(lc => lc.OnDrag());
     }
-
     public static void AlignBottom()
     {
         double max = selectedComponents.Max(lc => lc.Margin.Top);
         selectedComponents.ForEach(lc => lc.SetTop(max));
-        selectedComponents.ForEach(lc => lc.OnDrag(null));
+        selectedComponents.ForEach(lc => lc.OnDrag());
     }
-
-
     public static void AlignCenter()
     {
         double maxHeight = selectedComponents.Max(lc => lc.ActualHeight);
@@ -96,11 +92,9 @@ public static class ComponentSelector
             double lcCenter = lc.GetTop() + lc.ActualHeight / 2;
             lc.AddTop(center - lcCenter);
         });
-        selectedComponents.ForEach(lc => lc.OnDrag(null));
+        selectedComponents.ForEach(lc => lc.OnDrag());
     }
-
     public static void AlignMiddle() => throw new NotImplementedException();
-
 
     public static void MouseDown(MouseButtonEventArgs e)
     {
