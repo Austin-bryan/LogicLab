@@ -12,6 +12,8 @@ namespace LogicLab;
 public enum EPortType { Input, Output }
 
 // Austin (entire class)     
+// Purpose: Can accept a wire. One input IO port connects to one Output IO port. 
+// Logic Components can have multiple inputs, but only one outport, at max. 
 public  partial class IOPort : UserControl
 {
     public Point WireConnection
@@ -28,6 +30,8 @@ public  partial class IOPort : UserControl
         }
     }
 
+    // If this is an input port, this will have at max one wire, and that wire will be connected to one output port This returns that one output port. 
+    // If this is an output port, it can have an indefinite amount of wires each connected to their own input port. This returns all connected input port. 
     public ImmutableList<IOPort> ConnectedPorts
     {
         get
@@ -82,7 +86,7 @@ public  partial class IOPort : UserControl
     public void RemoveWire(Wire wire, bool updateSprite = true)
     {
         wires.Remove(wire);
-        if (updateSprite)
+        if (updateSprite)       // Show the input port sprite that gets hidden when a wire is connected
             ShowSprite(true);
     }
     public void RemoveAllWires(bool updateSprite = true)
@@ -93,18 +97,11 @@ public  partial class IOPort : UserControl
         if (updateSprite) 
             ShowSprite(true);
     }
-    public void SetMovementMode(bool enabled)//GA
+    public void SetWireVisibility(Visibility visibility) // GA
     {
-        if (enabled)
-        {
-            foreach (Wire wire in wires) wire.Visibility = Visibility.Hidden;
-            Visibility = Visibility.Hidden;
-        }
-        else
-        {
-            foreach (Wire wire in wires) wire.Visibility = Visibility.Visible;
-            Visibility = Visibility.Visible;
-        }
+        foreach (Wire wire in wires)
+            wire.Visibility = visibility;
+        Visibility = visibility;
     }
     public void RefreshWire()
     {

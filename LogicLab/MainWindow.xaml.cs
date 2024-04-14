@@ -45,7 +45,6 @@ public partial class MainWindow : Window
             // AB - Cache these values so they aren't being calculated during mouse move events
             components = MainGrid.Children.ToList().OfType<LogicComponent>().ToImmutableList();
             segments   = MainGrid.Children.ToList().OfType<DotGridSegment>().ToImmutableList();
-            components.ForEach(c => c.MovementMode(false));
             isPanning = true;
             // end AB
         }
@@ -80,7 +79,12 @@ public partial class MainWindow : Window
             // AB This enables to pan with right click, because I can't use middle mouse on a laptop
             if (creationMenu != null)
                 CloseCreationMenu();
-            hasPanned = true;
+
+            if (!hasPanned)
+            {
+                components?.ForEach(c => c.SetPortVisibility(Visibility.Hidden));
+                hasPanned = true;
+            }
             // end AB
 
             DotGridSegment.TranslateGrid(mouseDelta);//moves whole grid
@@ -109,8 +113,8 @@ public partial class MainWindow : Window
         if (hasPanned && (e.MiddleButton == MouseButtonState.Released || e.RightButton == MouseButtonState.Released)) // AB && GA
         {
             hasPanned = isPanning = false; // AB
-            Cursor = Cursors.Arrow; // AB
-            MainGrid.Children.ToList().OfType<LogicComponent>().ToList().ForEach(lc => lc.MovementMode(false)); // GA
+            Cursor    = Cursors.Arrow; // AB
+            components?.ForEach(lc => lc.SetPortVisibility(Visibility.Visible)); // GA
         }
     }
     

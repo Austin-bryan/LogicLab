@@ -65,11 +65,7 @@ public readonly struct ELogicGate
             LogicGateValue.OR     => signals.Any(b => b == true),
             LogicGateValue.XOR    => signals.Contains(null) ? null :                               // XORs require all inputs to be non-null to avoid glitches
                                      signals.Aggregate(false, (acc, curr) => acc ^ curr == true),  // Apply XOR to all signals
-            //LogicGateValue.NOT    => !Buffer.ApplyGate(signals),
-            //LogicGateValue.NAND   => !AND   .ApplyGate(signals),
-            //LogicGateValue.NOR    => !OR    .ApplyGate(signals),
-            //LogicGateValue.XNOR   => !XOR   .ApplyGate(signals),
-            _ => !(!this).ApplyGate(signals)
+            _ => !(!this).ApplyGate(signals) // For inverted logic gates, simply get the regulate gate, and invert its output 
         };
     }
 
