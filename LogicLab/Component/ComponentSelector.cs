@@ -143,13 +143,12 @@ public static class ComponentSelector
             return;
 
         MainGrid.ReleaseMouseCapture();
-        
+        isMouseDown = false;
+
         if (!hasDragged)
             return;
         
-        isMouseDown = hasDragged = false;
-
-        // Hide the drag selection box.
+        hasDragged = false;
         selectionBox.Visibility = Visibility.Collapsed;
 
         Point mouseUpPos = e.GetPosition(MainGrid);
