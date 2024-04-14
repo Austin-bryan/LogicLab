@@ -3,6 +3,7 @@ using System.Windows.Input;
 using System.Windows.Controls;
 using System.Collections.Immutable;
 using LogicLab.Component;
+using System.Windows.Shapes;
 
 namespace LogicLab;
 
@@ -14,13 +15,15 @@ public partial class LogicGate : LogicComponent
     public ELogicGate GateType { get; private set; }
     protected override Grid ControlGrid => Grid;
     protected override ImmutableList<IOPort> InputPorts => InputPanel.Children.ToList().OfType<IOPort>().ToImmutableList();
+    protected override Rectangle ForegroundSprite => Sprite;
 
     // Austin
     private bool? OutputSignal => GateType.ApplyGate(InputSignals);
-    private double backgroundHeight;
     private double startHeight;                             // Logic gates grow based on input size, this caches the startsize
     private int    inputCount = 2;                          // # of inputs, default is 2, but NOT and BUFFER have a min and max of 1
-    private bool   canResize, isResizing, mouseDown, isCreatedViaDesigner;
+    private bool   canResize, isResizing, mouseDown;
+    private readonly double backgroundHeight;
+    private readonly bool isCreatedViaDesigner;
     private Point  startResize;
 
     public LogicGate(ELogicGate logicGate)
@@ -112,14 +115,10 @@ public partial class LogicGate : LogicComponent
             }
         }
         else if (e.GetPosition(this).Y > ActualHeight - 10)
-        {
-            Cursor = Cursors.SizeNS;
-            canResize = true;
-        }
+            (Cursor, canResize) = (Cursors.SizeNS, true);
         else
         {
-            Cursor = Cursors.SizeAll;
-            canResize = false;
+            (Cursor, canResize) = (Cursors.SizeAll, false);
             Component_MouseMove(sender, e);
         }
     }

@@ -11,23 +11,7 @@
             <ColumnDefinition/>
             <ColumnDefinition Width="0*"/>
         </Grid.ColumnDefinitions>
-        <Rectangle x:Name="Sprite" HorizontalAlignment="Left" Height="30" VerticalAlignment="Center" Width="30" StrokeThickness="0" IsHitTestVisible="False" Margin="24,0,0,0">
-
-            <!-- <Connor> -->
-            <Rectangle.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Header="Delete" Click="DeleteComponent"/>
-                    <MenuItem Header="Align">
-                        <MenuItem Header="Left" Click="AlignLeft"/>
-                        <MenuItem Header="Top" Click="AlignTop"/>
-                        <MenuItem Header="Right" Click="AlignRight"/>
-                        <MenuItem Header="Bottom" Click="AlignBottom"/>
-                        <MenuItem Header="Center" Click="AlignCenter"/>
-                    </MenuItem>
-                </ContextMenu>
-            </Rectangle.ContextMenu>
-            <!-- </Connor> -->
-        </Rectangle>
+        <Rectangle x:Name="Sprite" HorizontalAlignment="Left" Height="30" VerticalAlignment="Center" Width="30" StrokeThickness="0" IsHitTestVisible="False" Margin="24,0,0,0"/>
         <StackPanel x:Name="InputPanel" Margin="-11,0,57,0" VerticalAlignment="Center"/>
         <StackPanel x:Name="OutputPanel" Margin="54,0,2,0" VerticalAlignment="Center"/>
         <Ellipse x:Name="NegateDot" HorizontalAlignment="Left" Height="5" Margin="51,0,0,0" VerticalAlignment="Center" Width="5" Fill="White" Visibility="Hidden" IsHitTestVisible="False"/>

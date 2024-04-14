@@ -139,7 +139,11 @@ public  partial class IOPort : UserControl
             return [.. connectedPorts];
         }
     }
-    public void RemoveWire(Wire wire) => wires.Remove(wire);
+    public void RemoveWire(Wire wire)
+    {
+        wires.Remove(wire);
+        ShowSprite(true);
+    }
 
     private readonly EPortType portType;
     private readonly LogicComponent owningComponent;

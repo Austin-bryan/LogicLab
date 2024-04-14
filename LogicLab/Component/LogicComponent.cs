@@ -15,6 +15,7 @@ namespace LogicLab;
 public abstract partial class LogicComponent : LabComponent
 {
     public Rectangle BackgroundSprite { get; private set; }
+    protected virtual Rectangle? ForegroundSprite { get; } = null;
 
     protected abstract Grid ControlGrid { get; }
     protected virtual ImmutableList<IOPort> InputPorts => inputPorts.ToImmutableList();
@@ -119,8 +120,7 @@ public abstract partial class LogicComponent : LabComponent
         ComponentSelector.Deselect(this);
     }
     public virtual void OnInputChange(IOPort changedPort, List<SignalPath> propagationHistory) { }
-    //public virtual void OnDelete() { }
-    public void OnDrag(MouseEventArgs e)
+    public void OnDrag(MouseEventArgs deleteme)
     {
         InputPorts.ForEach(io => io.OnDrag());
         OutputPort?.OnDrag();
@@ -165,6 +165,36 @@ public abstract partial class LogicComponent : LabComponent
                 mw.MainGrid.MouseMove += Component_MouseMove;
         if (BackgroundSprite.Parent == null)
             ControlGrid.Children.Insert(0, BackgroundSprite);
+        if (ForegroundSprite != null)
+            ForegroundSprite.IsHitTestVisible = false;
+
+        ContextMenu contextMenu = new();
+
+        MenuItem deleteItem = new() { Header = "Delete" };
+        MenuItem alignItem  = new() { Header = "Align" };
+        MenuItem leftItem   = new() { Header = "Left" };
+        MenuItem topItem    = new() { Header = "Top" };
+        MenuItem rightItem  = new() { Header = "Right" };
+        MenuItem bottomItem = new() { Header = "Bottom" };
+        MenuItem centerItem = new() { Header = "Center" };
+
+        deleteItem.Click += DeleteComponent; 
+        leftItem.Click   += AlignLeft;
+        topItem.Click    += AlignTop; 
+        rightItem.Click  += AlignRight;
+        bottomItem.Click += AlignBottom;
+        centerItem.Click += AlignCenter;
+
+        alignItem.Items.Add(leftItem);
+        alignItem.Items.Add(topItem);
+        alignItem.Items.Add(rightItem);
+        alignItem.Items.Add(bottomItem);
+        alignItem.Items.Add(centerItem);
+
+        contextMenu.Items.Add(deleteItem);
+        contextMenu.Items.Add(alignItem);
+
+        BackgroundSprite.ContextMenu = contextMenu;
     }
 
     private void BeginShadowAnimation(DropShadowEffect fromShadow, DropShadowEffect targetShadow)

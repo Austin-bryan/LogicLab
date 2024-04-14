@@ -1,11 +1,14 @@
-﻿using System.Windows;
+﻿using System.Security.Policy;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Shapes;
 
 namespace LogicLab;
 
 // Austin
 public partial class OutputConstant 
 {
+    protected override Rectangle ForegroundSprite => Sprite;
     public OutputConstant() : base() => InitializeComponent();
     public OutputConstant(bool signal) : this() => this.signal = signal;
 

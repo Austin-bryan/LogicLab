@@ -12,6 +12,7 @@ public partial class OutputToggle
     protected override Grid ControlGrid => Grid;
     private bool ShouldToggle = false;
     private readonly Rectangle sprite;
+    protected override Rectangle ForegroundSprite => sprite;
 
     public OutputToggle() : base()
     {
