@@ -8,6 +8,7 @@ using System.Windows.Media.Imaging;
 namespace LogicLab.EditorUI;
 
 // Austin (entire class)
+// Purpose: Can be open or closed in the creation menu, and contains multiple creation items, or, it can also contain more folders
 public partial class CreationFolder : UserControl
 {
     public static readonly DependencyProperty CustomTextProperty =
@@ -31,6 +32,7 @@ public partial class CreationFolder : UserControl
                 Height = FolderArrow.Height + 5;
                 ItemPanel.Visibility = Visibility.Collapsed;
 
+                // If this has a parent folder, the parent folder needs to be shrunk, as it was previously expanded
                 if (parentFolder != null)
                 {
                     parentFolder.ItemPanel.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
@@ -41,11 +43,13 @@ public partial class CreationFolder : UserControl
             }
             if (IsOpen)
             {
+                // Increase item panel size to make room for items
                 ItemPanel.Visibility = Visibility.Visible;
                 ItemPanel.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
                 ItemPanel.Arrange(new Rect(0, 0, ItemPanel.DesiredSize.Width, ItemPanel.DesiredSize.Height));
                 Height = ItemPanel.ActualHeight + 20;
 
+                // If there is a parent folder, it also needs to be expanded so that this content is fully visible
                 if (parentFolder != null)
                     parentFolder.Height += ItemPanel.ActualHeight;
             }
@@ -71,8 +75,9 @@ public partial class CreationFolder : UserControl
         Highlight  .MouseDown  += FolderArrow_MouseDown;
         FolderArrow.MouseEnter += Highlight_MouseEnter;
         FolderArrow.MouseLeave += Highlight_MouseLeave;
+
         arrowDefault = (SolidColorBrush)FolderArrow.Fill;
-        IsOpen = false;
+        IsOpen       = false;
     }
     public CreationFolder(CreationFolder parentFolder) : this() => this.parentFolder = parentFolder;
 
@@ -97,6 +102,7 @@ public partial class CreationFolder : UserControl
 
     public void FolderArrow_MouseDown(object sender, MouseButtonEventArgs e)
     {
+        // Animate arrow
         IsOpen = !IsOpen;
 
         DoubleAnimation animation = new()

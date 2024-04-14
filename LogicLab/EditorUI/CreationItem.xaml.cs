@@ -6,6 +6,7 @@ using System.Windows.Media;
 namespace LogicLab.EditorUI;
 
 // Austin (entire class)
+// Purpose: Exists in creation folders, clicking on them creates a logic component
 public partial class CreationItem: UserControl
 {
     private readonly SolidColorBrush transparentBrush = new(Color.FromArgb(0, 0, 0, 0));
@@ -37,11 +38,11 @@ public partial class CreationItem: UserControl
     private void Highlight_MouseEnter(object sender, MouseEventArgs e) => Highlight.Fill = highlightBrush;
     private void Highlight_MouseLeave(object sender, MouseEventArgs e) => Highlight.Fill = transparentBrush;
 
+    // Creates logic componet and closes creation menu
     private void Highlight_MouseDown(object sender, MouseButtonEventArgs e)
     {
         creationMenu.Remove();
         LogicComponent logicComponent = BuildLogicComponent();
-
         mainWindow.MainGrid.Children.Add(logicComponent);
 
         Point mousePos = Mouse.GetPosition(mainWindow); 

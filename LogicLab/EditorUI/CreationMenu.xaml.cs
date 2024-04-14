@@ -8,10 +8,11 @@ using LogicLab.Component;
 namespace LogicLab.EditorUI;
 
 // Austin
+// Purpose: Open a context menu with nested folders to create the logic components
 public partial class CreationMenu : UserControl
 {
     private static bool showPinHint = true;
-    private static List<Variant<bool, List<bool>>>? creationMenuStatus;
+    private static List<Variant<bool, List<bool>>>? creationMenuStatus;     // Variant is similar in behavior to C++'s std::variant
     private CreationFolder? directGates;
     private CreationFolder? invertedGates;
 
@@ -19,7 +20,9 @@ public partial class CreationMenu : UserControl
     {
         InitializeComponent();
 
-        if (!showPinHint)
+        // I put a comment bubble to show how pinning works, to make the application more friendly
+        // Once its been closed once, this prevents new instances from showing it again
+        if (!showPinHint)   
             HidePinHint();
     }
 
@@ -27,6 +30,7 @@ public partial class CreationMenu : UserControl
 
     public void Remove()
     {
+        // Don't remove if it's pinned
         if (isPinned)
             return;
         UpdateCreationMenuStatus();
@@ -41,11 +45,12 @@ public partial class CreationMenu : UserControl
         creationMenuStatus = [];
         List<bool> logicGateStatus = [];
 
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
+#pragma warning disable CS8602 // Dereference of a possibly null reference. These are no longer null, because CreateMenu assigns them
         logicGateStatus.Add(directGates.IsOpen);
         logicGateStatus.Add(invertedGates.IsOpen);
 #pragma warning restore CS8602 
 
+        // This caches the folder's open/close state so folders will be correctly opened and closed for next time
         creationMenuStatus.Add(new Variant<bool, List<bool>>(LogicFolder.IsOpen));
         creationMenuStatus.Add(new Variant<bool, List<bool>>(logicGateStatus));
         creationMenuStatus.Add(new Variant<bool, List<bool>>(OutputFolder.IsOpen));
@@ -56,6 +61,8 @@ public partial class CreationMenu : UserControl
 
     private void CreateMenu()
     {
+        // Creates all folders, sub folders and items and chains them together
+        // Lambdas are used to create the logic components, and passed as arguments
         directGates = new(LogicFolder) { FolderName = "Direct Gates" };
         directGates.AddItem(this, this.MainWindow(), () => new LogicGate(ELogicGate.Buffer), "Buffer Gate", ELogicGate.Buffer.GetImage());
         directGates.AddItem(this, this.MainWindow(), () => new LogicGate(ELogicGate.OR), "OR Gate", ELogicGate.OR.GetImage());
@@ -85,6 +92,8 @@ public partial class CreationMenu : UserControl
     {
         if (creationMenuStatus == null || directGates == null || invertedGates == null)
             return;
+
+        // Opens folders to be as they were last time. 
         TryOpenFolder(creationMenuStatus[0].GetValue<bool>(), LogicFolder);
         TryOpenFolder(creationMenuStatus[1].GetValue<List<bool>>()[0], directGates);
         TryOpenFolder(creationMenuStatus[1].GetValue<List<bool>>()[1], invertedGates);
@@ -101,9 +110,9 @@ public partial class CreationMenu : UserControl
     public void HideOutput() => FolderPanel.Children.Remove(OutputFolder);
     public void HideInput()  => FolderPanel.Children.Remove(InputFolder);
 
-
     private void PinSprite_MouseDown(object sender, MouseButtonEventArgs e)
     {
+        // Rotate pin
         if (PinSprite.RenderTransform as RotateTransform == null)
         {
             PinSprite.RenderTransform = new RotateTransform(0);
