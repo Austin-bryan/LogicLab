@@ -22,8 +22,8 @@ public partial class MainWindow : Window
         Cursor = InCommentMode ? Cursors.Cross : Cursors.Arrow;
         InCommentMode = !InCommentMode;
 
-        "Test".Show();
         Comment comment = new();
+        comment.SetPosition(new(500, 500));
 
         MainGrid.Children.Insert(0, comment);
     }
