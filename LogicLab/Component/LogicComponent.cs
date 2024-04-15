@@ -179,6 +179,8 @@ public abstract partial class LogicComponent : LabComponent
             ControlGrid.Children.Insert(0, BackgroundSprite);
         if (ForegroundSprite != null)
             ForegroundSprite.IsHitTestVisible = false;
+        BackgroundSprite.HorizontalAlignment  = HorizontalAlignment.Center;
+        BackgroundSprite.VerticalAlignment    = VerticalAlignment.Center;
 
         // Creates the context menu that is used across all Logic Components
         // XAML can't be inherited, so it must be done in C#
