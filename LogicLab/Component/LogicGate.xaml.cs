@@ -105,7 +105,7 @@ public partial class LogicGate : LogicComponent
                 OutputPort?.RefreshWires();
             }
         }
-        else if (e.GetPosition(this).Y > ActualHeight - 10)
+        else if (e.GetPosition(this).Y > ActualHeight - 10 && GateType.PositiveGate() != ELogicGate.Buffer)
             (Cursor, canResize) = (Cursors.SizeNS, true);
         else
         {
