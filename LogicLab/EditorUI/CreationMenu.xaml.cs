@@ -87,16 +87,18 @@ public partial class CreationMenu : UserControl
 
         RestoreStatus();
     }
-
     public void RestoreStatus()
     {
+        // Opens folders to be as they were last time. 
         if (creationMenuStatus == null || directGates == null || invertedGates == null)
             return;
 
-        // Opens folders to be as they were last time. 
-        TryOpenFolder(creationMenuStatus[0].GetValue<bool>(), LogicFolder);
-        TryOpenFolder(creationMenuStatus[1].GetValue<List<bool>>()[0], directGates);
-        TryOpenFolder(creationMenuStatus[1].GetValue<List<bool>>()[1], invertedGates);
+        // Only open child folders if they're parent was open, and if they were open as well
+        bool logicFolderOpen = creationMenuStatus[0].GetValue<bool>();
+        TryOpenFolder(logicFolderOpen, LogicFolder);
+        TryOpenFolder(logicFolderOpen && creationMenuStatus[1].GetValue<List<bool>>()[0], directGates);
+        TryOpenFolder(logicFolderOpen && creationMenuStatus[1].GetValue<List<bool>>()[1], invertedGates);
+        
         TryOpenFolder(creationMenuStatus[2].GetValue<bool>(), OutputFolder);
         TryOpenFolder(creationMenuStatus[3].GetValue<bool>(), InputFolder);
 
