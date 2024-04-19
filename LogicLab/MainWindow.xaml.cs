@@ -56,8 +56,8 @@ public partial class MainWindow : Window
         foreach (DotGridSegment item in MainGrid.Children.ToList().OfType<DotGridSegment>())
             MainGrid.Children.ToList().Remove(item); // Removes all old DotGridSegments
         
-        for (int y = 0; y < 5; y += 1) 
-            for (int x = 0; x < 5; x += 1)
+        for (int y = -1; y < 5; y += 1) 
+            for (int x = -1; x < 5; x += 1)
             {
                 DotGridSegment dotGrid = new(new Point(x, y));
                 MainGrid.Children.Add(dotGrid);
