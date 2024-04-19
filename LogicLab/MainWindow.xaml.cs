@@ -24,7 +24,6 @@ public partial class MainWindow : Window
         WindowState = WindowState.Maximized;
         InitializeDotGrid();
     }
-    int n = 0;
     private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
     {
         bool sourceIsMainGrid = e.OriginalSource == MainGrid;

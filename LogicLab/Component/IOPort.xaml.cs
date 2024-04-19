@@ -113,7 +113,7 @@ public  partial class IOPort : UserControl
         });
     }
     // Changes the signals of ports, and propagate that signal outward
-    public void SetSignal(bool? value, List<SignalPath> propagationHistory)
+    public void SetSignal(bool? value)
     {
         // Don't set signal if it results in no change. This prevents some trival infinite loops
         if (value == _signal)   
@@ -121,7 +121,7 @@ public  partial class IOPort : UserControl
 
         _signal = value;
         owningComponent.ShowSignal(value);
-        ProcessSignalAsync(value, propagationHistory);
+        ProcessSignalAsync(value);
     }
     public bool? GetSignal() => _signal;
     public async void RefreshWiresAsync()
@@ -181,8 +181,8 @@ public  partial class IOPort : UserControl
         wires.Add(activeWire);
 
         if (activeWire.Output != null)
-            SetSignal(activeWire.Output.GetSignal(), []);
-        activeWire.Input?.SetSignal(GetSignal(), []);
+            SetSignal(activeWire.Output.GetSignal());
+        activeWire.Input?.SetSignal(GetSignal());
         activeWire.Draw(WireConnection, GetSignal());
 
         static void RemoveWires(IOPort port)
@@ -223,10 +223,10 @@ public  partial class IOPort : UserControl
             Sprite.Margin = new Thickness(OverlapDetector.Width / 6, OverlapDetector.Height / 6, 0, 0);
     }
     
-    private async void ProcessSignalAsync(bool? signal, List<SignalPath> propagationHistory)
+    private async void ProcessSignalAsync(bool? signal)
     {
         if (portType == EPortType.Input)
-            owningComponent.OnInputChange(this, propagationHistory);        
+            owningComponent.OnInputChange(this);        
         else  // If Output
         {
             await Task.Delay(100);   // As much as I tried, infinte loops will still occur. This approach is a standard one
@@ -235,7 +235,7 @@ public  partial class IOPort : UserControl
 
             foreach (var port in ConnectedPorts)
                 if (port.portType == EPortType.Input)
-                    port.SetSignal(signal, propagationHistory);
+                    port.SetSignal(signal);
             foreach (var wire in wires)
                 if (wire.Output == this)
                     wire.ShowSignal(signal);
