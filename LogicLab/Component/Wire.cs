@@ -27,8 +27,9 @@ public partial class Wire : LabComponent
                                      errorBrush = new(Color.FromRgb(200, 50, 50));
     private readonly Path mainSpline = new()
     {
-        Stroke = new SolidColorBrush(Color.FromRgb(200, 200, 200)),
-        StrokeThickness = 4
+        Stroke           = new SolidColorBrush(Color.FromRgb(200, 200, 200)),
+        StrokeThickness  = 4,
+        IsHitTestVisible = false
     };
 
     public Wire(MainWindow mainWindow, Point startPoint)
@@ -58,14 +59,12 @@ public partial class Wire : LabComponent
         const int offset = 25;
         Point startPoint = new(Output?.WireConnection.X ?? anchor.X,
                                Output?.WireConnection.Y - 3 * Output?.Sprite.ActualHeight / 4 ?? anchor.Y - offset);
-        Point endPoint = new(Input?.WireConnection.X ?? anchor.X, Input?.WireConnection.Y - offset ?? anchor.Y - offset);
-
-        double distance = CalculateDistance(startPoint, endPoint);
-        IOPort port = Output ?? Input ?? throw new NullReferenceException("Wire has no ports attached");
+        Point endPoint   = new(Input?.WireConnection.X ?? anchor.X, Input?.WireConnection.Y - offset ?? anchor.Y - offset);
+        double distance  = CalculateDistance(startPoint, endPoint);
+        IOPort port      = Output ?? Input ?? throw new NullReferenceException("Wire has no ports attached");
 
         if (port == null)
             return;
-
         if (PresentationSource.FromVisual(port) == null)
             return;
 
@@ -115,9 +114,6 @@ public partial class Wire : LabComponent
             : signal == false
             ? Color.FromRgb(200, 200, 200)
             : Color.FromRgb(200, 50, 50);
-
-        //ColorAnimation colorAnim = new(color, TimeSpan.FromSeconds(0.25));
-        //mainSpline.Stroke.BeginAnimation(SolidColorBrush.ColorProperty, colorAnim);
         mainSpline.Stroke = new SolidColorBrush(color);
     }
 
