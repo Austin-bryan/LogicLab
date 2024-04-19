@@ -120,20 +120,20 @@ public  partial class IOPort : UserControl
             return;
 
         // Keep track of the path that is being taken of the signals, to detect infinite loops
-        SignalPath currentPath = new();
-        if (propagationHistory.Count != 0)
-        {
-            // Copy the last path to continue from there
-            var lastPath = propagationHistory.Last();
-            currentPath.AddRange(lastPath);
-        }
-        currentPath.AddStep(this, value);
+        //SignalPath currentPath = new();
+        //if (propagationHistory.Count != 0)
+        //{
+        //    // Copy the last path to continue from there
+        //    var lastPath = propagationHistory.Last();
+        //    currentPath.AddRange(lastPath);
+        //}
+        //currentPath.AddStep(this, value);
 
-        // Return if an infinite loop is detected
-        foreach (var path in propagationHistory)
-            if (currentPath.Equals(path))
-                return;
-        propagationHistory.Add(currentPath);
+        //// Return if an infinite loop is detected
+        //foreach (var path in propagationHistory)
+        //    if (currentPath.Equals(path))
+        //        return;
+        //propagationHistory.Add(currentPath);
 
         _signal = value;
         owningComponent.ShowSignal(value);
