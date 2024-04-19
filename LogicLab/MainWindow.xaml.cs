@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+using System.Transactions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -12,7 +13,7 @@ public partial class MainWindow : Window
     private CreationMenu? creationMenu;
 
     private Point oldMousePos = new(0, 0); // GA
-    private bool hasPanned, isPanning;
+    private bool isPanning, isMouseDown;
     private ImmutableList<LogicComponent>? components;
     private ImmutableList<DotGridSegment>? segments;
 
@@ -23,6 +24,7 @@ public partial class MainWindow : Window
         WindowState = WindowState.Maximized;
         InitializeDotGrid();
     }
+    int n = 0;
     private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
     {
         bool sourceIsMainGrid = e.OriginalSource == MainGrid;
@@ -45,7 +47,7 @@ public partial class MainWindow : Window
             // AB - Cache these values so they aren't being calculated during mouse move events
             components = MainGrid.Children.ToList().OfType<LogicComponent>().ToImmutableList();
             segments   = MainGrid.Children.ToList().OfType<DotGridSegment>().ToImmutableList();
-            isPanning = true;
+            isMouseDown  = true;
             // end AB
         }
     }
@@ -73,20 +75,22 @@ public partial class MainWindow : Window
         Point mouseDelta = new(e.GetPosition(this).X - oldMousePos.X, e.GetPosition(this).Y - oldMousePos.Y); //calculates mouseDelta
         oldMousePos = new Point(e.GetPosition(this).X, e.GetPosition(this).Y);
 
-        if (isPanning && (e.MiddleButton == MouseButtonState.Pressed || e.RightButton == MouseButtonState.Pressed)) // AB
+        if (e.OriginalSource == MainGrid && 
+            isMouseDown && !isPanning &&
+            (e.MiddleButton == MouseButtonState.Pressed || e.RightButton == MouseButtonState.Pressed)) // AB
         {
             Cursor = Cursors.ScrollAll; // AB
             // AB This enables to pan with right click, because I can't use middle mouse on a laptop
             if (creationMenu != null)
                 CloseCreationMenu();
-
-            if (!hasPanned)
-            {
-                components?.ForEach(c => c.SetPortVisibility(Visibility.Hidden));
-                hasPanned = true;
-            }
+            
+            if (!isPanning)
+                isPanning = true;
             // end AB
-
+        }
+        if (isPanning && (e.MiddleButton == MouseButtonState.Pressed || e.RightButton == MouseButtonState.Pressed))
+        {
+            components?.ForEach(c => c.SetPortVisibility(Visibility.Hidden));
             DotGridSegment.TranslateGrid(mouseDelta);// Moves whole grid
 
             // Pans all logic gates and the grid segments
@@ -110,10 +114,11 @@ public partial class MainWindow : Window
     {
         if (e.LeftButton == MouseButtonState.Released) // GA : this makes it so the selection box does not interfear with any other mouse function
             ComponentSelector.MouseUp(e); // AB
-        if (hasPanned && (e.MiddleButton == MouseButtonState.Released || e.RightButton == MouseButtonState.Released)) // AB && GA
+        isMouseDown = false;  // AB
+        if (isPanning && (e.MiddleButton == MouseButtonState.Released || e.RightButton == MouseButtonState.Released)) // AB && GA
         {
-            hasPanned = isPanning = false; // AB
             Cursor    = Cursors.Arrow; // AB
+            isPanning = false;
             components?.ForEach(lc => lc.SetPortVisibility(Visibility.Visible)); // GA
         }
     }
@@ -140,13 +145,13 @@ public partial class MainWindow : Window
     // AB
     private void MainGrid_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
     {
-        hasPanned = false;
+        isPanning = false;
         if (HintLabel != null && HintLabel.Visibility == Visibility.Visible)
             MainGrid.Children.Remove(HintLabel);
     }
     private void MainGrid_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
     {
-        if (!hasPanned && e.OriginalSource == MainGrid)
+        if (!isPanning && e.OriginalSource == MainGrid)
             OpenCreationMenu(e.GetPosition(this));
 
     }
