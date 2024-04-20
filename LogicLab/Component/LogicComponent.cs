@@ -124,7 +124,7 @@ public abstract partial class LogicComponent : LabComponent
         BeginShadowAnimation(highlight, shadow);
         ComponentSelector.Deselect(this);
     }
-    public virtual void OnInputChange(IOPort changedPort, List<SignalPath> propagationHistory) { }
+    public virtual void OnInputChange(IOPort changedPort) { }
     public void RefreshWires()
     {
         InputPorts.ForEach(io => io.RefreshWires());

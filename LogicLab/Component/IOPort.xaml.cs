@@ -57,20 +57,19 @@ public  partial class IOPort : UserControl
     private bool? _signal = null;
     private bool isPressed;
 
-    public IOPort(EPortType portType, LogicComponent owningComponent)
+    public IOPort(EPortType portType, LogicComponent owner)
     {
         InitializeComponent();
 
-        this.owningComponent = owningComponent;
+        this.owningComponent = owner;
         idleColor            = new SolidColorBrush(Color.FromRgb(9, 180, 255));
         hoverColor           = new SolidColorBrush(Color.FromRgb(59, 230, 255));
         this.portType        = portType;
 
-        BitmapImage bitmapImage = new(new Uri($"Images/{this.portType}.png", UriKind.Relative));
-        ImageBrush imageBrush   = new(bitmapImage);
-
-        Sprite.Fill        = idleColor;
-        Sprite.OpacityMask = imageBrush;
+        var bitmapImage      = new BitmapImage(new Uri($"Images/{this.portType}.png", UriKind.Relative));
+        var imageBrush       = new ImageBrush(bitmapImage);
+        Sprite.Fill          = idleColor;
+        Sprite.OpacityMask   = imageBrush;
 
         if (portType == EPortType.Input)
             return;
@@ -207,7 +206,6 @@ public  partial class IOPort : UserControl
         bool wireIsHalfConneceted = activeWire?.ConnectedPorts.ContainsKey(portType == EPortType.Output ? EPortType.Input : EPortType.Output) == false;
         if (wireIsHalfConneceted)
         {
-            //this.MainWindow().OpenCreationMenu(PointToScreen(e.GetPosition(this)), portType);
             if (activeWire != null)
             {
                 activeWire.Remove();
@@ -229,7 +227,7 @@ public  partial class IOPort : UserControl
             owningComponent.OnInputChange(this);        
         else  // If Output
         {
-            await Task.Delay(100);   // As much as I tried, infinte loops will still occur. This approach is a standard one
+            await Task.Delay(100);
             // In cases where the signal turns itself on and off, like a handmade XOR gate, it causes an infinte loop of never ending updates
             // This delay allows some time to pass, thus not blocking the thread. The result is a flicker effect, which was the goal. 
 

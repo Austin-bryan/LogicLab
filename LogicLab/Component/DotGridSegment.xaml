@@ -7,7 +7,7 @@
              mc:Ignorable="d" Height="1024" Width="1024" HorizontalAlignment="Left" VerticalAlignment="Top">
     <Grid Width="1024" Height="1024" IsHitTestVisible="False">
         <Grid.Background>
-            <ImageBrush ImageSource="/Component/GridTexture1.png" Stretch="Fill" TileMode="Tile" RenderOptions.EdgeMode="Aliased" RenderOptions.BitmapScalingMode="NearestNeighbor" Opacity="0.9" >
+            <ImageBrush ImageSource="/Component/GridTexture1.png" Stretch="Fill" TileMode="Tile" RenderOptions.EdgeMode="Aliased" RenderOptions.BitmapScalingMode="NearestNeighbor" Opacity="1.0" >
                 <ImageBrush.RelativeTransform>
                     <TransformGroup>
                         <ScaleTransform CenterY="0.5" CenterX="0.5" ScaleX="1" ScaleY="1"/>

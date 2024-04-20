@@ -14,7 +14,7 @@ public abstract class OutputComponent : LogicComponent
         await Task.Delay(1);    // AB - Wait for everything to be fully loaded
 
         AddOutputPort(ControlGrid);
-        OutputPort?.SetSignal(false, []);
+        OutputPort?.SetSignal(false);
 
         (Width, Height) = (75, 50); // AB - Limiting the size fixes a certain selection bug
         OutputPort?.SetLeft(BackgroundSprite.ActualWidth);  // AB

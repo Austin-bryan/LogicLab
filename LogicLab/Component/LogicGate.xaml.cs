@@ -33,10 +33,10 @@ public partial class LogicGate : LogicComponent
     }
 
     // Called whenever the state of one if its input ports has changed, then updates its output signal
-    public async override void OnInputChange(IOPort changedPort, List<SignalPath> propagationHistory)
+    public async override void OnInputChange(IOPort changedPort)
     {
         await Task.Delay(1);    // This avoids a particular glitch with the XOR gate
-        OutputPort?.SetSignal(OutputSignal, propagationHistory);
+        OutputPort?.SetSignal(OutputSignal);
     }
 
     public override void ShowSignal(bool? signal) => base.ShowSignal(OutputSignal);
@@ -99,7 +99,7 @@ public partial class LogicGate : LogicComponent
                 startResize = e.GetPosition(this);
 
                 ShowSignal(OutputSignal);
-                OutputPort?.SetSignal(OutputSignal, []);
+                OutputPort?.SetSignal(OutputSignal);
 
                 await Task.Delay(1);
                 OutputPort?.RefreshWires();

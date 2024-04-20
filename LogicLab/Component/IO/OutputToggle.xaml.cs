@@ -65,7 +65,7 @@ public partial class OutputToggle
     {
         // If a Drag is started, this is set to false. This prevents toggling when the user drags this component
         if (ShouldToggle)
-            OutputPort?.SetSignal(!OutputPort.GetSignal(), []);
+            OutputPort?.SetSignal(!OutputPort.GetSignal());
 
         Component_MouseLeftButtonUp(sender, e);
     }
