@@ -9,7 +9,11 @@ using LogicLab.Component;
 
 namespace LogicLab;
 
-public enum EPortType { Input, Output }
+public enum EPortType 
+{ 
+    Input, 
+    Output 
+}
 
 // Austin (entire class)     
 // Purpose: Can accept a wire. One input IO port connects to one Output IO port. 
@@ -61,15 +65,15 @@ public  partial class IOPort : UserControl
     {
         InitializeComponent();
 
-        this.owningComponent = owner;
-        idleColor            = new SolidColorBrush(Color.FromRgb(9, 180, 255));
-        hoverColor           = new SolidColorBrush(Color.FromRgb(59, 230, 255));
-        this.portType        = portType;
+        owningComponent    = owner;
+        idleColor          = new SolidColorBrush(Color.FromRgb(9, 180, 255));
+        hoverColor         = new SolidColorBrush(Color.FromRgb(59, 230, 255));
+        this.portType      = portType;
 
-        var bitmapImage      = new BitmapImage(new Uri($"Images/{this.portType}.png", UriKind.Relative));
-        var imageBrush       = new ImageBrush(bitmapImage);
-        Sprite.Fill          = idleColor;
-        Sprite.OpacityMask   = imageBrush;
+        var bitmapImage    = new BitmapImage(new Uri($"Images/{this.portType}.png", UriKind.Relative));
+        var imageBrush     = new ImageBrush(bitmapImage);
+        Sprite.Fill        = idleColor;
+        Sprite.OpacityMask = imageBrush;
 
         if (portType == EPortType.Input)
             return;
