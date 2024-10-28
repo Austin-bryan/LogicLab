@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Reflection.Metadata;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Shapes;
 
@@ -9,7 +10,7 @@ namespace LogicLab;
 public partial class OutputConstant 
 {
     protected override Rectangle ForegroundSprite => Sprite;
-    public OutputConstant() : base()              => InitializeComponent();
+    public OutputConstant(bool? v) : base()              => InitializeComponent();
     public OutputConstant(bool signal) : this()   => this.signal = signal;
 
     protected override Grid ControlGrid => Grid;
@@ -29,4 +30,6 @@ public partial class OutputConstant
         OutputPort?.SetSignal(signal ?? false);
         Sprite.Fill = Utilities.GetImage(OutputPort?.GetSignal() == true ? "On" : "Off");
     }
+    //outputs the type of constant
+    public bool? ConstantType() => signal; //GA
 }

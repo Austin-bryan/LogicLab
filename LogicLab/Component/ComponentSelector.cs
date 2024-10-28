@@ -106,27 +106,33 @@ public static class ComponentSelector
         selectedComponents.ForEach(lc => lc.RefreshWires());
     }
     private static readonly Func<LogicComponent> BuildLogicComponent;
-    public static async void DuplicateComponent()
+    public static async void DuplicateComponent() //GA
     {
         for (int i = selectedComponents.Count - 1; i >= 0; i--)
         {
             LogicComponent component = selectedComponents[i];
             
             Point mousePos = Mouse.GetPosition(MainGrid);
-            LogicComponent? temp = null; //new OutputToggle();//defaults to an input 
-
-            if (component is LogicGate logicGate)
-                temp = new LogicGate(logicGate.GateType);
-            else if (component is OutputToggle)
-                temp = new OutputToggle();
+            LogicComponent? temp = null; 
+            //sets temp to type of current component
+            if      (component is LogicGate logicGate) temp = new LogicGate(logicGate.GateType);
+            else if (component is OutputConstant outputConstant) temp = new OutputConstant(outputConstant.ConstantType());
+            else if (component is OutputToggle) temp = new OutputToggle();
+            else if (component is InputPixel) temp = new InputPixel();
+            else if (component is InputHexDisplay) temp = new InputHexDisplay();
 
             if (temp != null)
             {
+                //sets new components to 50 px down and to the left of original components position
                 temp.SetPosition(new Point(component.GetLeft() + 50, component.GetTop() + 50));
-                MainGrid.Children.Add(temp);
                 
-                temp.Select(true);//selects new component
-                component.Deselect(); //deselects old component
+                //selects new component
+                temp.Select(true);
+                //deselects old component
+                component.Deselect(); 
+                
+                //creates new component
+                MainGrid.Children.Add(temp);
             }
         };
     }
