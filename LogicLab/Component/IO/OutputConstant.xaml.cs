@@ -10,7 +10,7 @@ namespace LogicLab;
 public partial class OutputConstant 
 {
     protected override Rectangle ForegroundSprite => Sprite;
-    public OutputConstant(bool? v) : base()              => InitializeComponent();
+    public OutputConstant() : base()              => InitializeComponent();
     public OutputConstant(bool signal) : this()   => this.signal = signal;
 
     protected override Grid ControlGrid => Grid;

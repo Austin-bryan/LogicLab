@@ -144,7 +144,8 @@ public partial class MainWindow : Window
             switch (e.Key)
             {
                 case Key.D: ComponentSelector.DuplicateComponent(); break;
-                case Key.V: ComponentSelector.DuplicateComponent(); break;
+                case Key.C: ComponentSelector.CopyComponents(); break;
+                case Key.V: ComponentSelector.PasteComponents(); break;
                 default: break;
             }
 
