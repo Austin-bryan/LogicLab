@@ -108,14 +108,9 @@ public static class ComponentSelector
     private static readonly Func<LogicComponent> BuildLogicComponent;
     public static async void DuplicateComponent()
     {
-        // selectedComponents.ForEach(component =>
-        //foreach (LogicComponent component in selectedComponents)
-        //{
         for (int i = selectedComponents.Count - 1; i >= 0; i--)
         {
             LogicComponent component = selectedComponents[i];
-
-            //TODO:fix all the pasted stuff spawning in the same spot
             
             Point mousePos = Mouse.GetPosition(MainGrid);
             LogicComponent? temp = null; //new OutputToggle();//defaults to an input 
@@ -127,7 +122,7 @@ public static class ComponentSelector
 
             if (temp != null)
             {
-                temp.SetPosition(new Point(mousePos.X + 15, mousePos.Y));
+                temp.SetPosition(new Point(component.GetLeft() + 50, component.GetTop() + 50));
                 MainGrid.Children.Add(temp);
                 
                 temp.Select(true);//selects new component
