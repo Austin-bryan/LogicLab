@@ -126,18 +126,33 @@ public partial class MainWindow : Window
     {
         base.OnKeyDown(e);
 
-        if (Keyboard.Modifiers != ModifierKeys.Shift)
-            return;
-        // Shortcuts for alignment of logic gates
+        if (Keyboard.Modifiers == ModifierKeys.Shift)
+            // Shift Modified Key combos
+            switch (e.Key)
+            {
+                case Key.A: ComponentSelector.AlignLeft(); break;
+                case Key.W: ComponentSelector.AlignTop(); break;
+                case Key.D: ComponentSelector.AlignRight(); break;
+                case Key.S: ComponentSelector.AlignBottom(); break;
+                case Key.C: ComponentSelector.AlignCenter(); break;
+                case Key.V: ComponentSelector.DuplicateComponent(); break;
+                case Key.K: Application.Current.Shutdown(); break;
+                default: break;
+            }
+        else if (Keyboard.Modifiers == ModifierKeys.Control)
+            // Ctrl Modified Key Combos
+            switch (e.Key)
+            {
+                case Key.D: ComponentSelector.DuplicateComponent(); break;
+                case Key.V: ComponentSelector.DuplicateComponent(); break;
+                default: break;
+            }
+
+        //un modified key presses 
         switch (e.Key)
         {
-        case Key.A: ComponentSelector.AlignLeft();   break;
-        case Key.W: ComponentSelector.AlignTop();    break;
-        case Key.D: ComponentSelector.AlignRight();  break;
-        case Key.S: ComponentSelector.AlignBottom(); break;
-        case Key.C: ComponentSelector.AlignCenter(); break;
-        case Key.K: Application.Current.Shutdown(); break;
-        default: break;
+            case Key.Delete: ComponentSelector.DeleteComponent(); break;
+            default: break;
         }
     }
 

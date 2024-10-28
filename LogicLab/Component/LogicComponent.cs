@@ -64,7 +64,6 @@ public abstract partial class LogicComponent : LabComponent
         }
         // end AB
     }
-
     // end Connor
 
     // Austin

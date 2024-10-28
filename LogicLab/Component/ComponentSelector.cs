@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using LogicLab;
+using System.ComponentModel;
 
 namespace LogicLab.Component;
  
@@ -79,6 +80,7 @@ public static class ComponentSelector
     }
     public static async void AlignRight()
     {
+        //TODO: fix crash when not selecting anythin
         double max = selectedComponents.Max(lc => lc.Margin.Left);
         selectedComponents.ForEach(lc => lc.SetLeft(max));
         await Task.Delay(10);
@@ -102,6 +104,36 @@ public static class ComponentSelector
         });
         await Task.Delay(10);
         selectedComponents.ForEach(lc => lc.RefreshWires());
+    }
+    private static readonly Func<LogicComponent> BuildLogicComponent;
+    public static async void DuplicateComponent()
+    {
+        // selectedComponents.ForEach(component =>
+        //foreach (LogicComponent component in selectedComponents)
+        //{
+        for (int i = selectedComponents.Count - 1; i >= 0; i--)
+        {
+            LogicComponent component = selectedComponents[i];
+
+            //TODO:fix all the pasted stuff spawning in the same spot
+            
+            Point mousePos = Mouse.GetPosition(MainGrid);
+            LogicComponent? temp = null; //new OutputToggle();//defaults to an input 
+
+            if (component is LogicGate logicGate)
+                temp = new LogicGate(logicGate.GateType);
+            else if (component is OutputToggle)
+                temp = new OutputToggle();
+
+            if (temp != null)
+            {
+                temp.SetPosition(new Point(mousePos.X + 15, mousePos.Y));
+                MainGrid.Children.Add(temp);
+                
+                temp.Select(true);//selects new component
+                component.Deselect(); //deselects old component
+            }
+        };
     }
 
     public static void MouseDown(MouseButtonEventArgs e)
