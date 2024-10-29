@@ -66,6 +66,7 @@ public abstract partial class LogicComponent : LabComponent
     }
     // end Connor
 
+
     // Austin
     public void OnDelete()
     {

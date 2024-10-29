@@ -135,7 +135,6 @@ public partial class MainWindow : Window
                 case Key.D: ComponentSelector.AlignRight(); break;
                 case Key.S: ComponentSelector.AlignBottom(); break;
                 case Key.C: ComponentSelector.AlignCenter(); break;
-                case Key.V: ComponentSelector.DuplicateComponent(); break;
                 case Key.K: Application.Current.Shutdown(); break;
                 default: break;
             }

@@ -107,109 +107,50 @@ public static class ComponentSelector
         await Task.Delay(10);
         selectedComponents.ForEach(lc => lc.RefreshWires());
     }
-    public static async void CopyComponents()
+    
+    public static void CopyComponents() //GA
     {
-        for (int i = selectedComponents.Count - 1; i >= 0; i--)
+        clipBoard.Clear();
+        clipBoard.AddRange(selectedComponents);
+    }
+    private static LogicComponent? CloneComponent(LogicComponent component) //GA
+    {
+        LogicComponent? clone = null;
+        switch (component)
         {
-            LogicComponent component = selectedComponents[i];
+            case LogicGate logicGate: clone = new LogicGate(logicGate.GateType); break;
+            case OutputConstant outputConstant: clone = new OutputConstant(outputConstant.ConstantType().GetValueOrDefault()); break;
+            case OutputToggle: clone = new OutputToggle(); break;
+            case InputPixel: clone = new InputPixel(); break;
+            case InputHexDisplay: clone = new InputHexDisplay(); break;
+        };
+
+        return clone;
+    }
+    private static void CreateComponentDuplicates(List<LogicComponent> components) //GA
+    {
+        for (int i = components.Count - 1; i >= 0; i--)
+        {
+            LogicComponent component = components[i];
+            LogicComponent? clone = CloneComponent(component);
+            if (component == null) return;
 
             Point mousePos = Mouse.GetPosition(MainGrid);
-            LogicComponent? temp = null;
-            //sets temp to type of current component
-            if (component is LogicGate logicGate) temp = new LogicGate(logicGate.GateType);
-            else if (component is OutputConstant outputConstant)
-            {
-                if (outputConstant.ConstantType() == true)
-                    temp = new OutputConstant(true);
-                else temp = new OutputConstant(false);
-            }
-            else if (component is OutputToggle) temp = new OutputToggle();
-            else if (component is InputPixel) temp = new InputPixel();
-            else if (component is InputHexDisplay) temp = new InputHexDisplay();
 
-            if (temp != null)
-            {
-                clipBoard.Add(temp);
-                //TODO: make the relitive positions copy
-                //TODO: make the connections also copy
-            }
+            //sets new components to 50 px down and to the left of original components position
+            clone.SetPosition(new Point(component.GetLeft() + 50, component.GetTop() + 50));
+
+            clone.Select(true); //selects new component
+            component.Deselect(); //deselects old component
+
+            // adds new component to maingrid
+            MainGrid.Children.Add(clone);
+
+            //TODO: make the connections also paste
         };
     }
-    public static async void PasteComponents()
-    {
-        for (int i = clipBoard.Count - 1; i >= 0; i--)
-        {
-            LogicComponent component = clipBoard[i];
-
-            Point mousePos = Mouse.GetPosition(MainGrid);
-            LogicComponent? temp = null;
-            //sets temp to type of current component
-            if (component is LogicGate logicGate) temp = new LogicGate(logicGate.GateType);
-            else if (component is OutputConstant outputConstant)
-            {
-                if (outputConstant.ConstantType() == true)
-                    temp = new OutputConstant(true);
-                else temp = new OutputConstant(false);
-            }
-            else if (component is OutputToggle) temp = new OutputToggle();
-            else if (component is InputPixel) temp = new InputPixel();
-            else if (component is InputHexDisplay) temp = new InputHexDisplay();
-
-            if (temp != null)
-            {
-                //sets new components to 50 px down and to the left of original components position
-                temp.SetPosition(new Point(component.GetLeft() + 50, component.GetTop() + 50));
-
-                //selects new component
-                temp.Select(true);
-                //deselects old component
-                component.Deselect();
-
-                //creates new component
-                MainGrid.Children.Add(temp);
-
-                //TODO: make the relitive positions paste
-                //TODO: make the connections also paste
-            }
-        };
-    }
-    public static async void DuplicateComponent() //GA
-    {
-        for (int i = selectedComponents.Count - 1; i >= 0; i--)
-        {
-            LogicComponent component = selectedComponents[i];
-            
-            Point mousePos = Mouse.GetPosition(MainGrid);
-            LogicComponent? temp = null; 
-            //sets temp to type of current component
-            if      (component is LogicGate logicGate) temp = new LogicGate(logicGate.GateType);
-            else if (component is OutputConstant outputConstant)
-            {
-                if (outputConstant.ConstantType() == true)
-                    temp = new OutputConstant(true);
-                else temp = new OutputConstant(false);
-            }
-            else if (component is OutputToggle) temp = new OutputToggle();
-            else if (component is InputPixel) temp = new InputPixel();
-            else if (component is InputHexDisplay) temp = new InputHexDisplay();
-
-            if (temp != null)
-            {
-                //sets new components to 50 px down and to the left of original components position
-                temp.SetPosition(new Point(component.GetLeft() + 50, component.GetTop() + 50));
-                
-                //selects new component
-                temp.Select(true);
-                //deselects old component
-                component.Deselect(); 
-                
-                //creates new component
-                MainGrid.Children.Add(temp);
-
-                //TODO: make the connections also copy
-            }
-        };
-    }
+    public static void PasteComponents() => CreateComponentDuplicates(clipBoard); //GA
+    public static void DuplicateComponent() => CreateComponentDuplicates(selectedComponents); //GA
 
     public static void MouseDown(MouseButtonEventArgs e)
     {
